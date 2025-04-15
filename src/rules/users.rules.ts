@@ -30,5 +30,28 @@ export const loginSchema = userSchema.pick({
   password: true
 })
 
+export const forgotPasswordSchema = userSchema.pick({
+  email: true
+})
+
+export const resetPasswordSchema = userSchema
+  .pick({
+    password: true
+  })
+  .extend({
+    confirmPassword: z.string().min(1, USERS_MESSAGES.CONFIRM_PASSWORD_IS_REQUIRED)
+  })
+  .superRefine(({ password, confirmPassword }, ctx) => {
+    if (confirmPassword !== password) {
+      ctx.addIssue({
+        code: 'custom',
+        message: USERS_MESSAGES.CONFIRM_PASSWORD_IS_NOT_MATCH,
+        path: ['confirmPassword']
+      })
+    }
+  })
+
 export type RegisterSchema = z.infer<typeof registerSchema>
 export type LoginSchema = z.infer<typeof loginSchema>
+export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>
+export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>
