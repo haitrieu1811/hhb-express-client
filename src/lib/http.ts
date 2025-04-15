@@ -1,7 +1,8 @@
 import axios, { AxiosInstance } from 'axios'
 
-import { LOGIN_ENDPOINT, REGISTER_ENDPOINT } from '~/apis/users.apis'
+import { LOGIN_ENDPOINT, LOGOUT_ENDPOINT, REGISTER_ENDPOINT } from '~/apis/users.apis'
 import {
+  clearAuthStorage,
   getAccessTokenFromStorage,
   getProfileFromStorage,
   getRefreshTokenFromStorage,
@@ -49,6 +50,11 @@ class Http {
           this.accessToken = accessToken
           this.refreshToken = refreshToken
           this.profile = user
+        } else if (url && url === LOGOUT_ENDPOINT) {
+          clearAuthStorage()
+          this.accessToken = ''
+          this.refreshToken = ''
+          this.profile = null
         }
         return response
       },

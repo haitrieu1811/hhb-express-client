@@ -110,7 +110,7 @@ export default function LoginForm({ className, ...props }: React.ComponentPropsW
                 </div>
                 <div className='text-center text-sm'>
                   Bạn chưa có tài khoản?{' '}
-                  <Link to={PATH.LOGIN} className='underline underline-offset-4'>
+                  <Link to={PATH.REGISTER} className='underline underline-offset-4'>
                     Đăng ký tài khoản
                   </Link>
                 </div>
