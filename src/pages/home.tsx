@@ -28,6 +28,7 @@ export default function HomePage() {
       <ModeToggle />
       <Link to={PATH.LOGIN}>Đăng nhập</Link>
       <Link to={PATH.REGISTER}>Đăng ký</Link>
+      {isAuthenticated && <Link to={PATH.DASHBOARD}>Dashboard</Link>}
       {isAuthenticated && (
         <Button variant='link' onClick={() => logoutMutation.mutate()}>
           Đăng xuất

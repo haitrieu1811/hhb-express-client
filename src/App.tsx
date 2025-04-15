@@ -2,6 +2,7 @@ import React from 'react'
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router'
 
 import PATH from '~/constants/path'
+import DashboardLayout from '~/layouts/dashboard'
 import MainLayout from '~/layouts/main'
 import DashboardPage from '~/pages/dashboard'
 import ForgotPasswordPage from '~/pages/forgot-password'
@@ -39,9 +40,9 @@ export default function App() {
         {
           path: PATH.DASHBOARD,
           element: (
-            <MainLayout>
+            <DashboardLayout>
               <DashboardPage />
-            </MainLayout>
+            </DashboardLayout>
           )
         }
       ]
