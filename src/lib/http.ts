@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 
-import { REGISTER_ENDPOINT } from '~/apis/users.apis'
+import { LOGIN_ENDPOINT, REGISTER_ENDPOINT } from '~/apis/users.apis'
 import {
   getAccessTokenFromStorage,
   getProfileFromStorage,
@@ -41,7 +41,7 @@ class Http {
     this.instance.interceptors.response.use(
       (response) => {
         const { url } = response.config
-        if (url && [REGISTER_ENDPOINT].includes(url)) {
+        if (url && [REGISTER_ENDPOINT, LOGIN_ENDPOINT].includes(url)) {
           const { accessToken, refreshToken, user } = (response.data as AuthResponse).data
           setAccessTokenToStorage(accessToken)
           setRefreshTokenToStorage(refreshToken)
