@@ -1,42 +1,62 @@
-import { Route, Routes } from 'react-router'
+import React from 'react'
+import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router'
 
 import PATH from '~/constants/path'
 import MainLayout from '~/layouts/main'
+import DashboardPage from '~/pages/dashboard'
 import HomePage from '~/pages/home'
 import LoginPage from '~/pages/login'
 import RegisterPage from '~/pages/register'
+import { AppContext } from '~/providers/app.provider'
 
-function App() {
-  return (
-    <Routes>
-      <Route
-        path={PATH.HOME}
-        element={
-          <MainLayout>
-            <HomePage />
-          </MainLayout>
-        }
-      />
-
-      <Route
-        path={PATH.LOGIN}
-        element={
-          <MainLayout>
-            <LoginPage />
-          </MainLayout>
-        }
-      />
-
-      <Route
-        path={PATH.REGISTER}
-        element={
-          <MainLayout>
-            <RegisterPage />
-          </MainLayout>
-        }
-      />
-    </Routes>
-  )
+const ProtectedRoute = () => {
+  const { isAuthenticated } = React.useContext(AppContext)
+  return isAuthenticated ? <Outlet /> : <Navigate to={PATH.LOGIN} />
+}
+const RejectedRoute = () => {
+  const { isAuthenticated } = React.useContext(AppContext)
+  return !isAuthenticated ? <Outlet /> : <Navigate to={PATH.HOME} />
 }
 
-export default App
+export default function App() {
+  const router = createBrowserRouter([
+    {
+      path: PATH.HOME,
+      element: (
+        <MainLayout>
+          <HomePage />
+        </MainLayout>
+      )
+    },
+    {
+      path: '',
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: PATH.DASHBOARD,
+          element: (
+            <MainLayout>
+              <DashboardPage />
+            </MainLayout>
+          )
+        }
+      ]
+    },
+    {
+      path: '',
+      element: <RejectedRoute />,
+      children: [
+        {
+          path: PATH.LOGIN,
+          element: <LoginPage />
+        },
+        {
+          path: PATH.REGISTER,
+          element: <RegisterPage />
+        }
+      ]
+    }
+  ])
+
+  return <RouterProvider router={router} />
+}
