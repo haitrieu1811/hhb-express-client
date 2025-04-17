@@ -43,13 +43,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       navMain: [
         {
           title: 'Người dùng',
-          url: '#',
+          url: PATH.DASHBOARD_USER,
           icon: UsersRound,
           isActive: true,
           items: [
             {
               title: 'Danh sách',
-              url: '#'
+              url: PATH.DASHBOARD_USER
             },
             {
               title: 'Thêm mới',

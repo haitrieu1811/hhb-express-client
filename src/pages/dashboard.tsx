@@ -33,6 +33,7 @@ export default function DashboardPage() {
             <SectionCard key={index} />
           ))}
       </div>
+
       <div className='grid grid-cols-12 gap-4'>
         <div className='col-span-6'>
           <Chart />
@@ -41,6 +42,7 @@ export default function DashboardPage() {
           <Chart2 />
         </div>
       </div>
+
       <Card>
         <CardHeader>
           <CardTitle>Lorem, ipsum dolor.</CardTitle>

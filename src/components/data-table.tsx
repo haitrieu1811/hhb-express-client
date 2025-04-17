@@ -1,6 +1,3 @@
-'use client'
-
-import * as React from 'react'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,18 +12,35 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
+import * as React from 'react'
 
+import { DataTablePagination } from '~/components/data-table-pagination'
+import { DataTableToolbar } from '~/components/data-table-toolbar'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
-
-import { DataTablePagination } from './data-table-pagination'
-import { DataTableToolbar } from './data-table-toolbar'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  searchField?: string
+  facetedFilters?: {
+    columnName: string
+    title: string
+    options: {
+      label: string
+      value: string
+      icon?: React.ComponentType<{
+        className?: string
+      }>
+    }[]
+  }[]
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  searchField,
+  facetedFilters
+}: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -56,10 +70,10 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
   return (
     <div className='space-y-4'>
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table} searchField={searchField} facetedFilters={facetedFilters} />
       <div className='rounded-md border'>
         <Table>
-          <TableHeader>
+          <TableHeader className='bg-muted'>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -84,7 +98,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className='h-24 text-center'>
-                  No results.
+                  Không có bản ghi nào.
                 </TableCell>
               </TableRow>
             )}

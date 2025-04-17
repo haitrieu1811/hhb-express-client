@@ -1,13 +1,14 @@
 import { UserRole } from '~/constants/enum'
 import { getRefreshTokenFromStorage } from '~/lib/auth'
 import http from '~/lib/http'
-import { AuthResponse } from '~/types/users.types'
-import { OnlyMessageResponse } from '~/types/utils.types'
+import { AuthResponse, BasicUser } from '~/types/users.types'
+import { OnlyMessageResponse, PaginationReqParams, PaginationResponse, SuccessResponse } from '~/types/utils.types'
 
 export const REGISTER_ENDPOINT = '/users/register'
 export const LOGIN_ENDPOINT = '/users/login'
 export const LOGOUT_ENDPOINT = '/users/logout'
 export const RESET_PASSWORD_ENDPOINT = '/users/reset-password'
+export const REFRESH_TOKEN_ENDPOINT = '/users/refresh-token'
 
 const usersApis = {
   register(body: { email: string; password: string; confirmPassword: string; role: UserRole }) {
@@ -29,6 +30,15 @@ const usersApis = {
 
   resetPassword(body: { forgotPasswordToken: string; password: string; confirmPassword: string }) {
     return http.post<AuthResponse>(RESET_PASSWORD_ENDPOINT, body)
+  },
+
+  getAllUsers(params?: PaginationReqParams) {
+    return http.get<
+      SuccessResponse<{
+        users: BasicUser[]
+        pagination: PaginationResponse
+      }>
+    >('/users/all', { params })
   }
 } as const
 
