@@ -5,6 +5,7 @@ import PATH from '~/constants/path'
 import DashboardLayout from '~/layouts/dashboard'
 import MainLayout from '~/layouts/main'
 import DashboardPage from '~/pages/dashboard'
+import DashboardUserPage from '~/pages/dashboard-user'
 import ForgotPasswordPage from '~/pages/forgot-password'
 import HomePage from '~/pages/home'
 import LoginPage from '~/pages/login'
@@ -42,6 +43,14 @@ export default function App() {
           element: (
             <DashboardLayout>
               <DashboardPage />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: PATH.DASHBOARD_USER,
+          element: (
+            <DashboardLayout>
+              <DashboardUserPage />
             </DashboardLayout>
           )
         }

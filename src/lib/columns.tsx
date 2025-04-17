@@ -1,12 +1,20 @@
 import { ColumnDef } from '@tanstack/react-table'
+import { MoreHorizontal } from 'lucide-react'
 
+import { DataTableColumnHeader } from '~/components/data-table-column-header'
 import { Badge } from '~/components/ui/badge'
+import { Button } from '~/components/ui/button'
 import { Checkbox } from '~/components/ui/checkbox'
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger
+} from '~/components/ui/dropdown-menu'
 import { labels, priorities, statuses } from '~/lib/data'
 import { Task } from '~/lib/schema'
-import { DataTableColumnHeader } from '~/components/data-table-column-header'
-import { DataTableRowActions } from '~/components/data-table-row-actions'
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -95,6 +103,25 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => <DataTableRowActions row={row} />
+    cell: () => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant='ghost' className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'>
+            <MoreHorizontal />
+            <span className='sr-only'>Open menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align='end' className='w-[160px]'>
+          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <DropdownMenuItem>Make a copy</DropdownMenuItem>
+          <DropdownMenuItem>Favorite</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            Delete
+            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    )
   }
 ]

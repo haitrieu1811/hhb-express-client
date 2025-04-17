@@ -1,6 +1,6 @@
 import {
-  BookA,
-  ContactRound,
+  ChartColumnStacked,
+  Flag,
   Frame,
   LifeBuoy,
   Map,
@@ -43,12 +43,27 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       navMain: [
         {
           title: 'Người dùng',
-          url: '#',
+          url: PATH.DASHBOARD_USER,
           icon: UsersRound,
           isActive: true,
           items: [
             {
               title: 'Danh sách',
+              url: PATH.DASHBOARD_USER
+            },
+            {
+              title: 'Thêm mới',
+              url: '#'
+            }
+          ]
+        },
+        {
+          title: 'Danh mục sản phẩm',
+          url: '#',
+          icon: ChartColumnStacked,
+          items: [
+            {
+              title: 'Danh sách',
               url: '#'
             },
             {
@@ -58,9 +73,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           ]
         },
         {
-          title: 'Khách hàng',
+          title: 'Nhãn hiệu sản phẩm',
           url: '#',
-          icon: ContactRound,
+          icon: Flag,
           items: [
             {
               title: 'Danh sách',
@@ -77,26 +92,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           ]
         },
         {
-          title: 'Đơn hàng',
-          url: '#',
-          icon: BookA,
-          items: [
-            {
-              title: 'Danh sách',
-              url: '#'
-            },
-            {
-              title: 'Thêm mới',
-              url: '#'
-            },
-            {
-              title: 'Thống kê doanh thu',
-              url: '#'
-            }
-          ]
-        },
-        {
-          title: 'Mặt hàng',
+          title: 'Sản phẩm',
           url: '#',
           icon: ShoppingBag,
           items: [
