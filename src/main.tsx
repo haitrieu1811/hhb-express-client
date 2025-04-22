@@ -9,7 +9,14 @@ import { ThemeProvider } from '~/providers/theme.provider.tsx'
 import App from './App.tsx'
 import './index.css'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false
+    }
+  }
+})
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -17,7 +24,7 @@ createRoot(document.getElementById('root')!).render(
       <ThemeProvider>
         <AppProvider>
           <App />
-          <Toaster richColors />
+          <Toaster richColors position='top-center' />
         </AppProvider>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />

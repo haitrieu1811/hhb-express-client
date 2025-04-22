@@ -59,16 +59,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         },
         {
           title: 'Danh mục sản phẩm',
-          url: '#',
+          url: PATH.DASHBOARD_PRODUCT_CATEGORY,
           icon: ChartColumnStacked,
           items: [
             {
               title: 'Danh sách',
-              url: '#'
+              url: PATH.DASHBOARD_PRODUCT_CATEGORY
             },
             {
               title: 'Thêm mới',
-              url: '#'
+              url: PATH.DASHBOARD_PRODUCT_CATEGORY_NEW
             }
           ]
         },

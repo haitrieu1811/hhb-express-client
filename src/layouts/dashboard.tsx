@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 
 import { AppSidebar } from '~/components/app-sidebar'
 import { ModeToggle } from '~/components/mode-toggle'
@@ -12,6 +13,7 @@ import {
 } from '~/components/ui/breadcrumb'
 import { Separator } from '~/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar'
+import PATH from '~/constants/path'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -26,7 +28,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className='hidden md:block'>
-                    <BreadcrumbLink href='#'>Building Your Application</BreadcrumbLink>
+                    <BreadcrumbLink asChild>
+                      <Link to={PATH.DASHBOARD}>Trang chủ</Link>
+                    </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className='hidden md:block' />
                   <BreadcrumbItem>
