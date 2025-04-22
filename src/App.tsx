@@ -5,6 +5,7 @@ import PATH from '~/constants/path'
 import DashboardLayout from '~/layouts/dashboard'
 import MainLayout from '~/layouts/main'
 import DashboardPage from '~/pages/dashboard'
+import DashboardProductCategoryPage from '~/pages/dashboard-product-category'
 import DashboardUserPage from '~/pages/dashboard-user'
 import ForgotPasswordPage from '~/pages/forgot-password'
 import HomePage from '~/pages/home'
@@ -51,6 +52,14 @@ export default function App() {
           element: (
             <DashboardLayout>
               <DashboardUserPage />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: PATH.DASHBOARD_PRODUCT_CATEGORY,
+          element: (
+            <DashboardLayout>
+              <DashboardProductCategoryPage />
             </DashboardLayout>
           )
         }

@@ -1,3 +1,5 @@
+import { MediaType } from '~/constants/enum'
+
 export type SuccessResponse<Data> = {
   message: string
   data: Data
@@ -23,3 +25,13 @@ export type PaginationResponse = {
   totalRows: number
   totalPages: number
 }
+
+export type ImageItem = {
+  _id: string
+  name: string
+  type: MediaType.Image
+}
+
+export type UploadImageResponse = SuccessResponse<{
+  medias: ImageItem[]
+}>
