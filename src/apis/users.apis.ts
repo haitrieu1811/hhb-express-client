@@ -1,7 +1,7 @@
 import { UserRole } from '~/constants/enum'
 import { getRefreshTokenFromStorage } from '~/lib/auth'
 import http from '~/lib/http'
-import { AuthResponse, BasicUser } from '~/types/users.types'
+import { AuthResponse, BasicUser, User } from '~/types/users.types'
 import { OnlyMessageResponse, PaginationReqParams, PaginationResponse, SuccessResponse } from '~/types/utils.types'
 
 export const REGISTER_ENDPOINT = '/users/register'
@@ -9,6 +9,7 @@ export const LOGIN_ENDPOINT = '/users/login'
 export const LOGOUT_ENDPOINT = '/users/logout'
 export const RESET_PASSWORD_ENDPOINT = '/users/reset-password'
 export const REFRESH_TOKEN_ENDPOINT = '/users/refresh-token'
+export const UPDATE_ME_ENDPOINT = '/users/me'
 
 const usersApis = {
   register(body: { email: string; password: string; confirmPassword: string; role: UserRole }) {
@@ -39,6 +40,22 @@ const usersApis = {
         pagination: PaginationResponse
       }>
     >('/users/all', { params })
+  },
+
+  getMe() {
+    return http.get<
+      SuccessResponse<{
+        user: User
+      }>
+    >('/users/me')
+  },
+
+  updateMe(body: { fullName: string; avatar?: string | null }) {
+    return http.put<
+      SuccessResponse<{
+        user: User
+      }>
+    >(UPDATE_ME_ENDPOINT, body)
   }
 } as const
 

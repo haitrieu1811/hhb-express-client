@@ -6,7 +6,8 @@ import {
   LOGOUT_ENDPOINT,
   REFRESH_TOKEN_ENDPOINT,
   REGISTER_ENDPOINT,
-  RESET_PASSWORD_ENDPOINT
+  RESET_PASSWORD_ENDPOINT,
+  UPDATE_ME_ENDPOINT
 } from '~/apis/users.apis'
 import {
   clearAuthStorage,
@@ -18,14 +19,14 @@ import {
   setRefreshTokenToStorage
 } from '~/lib/auth'
 import { isExpiredTokenError, isUnauthorizedError } from '~/lib/utils'
-import { AuthResponse, BasicUser } from '~/types/users.types'
-import { ErrorResponse } from '~/types/utils.types'
+import { AuthResponse, User } from '~/types/users.types'
+import { ErrorResponse, SuccessResponse } from '~/types/utils.types'
 
 class Http {
   instance: AxiosInstance
   private accessToken: string
   private refreshToken: string
-  private profile: BasicUser | null
+  private profile: User | null
   private refreshTokenRequest: Promise<string> | null
 
   constructor() {
@@ -56,7 +57,7 @@ class Http {
 
     this.instance.interceptors.response.use(
       (response) => {
-        const { url } = response.config
+        const { url, method } = response.config
         if (url && [REGISTER_ENDPOINT, LOGIN_ENDPOINT, RESET_PASSWORD_ENDPOINT].includes(url)) {
           const { accessToken, refreshToken, user } = (response.data as AuthResponse).data
           setAccessTokenToStorage(accessToken)
@@ -65,6 +66,10 @@ class Http {
           this.accessToken = accessToken
           this.refreshToken = refreshToken
           this.profile = user
+        } else if (url && url === UPDATE_ME_ENDPOINT && method === 'put') {
+          const { user } = (response.data as SuccessResponse<{ user: User }>).data
+          this.profile = user
+          setProfileToStorage(user)
         } else if (url && url === LOGOUT_ENDPOINT) {
           clearAuthStorage()
           this.accessToken = ''

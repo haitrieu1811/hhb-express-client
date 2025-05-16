@@ -4,7 +4,11 @@ import { USERS_MESSAGES } from '~/constants/message'
 
 export const userSchema = z.object({
   email: z.string().email(USERS_MESSAGES.EMAIL_IS_INVALID),
-  password: z.string().min(8, USERS_MESSAGES.PASSWORD_LENGTH_INVALID).max(32, USERS_MESSAGES.PASSWORD_LENGTH_INVALID)
+  password: z.string().min(8, USERS_MESSAGES.PASSWORD_LENGTH_INVALID).max(32, USERS_MESSAGES.PASSWORD_LENGTH_INVALID),
+  fullName: z
+    .string()
+    .min(1, USERS_MESSAGES.FULLNAME_LENGTH_IS_INVALID)
+    .max(50, USERS_MESSAGES.FULLNAME_LENGTH_IS_INVALID)
 })
 
 export const registerSchema = userSchema
@@ -51,7 +55,13 @@ export const resetPasswordSchema = userSchema
     }
   })
 
+export const updateMeSchema = userSchema.pick({
+  email: true,
+  fullName: true
+})
+
 export type RegisterSchema = z.infer<typeof registerSchema>
 export type LoginSchema = z.infer<typeof loginSchema>
 export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>
 export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>
+export type UpdateMeSchema = z.infer<typeof updateMeSchema>

@@ -10,6 +10,7 @@ const PATH = {
   DASHBOARD_USER: '/dashboard/user',
   DASHBOARD_PRODUCT_CATEGORY: '/dashboard/product-category',
   DASHBOARD_PRODUCT_CATEGORY_NEW: '/dashboard/product-category/new',
+  DASHBOARD_ME: '/dashboard/me',
 
   NOT_FOUND: '*'
 } as const

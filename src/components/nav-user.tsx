@@ -1,6 +1,7 @@
 'use client'
 
-import { BadgeCheck, Bell, ChevronsUpDown, Key, LogOut, Sparkles } from 'lucide-react'
+import { BadgeCheck, Bell, ChevronsUpDown, Key, LogOut } from 'lucide-react'
+import { Link } from 'react-router'
 
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import {
@@ -13,6 +14,7 @@ import {
   DropdownMenuTrigger
 } from '~/components/ui/dropdown-menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '~/components/ui/sidebar'
+import PATH from '~/constants/path'
 import useLogout from '~/hooks/use-logout'
 
 export function NavUser({
@@ -25,7 +27,6 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-
   const { logoutMutation } = useLogout()
 
   return (
@@ -68,16 +69,11 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Nâng cấp Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Tài khoản
+              <DropdownMenuItem asChild>
+                <Link to={PATH.DASHBOARD_ME}>
+                  <BadgeCheck />
+                  Tài khoản
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Key />

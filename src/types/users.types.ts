@@ -1,4 +1,4 @@
-import { UserRole } from '~/constants/enum'
+import { UserRole, UserStatus, UserVerifyStatus } from '~/constants/enum'
 import { SuccessResponse } from '~/types/utils.types'
 
 export type BasicUser = {
@@ -10,8 +10,20 @@ export type BasicUser = {
   updatedAt: string
 }
 
+export type User = {
+  _id: string
+  email: string
+  fullName: string
+  avatar: string
+  avatarId: string
+  status: UserStatus
+  verifyStatus: UserVerifyStatus
+  createdAt: string
+  updatedAt: string
+}
+
 export type AuthResponse = SuccessResponse<{
   accessToken: string
   refreshToken: string
-  user: BasicUser
+  user: User
 }>

@@ -1,4 +1,4 @@
-import { BasicUser } from '~/types/users.types'
+import { User } from '~/types/users.types'
 
 export const localStorageEventTarget = new EventTarget()
 
@@ -26,11 +26,11 @@ export const clearAuthStorage = () => {
   localStorageEventTarget.dispatchEvent(clearAuthLSEvent)
 }
 
-export const getProfileFromStorage = (): BasicUser | null => {
+export const getProfileFromStorage = (): User | null => {
   const profile = localStorage.getItem('profile')
   return profile ? JSON.parse(profile) : null
 }
 
-export const setProfileToStorage = (profile: BasicUser) => {
+export const setProfileToStorage = (profile: User) => {
   localStorage.setItem('profile', JSON.stringify(profile))
 }

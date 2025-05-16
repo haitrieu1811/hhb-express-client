@@ -5,6 +5,7 @@ import PATH from '~/constants/path'
 import DashboardLayout from '~/layouts/dashboard'
 import MainLayout from '~/layouts/main'
 import DashboardPage from '~/pages/dashboard'
+import DashboardMePage from '~/pages/dashboard-me'
 import DashboardProductCategoryPage from '~/pages/dashboard-product-category'
 import DashboardProductCategoryNewPage from '~/pages/dashboard-product-category-new'
 import DashboardUserPage from '~/pages/dashboard-user'
@@ -69,6 +70,14 @@ export default function App() {
           element: (
             <DashboardLayout>
               <DashboardProductCategoryNewPage />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: PATH.DASHBOARD_ME,
+          element: (
+            <DashboardLayout>
+              <DashboardMePage />
             </DashboardLayout>
           )
         }
