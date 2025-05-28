@@ -1,8 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
 import { PlusCircle } from 'lucide-react'
 import React from 'react'
 
-import productCategoriesApis from '~/apis/productCategories.apis'
 import { ProductCategoryColumns } from '~/components/columns/product-category'
 import CreateProductCategoryForm from '~/components/create-product-category-form'
 import { DataTable } from '~/components/data-table'
@@ -10,24 +8,12 @@ import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { ProductCategoryStatus } from '~/constants/enum'
+import useProductCategories from '~/hooks/use-product-categories'
 
 export default function DashboardProductCategoryPage() {
   const [isOpenCreateDialog, setIsOpenCreateDialog] = React.useState<boolean>(false)
 
-  const getProductCategoriesQuery = useQuery({
-    queryKey: ['get-product-categories'],
-    queryFn: () => productCategoriesApis.getProductCategories()
-  })
-
-  const productCategories = React.useMemo(
-    () => getProductCategoriesQuery.data?.data.data.productCategories ?? [],
-    [getProductCategoriesQuery.data?.data.data.productCategories]
-  )
-
-  const totalProductCategories = React.useMemo(
-    () => getProductCategoriesQuery.data?.data.data.pagination.totalRows ?? 0,
-    [getProductCategoriesQuery.data?.data.data.pagination.totalRows]
-  )
+  const { productCategories, totalProductCategories } = useProductCategories()
 
   return (
     <div className='gap-4 grid'>

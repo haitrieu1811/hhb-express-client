@@ -6,8 +6,10 @@ import DashboardLayout from '~/layouts/dashboard'
 import MainLayout from '~/layouts/main'
 import DashboardPage from '~/pages/dashboard'
 import DashboardMePage from '~/pages/dashboard-me'
+import DashboardProductPage from '~/pages/dashboard-product'
 import DashboardProductCategoryPage from '~/pages/dashboard-product-category'
 import DashboardProductCategoryNewPage from '~/pages/dashboard-product-category-new'
+import DashboardProductNewPage from '~/pages/dashboard-product-new'
 import DashboardUserPage from '~/pages/dashboard-user'
 import ForgotPasswordPage from '~/pages/forgot-password'
 import HomePage from '~/pages/home'
@@ -78,6 +80,22 @@ export default function App() {
           element: (
             <DashboardLayout>
               <DashboardMePage />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: PATH.DASHBOARD_PRODUCT,
+          element: (
+            <DashboardLayout>
+              <DashboardProductPage />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: PATH.DASHBOARD_PRODUCT_NEW,
+          element: (
+            <DashboardLayout>
+              <DashboardProductNewPage />
             </DashboardLayout>
           )
         }

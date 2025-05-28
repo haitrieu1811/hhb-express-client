@@ -93,16 +93,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         },
         {
           title: 'Sản phẩm',
-          url: '#',
+          url: PATH.DASHBOARD_PRODUCT,
           icon: ShoppingBag,
           items: [
             {
               title: 'Danh sách',
-              url: '#'
+              url: PATH.DASHBOARD_PRODUCT
             },
             {
               title: 'Thêm mới',
-              url: '#'
+              url: PATH.DASHBOARD_PRODUCT_NEW
             },
             {
               title: 'Thống kê doanh thu',

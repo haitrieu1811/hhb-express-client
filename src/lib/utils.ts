@@ -38,3 +38,11 @@ export const convertMomentFromNowToVietnamese = (momentFromNow: string) =>
     .replace('months ago', 'tháng trước')
     .replace('a year ago', '1 năm trước')
     .replace('years ago', 'năm trước')
+
+export const formatCurrency = (currency: number) => {
+  return new Intl.NumberFormat('de-DE').format(currency)
+}
+
+export const rateSale = (originalPrice: number, salePrice: number) => {
+  return Math.round(((originalPrice - salePrice) / originalPrice) * 100)
+}
