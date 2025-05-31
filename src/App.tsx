@@ -3,7 +3,7 @@ import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-rou
 
 import PATH from '~/constants/path'
 import DashboardLayout from '~/layouts/dashboard'
-import MainLayout from '~/layouts/main'
+import ShopLayout from '~/layouts/shop'
 import DashboardPage from '~/pages/dashboard'
 import DashboardMePage from '~/pages/dashboard-me'
 import DashboardProductPage from '~/pages/dashboard-product'
@@ -33,9 +33,9 @@ export default function App() {
     {
       path: PATH.HOME,
       element: (
-        <MainLayout>
+        <ShopLayout>
           <HomePage />
-        </MainLayout>
+        </ShopLayout>
       )
     },
     // Đăng nhập rồi mới được vào đây
