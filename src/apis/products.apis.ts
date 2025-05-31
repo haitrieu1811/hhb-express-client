@@ -1,6 +1,6 @@
 import http from '~/lib/http'
 import { ProductItem } from '~/types/products.types'
-import { SuccessResponse } from '~/types/utils.types'
+import { PaginationReqParams, PaginationResponse, SuccessResponse } from '~/types/utils.types'
 
 export type CreateProductReqBody = {
   thumbnail: string
@@ -20,6 +20,15 @@ const productsApis = {
         product: ProductItem
       }>
     >('/products', body)
+  },
+
+  getProducts(params?: PaginationReqParams) {
+    return http.get<
+      SuccessResponse<{
+        products: ProductItem[]
+        pagination: PaginationResponse
+      }>
+    >('/products', { params })
   }
 } as const
 
