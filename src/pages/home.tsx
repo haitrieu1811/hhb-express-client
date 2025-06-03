@@ -8,14 +8,13 @@ import { formatCurrency } from '~/lib/utils'
 
 export default function HomePage() {
   const { products } = usePublicProducts()
-
   return (
     <div className='space-y-4'>
       <h2 className='font-semibold text-xl tracking-tight'>Top deal - sale rẻ</h2>
       <div className='grid grid-cols-12 gap-4'>
         {products.map((product) => (
-          <div className='col-span-2'>
-            <Card key={product._id} className='py-2'>
+          <div key={product._id} className='col-span-2'>
+            <Card className='py-2'>
               <CardContent className='px-2'>
                 <div className='space-y-4'>
                   <Link to={PATH.PRODUCT_DETAIL({ name: product.name, id: product._id })} className='block'>

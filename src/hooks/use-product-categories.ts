@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 
-import productCategoriesApis from '~/apis/productCategories.apis'
+import productCategoriesApis, { GetProductCategories } from '~/apis/productCategories.apis'
 
-export default function useProductCategories() {
+export default function useProductCategories({ page, name, limit }: GetProductCategories) {
   const getProductCategoriesQuery = useQuery({
-    queryKey: ['get-product-categories'],
-    queryFn: () => productCategoriesApis.getProductCategories()
+    queryKey: ['get-product-categories', { page, name, limit }],
+    queryFn: () => productCategoriesApis.getProductCategories({ page, name, limit })
   })
 
   const productCategories = React.useMemo(

@@ -13,7 +13,7 @@ import useProductCategories from '~/hooks/use-product-categories'
 export default function DashboardProductCategoryPage() {
   const [isOpenCreateDialog, setIsOpenCreateDialog] = React.useState<boolean>(false)
 
-  const { productCategories, totalProductCategories } = useProductCategories()
+  const { productCategories, totalProductCategories } = useProductCategories({})
 
   return (
     <div className='gap-4 grid'>

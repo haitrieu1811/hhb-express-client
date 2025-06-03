@@ -4,11 +4,13 @@ import {
   DollarSign,
   Home,
   Info,
+  Loader2,
   LogIn,
   Menu,
   Newspaper,
   Phone,
   Search,
+  SearchX,
   ShoppingCart,
   SquareRoundCorner,
   Tags,
@@ -29,15 +31,27 @@ import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover
 import { Skeleton } from '~/components/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import PATH from '~/constants/path'
+import useDebounce from '~/hooks/use-debounce'
 import useProductCategories from '~/hooks/use-product-categories'
 import { AppContext } from '~/providers/app.provider'
 
 export default function ShopHeader() {
   const { isAuthenticated, profile } = React.useContext(AppContext)
 
-  const [searchQuery, setSearchQuery] = React.useState<string>('')
+  const searchCategoryRef = React.useRef<HTMLInputElement>(null)
 
-  const { productCategories } = useProductCategories()
+  const [searchQuery, setSearchQuery] = React.useState<string>('')
+  const [searchCategoryQuery, setSearchCategoryQuery] = React.useState<string>('')
+  const searchCategoryQueryDebounce = useDebounce(searchCategoryQuery, 1500)
+
+  const { productCategories, getProductCategoriesQuery, totalProductCategories } = useProductCategories({
+    name: searchCategoryQueryDebounce
+  })
+
+  const handleCancelSearchCategory = () => {
+    setSearchCategoryQuery('')
+    searchCategoryRef.current?.focus()
+  }
 
   return (
     <TooltipProvider>
@@ -69,31 +83,50 @@ export default function ShopHeader() {
                     <div className='absolute top-0 bottom-0 left-0 w-10 flex justify-center items-center'>
                       <Search className='size-4' />
                     </div>
-                    <Input placeholder='Tìm kiếm danh mục sản phẩm...' className='px-10' />
+                    <Input
+                      ref={searchCategoryRef}
+                      value={searchCategoryQuery}
+                      placeholder='Tìm kiếm danh mục sản phẩm...'
+                      className='px-10'
+                      onChange={(e) => setSearchCategoryQuery(e.target.value)}
+                    />
                     <div className='absolute top-0 bottom-0 right-0 w-10 flex justify-center items-center'>
-                      {/* <Loader2 className='size-4 animate-spin' /> */}
-                      <button className='size-full flex justify-center items-center hover:cursor-pointer'>
-                        <X className='size-4' />
-                      </button>
+                      {getProductCategoriesQuery.isLoading && <Loader2 className='size-4 animate-spin' />}
+                      {!getProductCategoriesQuery.isLoading && searchCategoryQuery.length > 0 && (
+                        <button
+                          className='size-full flex justify-center items-center hover:cursor-pointer'
+                          onClick={handleCancelSearchCategory}
+                        >
+                          <X className='size-4' />
+                        </button>
+                      )}
                     </div>
                   </div>
-                  <div className='grid grid-cols-12 gap-4'>
-                    {productCategories.map((category) => (
-                      <div key={category._id} className='col-span-6'>
-                        <Link
-                          to={PATH.HOME}
-                          className='flex items-center space-x-4 hover:bg-muted duration-100 px-4 py-2 rounded-md border-t first:border-t-0'
-                        >
-                          <img
-                            src={category.thumbnail}
-                            alt={category.name}
-                            className='size-10 aspect-square object-cover shrink-0 rounded-md'
-                          />
-                          <div className='text-sm'>{category.name}</div>
-                        </Link>
-                      </div>
-                    ))}
-                  </div>
+                  {totalProductCategories > 0 && !getProductCategoriesQuery.isLoading && (
+                    <div className='grid grid-cols-12 gap-4'>
+                      {productCategories.map((category) => (
+                        <div key={category._id} className='col-span-6'>
+                          <Link
+                            to={PATH.HOME}
+                            className='flex items-center space-x-4 hover:bg-muted duration-100 px-4 py-2 rounded-md border-t first:border-t-0'
+                          >
+                            <img
+                              src={category.thumbnail}
+                              alt={category.name}
+                              className='size-10 aspect-square object-cover shrink-0 rounded-md'
+                            />
+                            <div className='text-sm'>{category.name}</div>
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {totalProductCategories === 0 && !getProductCategoriesQuery.isLoading && (
+                    <div className='flex justify-center items-center p-4 space-x-2 text-muted-foreground'>
+                      <SearchX className='size-4' />
+                      <p className='text-sm'>Không có danh mục sản phẩm trùng khớp.</p>
+                    </div>
+                  )}
                 </DialogContent>
               </Dialog>
             </div>

@@ -10,8 +10,12 @@ type CreateProductCategoryReqBody = {
   status: ProductCategoryStatus
 }
 
+export type GetProductCategories = PaginationReqParams & {
+  name?: string
+}
+
 const productCategoriesApis = {
-  getProductCategories(params?: PaginationReqParams) {
+  getProductCategories(params?: GetProductCategories) {
     return http.get<GetProductCategoriesResponse>('/product-categories', { params })
   },
 
