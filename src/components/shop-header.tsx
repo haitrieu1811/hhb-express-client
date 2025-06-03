@@ -23,8 +23,9 @@ import { Link } from 'react-router'
 import { ModeToggle } from '~/components/mode-toggle'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { Button } from '~/components/ui/button'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog'
+import { Input } from '~/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '~/components/ui/sheet'
 import { Skeleton } from '~/components/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import PATH from '~/constants/path'
@@ -52,35 +53,49 @@ export default function ShopHeader() {
                 <span className='font-bold text-2xl tracking-tight'>MHN</span>
               </Link>
               {/* Danh mục sản phẩm */}
-              <Sheet>
-                <SheetTrigger asChild>
+              <Dialog>
+                <DialogTrigger asChild>
                   <Button variant='secondary'>
                     <Menu className='size-4' />
                     Danh mục
                   </Button>
-                </SheetTrigger>
-                <SheetContent className='max-h-screen overflow-y-auto gap-0'>
-                  <SheetHeader>
-                    <SheetTitle>Danh mục sản phẩm</SheetTitle>
-                  </SheetHeader>
-                  <div>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Danh mục sản phẩm</DialogTitle>
+                  </DialogHeader>
+                  {/* Tìm kiếm danh mục sản phẩm */}
+                  <div className='relative'>
+                    <div className='absolute top-0 bottom-0 left-0 w-10 flex justify-center items-center'>
+                      <Search className='size-4' />
+                    </div>
+                    <Input placeholder='Tìm kiếm danh mục sản phẩm...' className='px-10' />
+                    <div className='absolute top-0 bottom-0 right-0 w-10 flex justify-center items-center'>
+                      {/* <Loader2 className='size-4 animate-spin' /> */}
+                      <button className='size-full flex justify-center items-center hover:cursor-pointer'>
+                        <X className='size-4' />
+                      </button>
+                    </div>
+                  </div>
+                  <div className='grid grid-cols-12 gap-4'>
                     {productCategories.map((category) => (
-                      <Link
-                        to={PATH.HOME}
-                        key={category._id}
-                        className='flex items-center space-x-4 hover:bg-muted duration-100 px-4 py-2 border-t'
-                      >
-                        <img
-                          src={category.thumbnail}
-                          alt={category.name}
-                          className='size-10 aspect-square object-cover shrink-0 rounded-lg'
-                        />
-                        <div className='text-sm'>{category.name}</div>
-                      </Link>
+                      <div key={category._id} className='col-span-6'>
+                        <Link
+                          to={PATH.HOME}
+                          className='flex items-center space-x-4 hover:bg-muted duration-100 px-4 py-2 rounded-md border-t first:border-t-0'
+                        >
+                          <img
+                            src={category.thumbnail}
+                            alt={category.name}
+                            className='size-10 aspect-square object-cover shrink-0 rounded-md'
+                          />
+                          <div className='text-sm'>{category.name}</div>
+                        </Link>
+                      </div>
                     ))}
                   </div>
-                </SheetContent>
-              </Sheet>
+                </DialogContent>
+              </Dialog>
             </div>
             {/* Tìm kiếm */}
             <div className='relative'>
