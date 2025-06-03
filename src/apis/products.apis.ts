@@ -29,6 +29,14 @@ const productsApis = {
         pagination: PaginationResponse
       }>
     >('/products', { params })
+  },
+
+  getProduct(productId: string) {
+    return http.get<
+      SuccessResponse<{
+        product: ProductItem
+      }>
+    >(`/products/${productId}`)
   }
 } as const
 

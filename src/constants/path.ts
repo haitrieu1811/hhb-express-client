@@ -1,3 +1,5 @@
+import { generateNameId } from '~/lib/utils'
+
 const PATH = {
   HOME: '/',
 
@@ -5,6 +7,9 @@ const PATH = {
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
+
+  PRODUCT_DETAIL_WITH_NAME_ID: '/products/:nameId',
+  PRODUCT_DETAIL: ({ name, id }: { name: string; id: string }) => `/products/${generateNameId({ name, id })}`,
 
   DASHBOARD: '/dashboard',
   DASHBOARD_USER: '/dashboard/user',

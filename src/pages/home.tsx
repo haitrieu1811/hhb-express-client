@@ -18,11 +18,14 @@ export default function HomePage() {
             <Card key={product._id} className='py-2'>
               <CardContent className='px-2'>
                 <div className='space-y-4'>
-                  <Link to={PATH.HOME} className='block'>
+                  <Link to={PATH.PRODUCT_DETAIL({ name: product.name, id: product._id })} className='block'>
                     <img src={product.thumbnail.url} alt={product.name} className='rounded-xl' />
                   </Link>
                   <div className='space-y-1'>
-                    <Link to={PATH.HOME} className='text-sm hover:underline line-clamp-1'>
+                    <Link
+                      to={PATH.PRODUCT_DETAIL({ name: product.name, id: product._id })}
+                      className='text-sm hover:underline line-clamp-1'
+                    >
                       {product.name}
                     </Link>
                     <div className='flex justify-between items-center space-x-4'>

@@ -14,6 +14,7 @@ import DashboardUserPage from '~/pages/dashboard-user'
 import ForgotPasswordPage from '~/pages/forgot-password'
 import HomePage from '~/pages/home'
 import LoginPage from '~/pages/login'
+import ProductDetailPage from '~/pages/product-detail'
 import RegisterPage from '~/pages/register'
 import ResetPasswordPage from '~/pages/reset-password'
 import { AppContext } from '~/providers/app.provider'
@@ -35,6 +36,14 @@ export default function App() {
       element: (
         <ShopLayout>
           <HomePage />
+        </ShopLayout>
+      )
+    },
+    {
+      path: PATH.PRODUCT_DETAIL_WITH_NAME_ID,
+      element: (
+        <ShopLayout>
+          <ProductDetailPage />
         </ShopLayout>
       )
     },
