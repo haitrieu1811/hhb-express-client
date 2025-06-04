@@ -10,6 +10,7 @@ const PATH = {
 
   PRODUCT_DETAIL_WITH_NAME_ID: '/products/:nameId',
   PRODUCT_DETAIL: ({ name, id }: { name: string; id: string }) => `/products/${generateNameId({ name, id })}`,
+  ME: '/me',
 
   DASHBOARD: '/dashboard',
   DASHBOARD_USER: '/dashboard/user',

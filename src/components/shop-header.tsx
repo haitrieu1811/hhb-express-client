@@ -6,15 +6,20 @@ import {
   Info,
   Loader2,
   LogIn,
+  LogOut,
+  MapPin,
   Menu,
   Newspaper,
   Phone,
+  ReceiptText,
   Search,
   SearchX,
   ShoppingCart,
   SquareRoundCorner,
   Tags,
   Truck,
+  UserPen,
+  UserRound,
   UserRoundPlus,
   X
 } from 'lucide-react'
@@ -387,16 +392,34 @@ export default function ShopHeader() {
                     </div>
                     <div>
                       <Button asChild variant='ghost' className='w-full justify-start rounded-none border-t h-10'>
-                        <Link to={PATH.HOME}>Tài khoản</Link>
+                        <Link to={PATH.ME}>
+                          <UserRound className='size-4' />
+                          Tài khoản
+                        </Link>
                       </Button>
                       <Button asChild variant='ghost' className='w-full justify-start rounded-none border-t h-10'>
-                        <Link to={PATH.HOME}>Quản lý đơn hàng</Link>
+                        <Link to={PATH.HOME}>
+                          <UserPen className='size-4' />
+                          Cập nhật tài khoản
+                        </Link>
                       </Button>
                       <Button asChild variant='ghost' className='w-full justify-start rounded-none border-t h-10'>
-                        <Link to={PATH.HOME}>Quản lý địa chỉ</Link>
+                        <Link to={PATH.HOME}>
+                          <ReceiptText className='size-4' />
+                          Quản lý đơn hàng
+                        </Link>
                       </Button>
                       <Button asChild variant='ghost' className='w-full justify-start rounded-none border-t h-10'>
-                        <Link to={PATH.HOME}>Đăng xuất</Link>
+                        <Link to={PATH.HOME}>
+                          <MapPin className='size-4' />
+                          Quản lý địa chỉ
+                        </Link>
+                      </Button>
+                      <Button asChild variant='ghost' className='w-full justify-start rounded-none border-t h-10'>
+                        <Link to={PATH.HOME}>
+                          <LogOut className='size-4' />
+                          Đăng xuất
+                        </Link>
                       </Button>
                     </div>
                   </PopoverContent>
