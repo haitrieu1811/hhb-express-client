@@ -16,8 +16,7 @@ import {
   Tags,
   Truck,
   UserRoundPlus,
-  X,
-  XCircle
+  X
 } from 'lucide-react'
 import React from 'react'
 import { Link } from 'react-router'
@@ -25,7 +24,7 @@ import { Link } from 'react-router'
 import { ModeToggle } from '~/components/mode-toggle'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { Button } from '~/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Input } from '~/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
 import { Skeleton } from '~/components/ui/skeleton'
@@ -33,24 +32,42 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/comp
 import PATH from '~/constants/path'
 import useDebounce from '~/hooks/use-debounce'
 import useProductCategories from '~/hooks/use-product-categories'
+import usePublicProducts from '~/hooks/use-public-products'
+import { formatCurrency, rateSale } from '~/lib/utils'
 import { AppContext } from '~/providers/app.provider'
 
 export default function ShopHeader() {
   const { isAuthenticated, profile } = React.useContext(AppContext)
 
   const searchCategoryRef = React.useRef<HTMLInputElement>(null)
+  const searchRef = React.useRef<HTMLInputElement>(null)
 
   const [searchQuery, setSearchQuery] = React.useState<string>('')
+  const [isSearching, setIsSearching] = React.useState<boolean>(false)
   const [searchCategoryQuery, setSearchCategoryQuery] = React.useState<string>('')
+  const [isOpenCategoriesDialog, setIsOpenCategoriesDialog] = React.useState<boolean>(false)
+
   const searchCategoryQueryDebounce = useDebounce(searchCategoryQuery, 1500)
+  const searchQueryDebounce = useDebounce(searchQuery, 1500)
 
   const { productCategories, getProductCategoriesQuery, totalProductCategories } = useProductCategories({
-    name: searchCategoryQueryDebounce
+    name: searchCategoryQueryDebounce,
+    enabled: isOpenCategoriesDialog
+  })
+
+  const { products, totalProducts, getProductsQuery } = usePublicProducts({
+    name: searchQueryDebounce,
+    enabled: searchQueryDebounce.trim().length > 0
   })
 
   const handleCancelSearchCategory = () => {
     setSearchCategoryQuery('')
     searchCategoryRef.current?.focus()
+  }
+
+  const handleCancelSearch = () => {
+    setSearchQuery('')
+    searchRef.current?.focus()
   }
 
   return (
@@ -67,13 +84,11 @@ export default function ShopHeader() {
                 <span className='font-bold text-2xl tracking-tight'>MHN</span>
               </Link>
               {/* Danh mục sản phẩm */}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant='secondary'>
-                    <Menu className='size-4' />
-                    Danh mục
-                  </Button>
-                </DialogTrigger>
+              <Button variant='secondary' onClick={() => setIsOpenCategoriesDialog(true)}>
+                <Menu className='size-4' />
+                Danh mục
+              </Button>
+              <Dialog open={isOpenCategoriesDialog} onOpenChange={(value) => setIsOpenCategoriesDialog(value)}>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Danh mục sản phẩm</DialogTitle>
@@ -102,6 +117,7 @@ export default function ShopHeader() {
                       )}
                     </div>
                   </div>
+                  {/* Kết quả tìm kiếm */}
                   {totalProductCategories > 0 && !getProductCategoriesQuery.isLoading && (
                     <div className='grid grid-cols-12 gap-4'>
                       {productCategories.map((category) => (
@@ -121,6 +137,7 @@ export default function ShopHeader() {
                       ))}
                     </div>
                   )}
+                  {/* Không tìm thấy sản phẩm */}
                   {totalProductCategories === 0 && !getProductCategoriesQuery.isLoading && (
                     <div className='flex justify-center items-center p-4 space-x-2 text-muted-foreground'>
                       <SearchX className='size-4' />
@@ -137,55 +154,88 @@ export default function ShopHeader() {
                   <Search className='size-4' />
                 </div>
                 <input
+                  ref={searchRef}
                   type='text'
                   value={searchQuery}
                   placeholder='Tìm kiếm sản phẩm ở đây...'
                   className='p-2 pl-10 bg-muted w-full rounded-sm text-sm border forcus:border-muted-foreground'
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setIsSearching(true)}
                 />
-                <button
-                  className='absolute right-0 top-1/2 -translate-y-1/2 w-10 h-full flex justify-center items-center hover:cursor-pointer'
-                  onClick={() => setSearchQuery('')}
-                >
-                  <XCircle className='size-5' />
-                  {/* <Loader2 className='size-4 animate-spin' />} */}
-                </button>
+                {getProductsQuery.isLoading && (
+                  <div className='absolute right-0 inset-y-0 w-10 flex justify-center items-center'>
+                    <Loader2 className='size-4 animate-spin' />
+                  </div>
+                )}
+                {searchQuery.length > 0 && !getProductsQuery.isLoading && (
+                  <div className='absolute right-0 inset-y-0 w-10 flex justify-center items-center'>
+                    <button className='hover:cursor-pointer' onClick={handleCancelSearch}>
+                      <X className='size-5' />
+                    </button>
+                  </div>
+                )}
               </div>
               {/* Kết quả tìm kiếm */}
-              {searchQuery.length > 0 && (
-                <div className='absolute top-[120%] left-0 right-0 bg-popover rounded-md border shadow-md outline-hidden'>
-                  <div className='p-4'>
-                    <h3 className='font-medium tracking-tight text-sm'>Kết quả tìm kiếm cho "{searchQuery}"</h3>
-                  </div>
-                  <div className='max-h-[400px] overflow-y-auto'>
-                    {Array(20)
-                      .fill(0)
-                      .map((_, index) => (
-                        <Link
-                          to={PATH.HOME}
-                          key={index}
-                          className='flex justify-between space-x-4 p-2 border-t hover:bg-muted duration-100'
-                        >
-                          <Skeleton className='size-12 rounded-lg' />
-                          <div className='flex-1'>
-                            <h3 className='line-clamp-1 text-sm'>
-                              Đèn học PIXAR Bóng LED Chống Cận Bảo Vệ Mắt Đổi 3 Màu Kẹp Bàn Chắc Chắn Tao1501 Bảo Hành 2
-                              Năm BA001
-                            </h3>
-                            <div className='flex items-center space-x-2 text-xs'>
-                              <div className='font-semibold'>12.000.000đ</div>
-                              <div className='text-muted-foreground line-through'>8.000.000đ</div>
-                              <div className='text-red-500 font-semibold'>-8%</div>
+              {searchQuery.length > 0 && !getProductsQuery.isLoading && isSearching && (
+                <div className='absolute top-[120%] left-0 right-0 bg-popover rounded-md border shadow-md outline-hidden py-2'>
+                  {totalProducts > 0 && !getProductsQuery.isLoading && (
+                    <React.Fragment>
+                      <div className='px-4 pb-4 pt-2'>
+                        <h3 className='font-medium tracking-tight text-sm'>Kết quả tìm kiếm cho "{searchQuery}"</h3>
+                      </div>
+                      <div className='max-h-[400px] overflow-y-auto'>
+                        {products.slice(0, 5).map((product) => (
+                          <Link
+                            to={PATH.PRODUCT_DETAIL({
+                              name: product.name,
+                              id: product._id
+                            })}
+                            key={product._id}
+                            className='flex justify-between space-x-4 px-4 py-2 border-t hover:bg-muted duration-100'
+                          >
+                            <img
+                              src={product.thumbnail.url}
+                              alt={product.name}
+                              className='size-14 rounded-md object-cover shrink-0'
+                            />
+                            <div className='flex-1 space-y-0.5'>
+                              <h3 className='line-clamp-1 text-sm'>{product.name}</h3>
+                              <div className='flex items-center space-x-2 text-xs'>
+                                {product.priceAfterDiscount < product.price ? (
+                                  <React.Fragment>
+                                    <div className='font-semibold'>
+                                      {formatCurrency(product.priceAfterDiscount)}&#8363;
+                                    </div>
+                                    <div className='text-muted-foreground line-through'>
+                                      {formatCurrency(product.price)}&#8363;
+                                    </div>
+                                    <div className='text-red-500 font-semibold'>
+                                      -{rateSale(product.price, product.priceAfterDiscount)}%
+                                    </div>
+                                  </React.Fragment>
+                                ) : (
+                                  <div className='font-semibold'>{formatCurrency(product.price)}&#8363;</div>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                      ))}
-                  </div>
-                  <div className='flex justify-center p-2'>
-                    <Button asChild variant='link' size='sm'>
-                      <Link to={PATH.HOME}>Xem tất cả kết quả tìm kiếm</Link>
-                    </Button>
-                  </div>
+                          </Link>
+                        ))}
+                      </div>
+                      {totalProducts > 5 && (
+                        <div className='flex justify-center p-2'>
+                          <Button asChild variant='link' size='sm'>
+                            <Link to={PATH.HOME}>Xem tất cả kết quả tìm kiếm</Link>
+                          </Button>
+                        </div>
+                      )}
+                    </React.Fragment>
+                  )}
+                  {totalProducts === 0 && !getProductsQuery.isLoading && (
+                    <div className=' flex justify-center items-center p-4 space-x-1 text-muted-foreground'>
+                      <SearchX className='size-4' />
+                      <p className='text-sm'>Không tìm thấy sản phẩm trùng khớp.</p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

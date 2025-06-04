@@ -3,10 +3,15 @@ import React from 'react'
 
 import productCategoriesApis, { GetProductCategories } from '~/apis/productCategories.apis'
 
-export default function useProductCategories({ page, name, limit }: GetProductCategories) {
+type UseProductCategoriesProps = GetProductCategories & {
+  enabled?: boolean
+}
+
+export default function useProductCategories({ enabled, ...params }: UseProductCategoriesProps) {
   const getProductCategoriesQuery = useQuery({
-    queryKey: ['get-product-categories', { page, name, limit }],
-    queryFn: () => productCategoriesApis.getProductCategories({ page, name, limit })
+    queryKey: ['get-product-categories', params],
+    queryFn: () => productCategoriesApis.getProductCategories(params),
+    enabled
   })
 
   const productCategories = React.useMemo(

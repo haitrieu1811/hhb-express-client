@@ -1,12 +1,17 @@
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 
-import productsApis from '~/apis/products.apis'
+import productsApis, { GetPublicProductsReqParams } from '~/apis/products.apis'
 
-export default function usePublicProducts() {
+type UsePublicProductsProps = GetPublicProductsReqParams & {
+  enabled?: boolean
+}
+
+export default function usePublicProducts({ enabled, ...params }: UsePublicProductsProps) {
   const getProductsQuery = useQuery({
-    queryKey: ['get-products'],
-    queryFn: () => productsApis.getProducts()
+    queryKey: ['get-products', params],
+    queryFn: () => productsApis.getProducts(params),
+    enabled
   })
 
   const products = React.useMemo(
@@ -18,6 +23,7 @@ export default function usePublicProducts() {
 
   return {
     products,
-    totalProducts
+    totalProducts,
+    getProductsQuery
   }
 }

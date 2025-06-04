@@ -13,6 +13,10 @@ export type CreateProductReqBody = {
   status?: number
 }
 
+export type GetPublicProductsReqParams = PaginationReqParams & {
+  name?: string
+}
+
 const productsApis = {
   createProduct(body: CreateProductReqBody) {
     return http.post<
@@ -22,7 +26,7 @@ const productsApis = {
     >('/products', body)
   },
 
-  getProducts(params?: PaginationReqParams) {
+  getProducts(params: GetPublicProductsReqParams) {
     return http.get<
       SuccessResponse<{
         products: ProductItem[]

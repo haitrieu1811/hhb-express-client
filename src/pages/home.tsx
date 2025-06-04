@@ -7,7 +7,7 @@ import usePublicProducts from '~/hooks/use-public-products'
 import { formatCurrency } from '~/lib/utils'
 
 export default function HomePage() {
-  const { products } = usePublicProducts()
+  const { products } = usePublicProducts({})
   return (
     <div className='space-y-4'>
       <h2 className='font-semibold text-xl tracking-tight'>Top deal - sale rẻ</h2>
