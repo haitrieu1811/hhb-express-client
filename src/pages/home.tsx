@@ -1,60 +1,26 @@
-import { Link } from 'react-router'
-
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
-import { Card, CardContent } from '~/components/ui/card'
-import PATH from '~/constants/path'
+import { Loader2 } from 'lucide-react'
+import ProductItem from '~/components/product-item'
 import usePublicProducts from '~/hooks/use-public-products'
-import { formatCurrency } from '~/lib/utils'
 
 export default function HomePage() {
-  const { products } = usePublicProducts({})
+  const { products, totalProducts, getProductsQuery } = usePublicProducts({})
   return (
-    <div className='space-y-4'>
+    <div className='space-y-4 py-10'>
       <h2 className='font-semibold text-xl tracking-tight'>Top deal - sale rẻ</h2>
-      <div className='grid grid-cols-12 gap-4'>
-        {products.map((product) => (
-          <div key={product._id} className='col-span-2'>
-            <Card className='py-2'>
-              <CardContent className='px-2'>
-                <div className='space-y-4'>
-                  <Link to={PATH.PRODUCT_DETAIL({ name: product.name, id: product._id })} className='block'>
-                    <img src={product.thumbnail.url} alt={product.name} className='rounded-xl' />
-                  </Link>
-                  <div className='space-y-1'>
-                    <Link
-                      to={PATH.PRODUCT_DETAIL({ name: product.name, id: product._id })}
-                      className='text-sm hover:underline line-clamp-1'
-                    >
-                      {product.name}
-                    </Link>
-                    <div className='flex justify-between items-center space-x-4'>
-                      <div className='flex space-y-1 flex-col'>
-                        <div className='font-semibold text-sm'>{formatCurrency(product.price)}&#8363;</div>
-                        <div className='text-muted-foreground text-xs line-through'>
-                          {formatCurrency(product.priceAfterDiscount)}&#8363;
-                        </div>
-                      </div>
-                      <div className='text-xs font-semibold bg-red-500 rounded-sm p-1 text-white'>-20%</div>
-                    </div>
-                  </div>
-                  <div>
-                    <Link to={PATH.HOME} className='flex items-center space-x-2'>
-                      <Avatar className='size-6'>
-                        <AvatarImage src={product.author.avatar} alt={product.author.fullName} />
-                        <AvatarFallback>
-                          {product.author.fullName[0].toUpperCase()}
-                          {product.author.fullName[1].toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className='text-sm text-muted-foreground'>{product.author.fullName}</div>
-                    </Link>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        ))}
-      </div>
+      {totalProducts > 0 && !getProductsQuery.isLoading && (
+        <div className='grid grid-cols-12 gap-4'>
+          {products.map((product) => (
+            <div key={product._id} className='col-span-2'>
+              <ProductItem productData={product} />
+            </div>
+          ))}
+        </div>
+      )}
+      {getProductsQuery.isLoading && (
+        <div className='flex justify-center items-center p-10'>
+          <Loader2 className='size-10 animate-spin' />
+        </div>
+      )}
     </div>
   )
 }

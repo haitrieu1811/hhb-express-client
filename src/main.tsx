@@ -4,6 +4,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
 import { Toaster } from '~/components/ui/sonner'
+import { TooltipProvider } from '~/components/ui/tooltip.tsx'
 import AppProvider from '~/providers/app.provider.tsx'
 import { ThemeProvider } from '~/providers/theme.provider.tsx'
 import App from './App.tsx'
@@ -23,8 +24,10 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <AppProvider>
-          <App />
-          <Toaster richColors position='top-center' />
+          <TooltipProvider>
+            <App />
+            <Toaster richColors position='top-center' />
+          </TooltipProvider>
         </AppProvider>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />

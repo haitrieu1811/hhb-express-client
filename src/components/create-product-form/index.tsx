@@ -55,7 +55,7 @@ export default function CreateProductForm() {
     toast.success('Hủy bỏ hoàn tất.')
   }
 
-  const { productCategories } = useProductCategories()
+  const { productCategories } = useProductCategories({})
 
   const form = useForm<CreateProductSchema>({
     resolver: zodResolver(createProductSchema),

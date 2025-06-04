@@ -4,6 +4,7 @@ import React from 'react'
 import { Link, useParams } from 'react-router'
 
 import productsApis from '~/apis/products.apis'
+import PhotosGrid from '~/components/photos-grid'
 import QuantityController from '~/components/quantity-controller'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { Badge } from '~/components/ui/badge'
@@ -16,7 +17,6 @@ import {
   BreadcrumbSeparator
 } from '~/components/ui/breadcrumb'
 import { Button } from '~/components/ui/button'
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '~/components/ui/carousel'
 import {
   Dialog,
   DialogContent,
@@ -33,14 +33,16 @@ import { Textarea } from '~/components/ui/textarea'
 import PATH from '~/constants/path'
 import { cn, formatCurrency, getIdFromNameId, rateSale } from '~/lib/utils'
 
+const MAX_PHOTOS_TO_DISPLAY = 5
+
 export default function ProductDetailPage() {
   const params = useParams()
   const nameId = params.nameId
   const productId = getIdFromNameId(nameId ?? '')
 
-  const [currentPhoto, setCurrentPhoto] = React.useState<string | null>(null)
   const [currentStar, setCurrentStar] = React.useState<number | null>(null)
   const [quantity, setQuantity] = React.useState<number>(1)
+  const [isViewPhoto, setIsViewPhoto] = React.useState<boolean>(false)
 
   const getProductQuery = useQuery({
     queryKey: ['get-product', productId],
@@ -52,11 +54,6 @@ export default function ProductDetailPage() {
     () => getProductQuery.data?.data.data.product,
     [getProductQuery.data?.data.data.product]
   )
-
-  React.useEffect(() => {
-    if (!product) return
-    setCurrentPhoto(product.thumbnail.url)
-  }, [product])
 
   return (
     <React.Fragment>
@@ -81,38 +78,35 @@ export default function ProductDetailPage() {
       </Breadcrumb>
       <div className='flex items-start space-x-10 mt-4 mb-20'>
         {/* Hình ảnh sản phẩm */}
-        <div className='basis-1/3 space-y-4 sticky top-32'>
-          {currentPhoto && (
-            <img src={currentPhoto} alt={product?.name} className='aspect-square object-cover rounded-lg' />
+        <div
+          className='grid grid-cols-12 gap-4 basis-1/2 sticky top-32 hover:cursor-pointer'
+          onClick={() => setIsViewPhoto(true)}
+        >
+          {product?.photos.slice(0, MAX_PHOTOS_TO_DISPLAY).map((photo) => (
+            <div key={photo._id} className='col-span-4'>
+              <img src={photo.url} alt='' className='aspect-square object-cover rounded-md' />
+            </div>
+          ))}
+          {product && product.photos.length > MAX_PHOTOS_TO_DISPLAY && (
+            <div className='col-span-4 bg-border rounded-md flex justify-center items-center font-semibold text-3xl tracking-widest'>
+              +{product.photos.length - MAX_PHOTOS_TO_DISPLAY}
+            </div>
           )}
-          <Carousel>
-            <CarouselContent>
-              {product?.photos.map((photo) => {
-                const isActive = photo.url === currentPhoto
-                return (
-                  <CarouselItem key={photo._id} className='basis-1/5'>
-                    <div
-                      className={cn('border-2 rounded-lg p-0.5 hover:cursor-pointer', {
-                        'border-transparent': !isActive,
-                        'border-foreground': isActive
-                      })}
-                      onClick={() => setCurrentPhoto(photo.url)}
-                    >
-                      <img src={photo.url} alt={photo.url} className='aspect-square object-cover rounded-lg' />
-                    </div>
-                  </CarouselItem>
-                )
-              })}
-            </CarouselContent>
-            <CarouselPrevious className='left-0' />
-            <CarouselNext className='right-0' />
-          </Carousel>
         </div>
+        <Dialog open={isViewPhoto} onOpenChange={(value) => setIsViewPhoto(value)}>
+          <DialogContent className='min-w-5xl max-h-[90%] overflow-y-auto'>
+            <DialogHeader>
+              <DialogTitle>Hình ảnh sản phẩm</DialogTitle>
+              <DialogDescription>{product?.name}</DialogDescription>
+            </DialogHeader>
+            {product && <PhotosGrid defaultPhoto={product.thumbnail.url} photos={product.photos} />}
+          </DialogContent>
+        </Dialog>
         {/* Thông tin sản phẩm */}
         <div className='flex-1 space-y-16'>
           <div className='space-y-6'>
             <Badge variant='outline'>{product?.category.name}</Badge>
-            <h1 className='text-2xl font-semibold'>{product?.name}</h1>
+            <h1 className='text-xl font-medium'>{product?.name}</h1>
             {/* Số sao đánh giá */}
             <div className='flex items-center space-x-8'>
               <div className='flex items-center space-x-4'>
@@ -129,11 +123,19 @@ export default function ProductDetailPage() {
             </div>
             {/* Giá, giảm giá */}
             <div className='flex items-center space-x-4'>
-              <div className='font-semibold text-2xl'>{formatCurrency(product?.priceAfterDiscount ?? 0)}&#8363;</div>
-              <div className='text-muted-foreground line-through text-xl'>
-                {formatCurrency(product?.price ?? 0)}&#8363;
-              </div>
-              <Badge variant='outline'>-{rateSale(product?.price ?? 0, product?.priceAfterDiscount ?? 0)}%</Badge>
+              {product && product.priceAfterDiscount < product.price ? (
+                <React.Fragment>
+                  <div className='font-semibold text-2xl'>{formatCurrency(product.priceAfterDiscount)}&#8363;</div>
+                  <div className='text-muted-foreground line-through text-xl'>
+                    {formatCurrency(product.price)}&#8363;
+                  </div>
+                  <Badge className='bg-destructive text-white'>
+                    -{rateSale(product.price, product.priceAfterDiscount)}%
+                  </Badge>
+                </React.Fragment>
+              ) : (
+                <div className='font-semibold text-2xl'>{formatCurrency(product?.price ?? 0)}&#8363;</div>
+              )}
             </div>
             {/* Số lượng */}
             <div className='flex items-center space-x-6'>
@@ -164,7 +166,9 @@ export default function ProductDetailPage() {
               <TabsTrigger value='reviews'>Đánh giá và nhận xét</TabsTrigger>
               <TabsTrigger value='similarProducts'>Sản phẩm tương tự</TabsTrigger>
             </TabsList>
-            <TabsContent value='description'>{product?.description}</TabsContent>
+            <TabsContent value='description' className='whitespace-pre-wrap text-sm pt-4'>
+              {product?.description}
+            </TabsContent>
             <TabsContent value='reviews' className='pt-10'>
               {/* Tổng quan đánh giá */}
               <div className='space-y-2'>
@@ -281,10 +285,10 @@ export default function ProductDetailPage() {
                     .map((_, index) => (
                       <div key={index} className='col-span-6 space-y-4 border rounded-lg p-4'>
                         {index % 2 === 0 && <Badge className='bg-green-500'>Rất hài lòng</Badge>}
-                        {index % 2 !== 0 && <Badge className='bg-red-500'>Rất không hài lòng</Badge>}
-                        <div className='flex items-center space-x-4'>
+                        {index % 2 !== 0 && <Badge variant='destructive'>Rất không hài lòng</Badge>}
+                        <div className='flex items-center space-x-2'>
                           <Link to={PATH.HOME} className='shrink-0'>
-                            <Avatar className='size-10'>
+                            <Avatar>
                               <AvatarImage src={product?.author.avatar} alt='' />
                               <AvatarFallback>TR</AvatarFallback>
                             </Avatar>
@@ -303,7 +307,7 @@ export default function ProductDetailPage() {
                           </div>
                           <div className='text-xs text-muted-foreground'>1 giờ trước.</div>
                         </div>
-                        <div className='text-sm text-muted-foreground'>
+                        <div className='text-sm'>
                           Truyện hay, mk phải đọc xong mới có thể đánh giá toàn diện một sản phẩm. Truyện vừa hay, ý
                           nghĩa, thể hiện khảo khát được đến trường của các em vùng khó khăn. Sách của Nhã Nam quyển nào
                           cx hay hết đó mn. Còn mua hàng trên Tiki thì rõ là OK luôn, giáo hàng nhanh, hàng lại chất

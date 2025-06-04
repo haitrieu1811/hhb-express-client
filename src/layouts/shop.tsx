@@ -7,7 +7,7 @@ export default function ShopLayout({ children }: { children: React.ReactNode }) 
   return (
     <React.Fragment>
       <ShopHeader />
-      <main className='min-h-screen py-4'>
+      <main className='py-4'>
         <div className='w-7xl mx-auto'>{children}</div>
       </main>
       <ShopFooter />
