@@ -20,7 +20,7 @@ export const USER_MENU = [
   },
   {
     icon: MapPin,
-    to: PATH.HOME,
+    to: PATH.ACCOUNT_ADDRESSES,
     label: 'Quản lý địa chỉ'
   },
   {
