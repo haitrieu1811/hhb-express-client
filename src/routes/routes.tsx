@@ -1,6 +1,7 @@
 import PATH from '~/constants/path'
 import DashboardLayout from '~/layouts/dashboard'
 import ShopLayout from '~/layouts/shop'
+import AccountPage from '~/pages/account'
 import DashboardPage from '~/pages/dashboard'
 import DashboardMePage from '~/pages/dashboard-me'
 import DashboardProductPage from '~/pages/dashboard-product'
@@ -69,6 +70,11 @@ export const protectedRoutes = [
     path: PATH.ME,
     layout: ShopLayout,
     page: MePage
+  },
+  {
+    path: PATH.ACCOUNT,
+    layout: ShopLayout,
+    page: AccountPage
   }
 ]
 

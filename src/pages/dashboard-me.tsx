@@ -1,15 +1,13 @@
-import { useQuery } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import moment from 'moment'
 import React from 'react'
 
-import usersApis from '~/apis/users.apis'
 import ProfileForm from '~/components/profile-form'
 import { Badge } from '~/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { UserStatus, UserVerifyStatus } from '~/constants/enum'
+import useMe from '~/hooks/use-me'
 import { convertMomentFromNowToVietnamese } from '~/lib/utils'
-import { AppContext } from '~/providers/app.provider'
 
 const statuses = {
   [UserStatus.Active]: <Badge className='bg-green-500'>Hoạt động</Badge>,
@@ -22,15 +20,7 @@ const verifyStatuses = {
 } as const
 
 export default function DashboardMePage() {
-  const { isAuthenticated } = React.useContext(AppContext)
-
-  const getMeQuery = useQuery({
-    queryKey: ['get-me'],
-    queryFn: () => usersApis.getMe(),
-    enabled: !!isAuthenticated
-  })
-
-  const meData = React.useMemo(() => getMeQuery.data?.data.data.user, [getMeQuery.data?.data.data.user])
+  const { getMeQuery, meData } = useMe()
 
   const otherInfo = React.useMemo(
     () => [

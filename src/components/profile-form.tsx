@@ -84,9 +84,53 @@ export default function ProfileForm({ user }: { user: User }) {
   }
 
   return (
-    <div className='grid gap-10'>
-      <div className='shrink-0 px-1 flex flex-col items-center space-y-6'>
-        <Avatar className='size-28 rounded-lg'>
+    <div className='grid grid-cols-12 gap-10'>
+      <div className='col-span-8'>
+        <Form {...form}>
+          <form className='grid gap-6' onSubmit={handleSubmit}>
+            {/* Email */}
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input disabled {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            {/* FullName */}
+            <FormField
+              control={form.control}
+              name='fullName'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Họ tên</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className='flex justify-end space-x-2'>
+              {/* Submit */}
+              <Button type='submit' disabled={isPending}>
+                {isPending && <Loader2 className='size-4 animate-spin' />}
+                Cập nhật
+              </Button>
+              {/* Cancel */}
+              <Button variant='outline' type='button' onClick={handleCancel}>
+                Hủy bỏ
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
+      <div className='col-span-4 px-1 flex flex-col items-center space-y-6'>
+        <Avatar className='size-20'>
           <AvatarImage src={avatarPreview || user.avatar} alt={user.fullName} />
           <AvatarFallback className='text-3xl'>
             {user.fullName[0].toUpperCase()}
@@ -113,51 +157,6 @@ export default function ProfileForm({ user }: { user: User }) {
           )}
         </div>
       </div>
-
-      <Form {...form}>
-        <form className='flex-1 grid gap-6' onSubmit={handleSubmit}>
-          {/* Email */}
-          <FormField
-            control={form.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input disabled {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-
-          {/* FullName */}
-          <FormField
-            control={form.control}
-            name='fullName'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Họ tên</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className='flex justify-end space-x-2'>
-            {/* Submit */}
-            <Button type='submit' disabled={isPending}>
-              {isPending && <Loader2 className='size-4 animate-spin' />}
-              Cập nhật
-            </Button>
-            {/* Cancel */}
-            <Button variant='outline' type='button' onClick={handleCancel}>
-              Hủy bỏ
-            </Button>
-          </div>
-        </form>
-      </Form>
     </div>
   )
 }

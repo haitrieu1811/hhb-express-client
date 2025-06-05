@@ -6,20 +6,15 @@ import {
   Info,
   Loader2,
   LogIn,
-  LogOut,
-  MapPin,
   Menu,
   Newspaper,
   Phone,
-  ReceiptText,
   Search,
   SearchX,
   ShoppingCart,
   SquareRoundCorner,
   Tags,
   Truck,
-  UserPen,
-  UserRound,
   UserRoundPlus,
   X
 } from 'lucide-react'
@@ -34,6 +29,7 @@ import { Input } from '~/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
 import { Skeleton } from '~/components/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip'
+import { USER_MENU } from '~/constants/data'
 import PATH from '~/constants/path'
 import useDebounce from '~/hooks/use-debounce'
 import useProductCategories from '~/hooks/use-product-categories'
@@ -390,37 +386,20 @@ export default function ShopHeader() {
                         <div className='text-muted-foreground'>{profile?.email}</div>
                       </div>
                     </div>
-                    <div>
-                      <Button asChild variant='ghost' className='w-full justify-start rounded-none border-t h-10'>
-                        <Link to={PATH.ME}>
-                          <UserRound className='size-4' />
-                          Tài khoản
-                        </Link>
-                      </Button>
-                      <Button asChild variant='ghost' className='w-full justify-start rounded-none border-t h-10'>
-                        <Link to={PATH.HOME}>
-                          <UserPen className='size-4' />
-                          Cập nhật tài khoản
-                        </Link>
-                      </Button>
-                      <Button asChild variant='ghost' className='w-full justify-start rounded-none border-t h-10'>
-                        <Link to={PATH.HOME}>
-                          <ReceiptText className='size-4' />
-                          Quản lý đơn hàng
-                        </Link>
-                      </Button>
-                      <Button asChild variant='ghost' className='w-full justify-start rounded-none border-t h-10'>
-                        <Link to={PATH.HOME}>
-                          <MapPin className='size-4' />
-                          Quản lý địa chỉ
-                        </Link>
-                      </Button>
-                      <Button asChild variant='ghost' className='w-full justify-start rounded-none border-t h-10'>
-                        <Link to={PATH.HOME}>
-                          <LogOut className='size-4' />
-                          Đăng xuất
-                        </Link>
-                      </Button>
+                    <div className='pb-2'>
+                      {USER_MENU.map((item) => (
+                        <Button
+                          key={item.label}
+                          asChild
+                          variant='ghost'
+                          className='w-full justify-start rounded-none border-t h-10'
+                        >
+                          <Link to={item.to}>
+                            <item.icon className='size-4' />
+                            {item.label}
+                          </Link>
+                        </Button>
+                      ))}
                     </div>
                   </PopoverContent>
                 </Popover>
