@@ -5,6 +5,7 @@ import { USERS_MESSAGES } from '~/constants/message'
 export const userSchema = z.object({
   email: z.string().email(USERS_MESSAGES.EMAIL_IS_INVALID),
   password: z.string().min(8, USERS_MESSAGES.PASSWORD_LENGTH_INVALID).max(32, USERS_MESSAGES.PASSWORD_LENGTH_INVALID),
+  confirmPassword: z.string().min(1, USERS_MESSAGES.CONFIRM_PASSWORD_IS_REQUIRED),
   fullName: z
     .string()
     .min(1, USERS_MESSAGES.FULLNAME_LENGTH_IS_INVALID)
@@ -40,10 +41,8 @@ export const forgotPasswordSchema = userSchema.pick({
 
 export const resetPasswordSchema = userSchema
   .pick({
-    password: true
-  })
-  .extend({
-    confirmPassword: z.string().min(1, USERS_MESSAGES.CONFIRM_PASSWORD_IS_REQUIRED)
+    password: true,
+    confirmPassword: true
   })
   .superRefine(({ password, confirmPassword }, ctx) => {
     if (confirmPassword !== password) {
@@ -60,8 +59,27 @@ export const updateMeSchema = userSchema.pick({
   fullName: true
 })
 
+export const changePasswordSchema = userSchema
+  .pick({
+    password: true,
+    confirmPassword: true
+  })
+  .extend({
+    oldPassword: z.string().min(1, USERS_MESSAGES.OLD_PASSWORD_IS_REQUIRED)
+  })
+  .superRefine(({ password, confirmPassword }, ctx) => {
+    if (password !== confirmPassword) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['confirmPassword'],
+        message: USERS_MESSAGES.CONFIRM_PASSWORD_IS_NOT_MATCH
+      })
+    }
+  })
+
 export type RegisterSchema = z.infer<typeof registerSchema>
 export type LoginSchema = z.infer<typeof loginSchema>
 export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>
 export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>
 export type UpdateMeSchema = z.infer<typeof updateMeSchema>
+export type ChangePasswordSchema = z.infer<typeof changePasswordSchema>

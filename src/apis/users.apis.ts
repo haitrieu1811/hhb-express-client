@@ -56,6 +56,10 @@ const usersApis = {
         user: User
       }>
     >(UPDATE_ME_ENDPOINT, body)
+  },
+
+  changePassword(body: { oldPassword: string; password: string; confirmPassword: string }) {
+    return http.post<OnlyMessageResponse>('/users/change-password', body)
   }
 } as const
 

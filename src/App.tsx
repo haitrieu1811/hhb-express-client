@@ -1,5 +1,5 @@
 import React from 'react'
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router'
+import { createBrowserRouter, Navigate, Outlet, RouteObject, RouterProvider } from 'react-router'
 
 import PATH from '~/constants/path'
 import { AppContext } from '~/providers/app.provider'
@@ -14,7 +14,7 @@ const RejectedRoute = () => {
   return !isAuthenticated ? <Outlet /> : <Navigate to={PATH.HOME} />
 }
 
-const publicPages = publicRoutes.map((route) => ({
+const publicPages: RouteObject[] = publicRoutes.map((route) => ({
   path: route.path,
   element: (
     <route.layout>
@@ -23,16 +23,20 @@ const publicPages = publicRoutes.map((route) => ({
   )
 }))
 
-const protectedPages = protectedRoutes.map((route) => ({
+const protectedPages: RouteObject[] = protectedRoutes.map((route) => ({
   path: route.path,
   element: (
     <route.layout>
       <route.page></route.page>
     </route.layout>
-  )
+  ),
+  children: route.children?.map((item) => ({
+    path: item.path,
+    element: <item.page />
+  }))
 }))
 
-const rejectedPages = rejectedRoutes.map((route) => ({
+const rejectedPages: RouteObject[] = rejectedRoutes.map((route) => ({
   path: route.path,
   element: (
     <route.layout>

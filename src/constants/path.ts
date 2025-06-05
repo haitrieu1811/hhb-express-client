@@ -12,6 +12,8 @@ const PATH = {
   PRODUCT_DETAIL: ({ name, id }: { name: string; id: string }) => `/products/${generateNameId({ name, id })}`,
   ME: '/me',
   ACCOUNT: '/account',
+  ACCOUNT_PROFILE: '/account/profile',
+  ACCOUNT_CHANGE_PASSWORD: '/account/change-password',
 
   DASHBOARD: '/dashboard',
   DASHBOARD_USER: '/dashboard/user',

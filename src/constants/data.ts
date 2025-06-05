@@ -10,7 +10,7 @@ export const USER_MENU = [
   },
   {
     icon: UserRoundPen,
-    to: PATH.ACCOUNT,
+    to: PATH.ACCOUNT_PROFILE,
     label: 'Cập nhật tài khoản'
   },
   {
@@ -25,7 +25,7 @@ export const USER_MENU = [
   },
   {
     icon: KeyRound,
-    to: PATH.HOME,
+    to: PATH.ACCOUNT_CHANGE_PASSWORD,
     label: 'Thay đổi mật khẩu'
   },
   {

@@ -1,7 +1,9 @@
 import PATH from '~/constants/path'
 import DashboardLayout from '~/layouts/dashboard'
 import ShopLayout from '~/layouts/shop'
-import AccountPage from '~/pages/account'
+import AccountPage from '~/pages/account/account'
+import AccountChangePasswordPage from '~/pages/account/change-password'
+import AccountProfilePage from '~/pages/account/profile'
 import DashboardPage from '~/pages/dashboard'
 import DashboardMePage from '~/pages/dashboard-me'
 import DashboardProductPage from '~/pages/dashboard-product'
@@ -74,7 +76,17 @@ export const protectedRoutes = [
   {
     path: PATH.ACCOUNT,
     layout: ShopLayout,
-    page: AccountPage
+    page: AccountPage,
+    children: [
+      {
+        path: PATH.ACCOUNT_PROFILE,
+        page: AccountProfilePage
+      },
+      {
+        path: PATH.ACCOUNT_CHANGE_PASSWORD,
+        page: AccountChangePasswordPage
+      }
+    ]
   }
 ]
 
