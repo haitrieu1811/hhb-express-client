@@ -1,6 +1,6 @@
 import { AddressType } from '~/constants/enum'
 import http from '~/lib/http'
-import { DistrictItem, ProvinceItem, WardItem } from '~/types/addresses.types'
+import { AddressItem, DistrictItem, ProvinceItem, WardItem } from '~/types/addresses.types'
 import { OnlyMessageResponse, SuccessResponse } from '~/types/utils.types'
 
 type CreateAddressReqBody = {
@@ -43,5 +43,37 @@ export const addressesApis = {
 
   createAddress(body: CreateAddressReqBody) {
     return http.post<OnlyMessageResponse>('/addresses', body)
+  },
+
+  getMyAddresses() {
+    return http.get<
+      SuccessResponse<{
+        addresses: AddressItem[]
+      }>
+    >('/addresses/me')
+  },
+
+  getAddress(addressId: string) {
+    return http.get<
+      SuccessResponse<{
+        address: AddressItem
+      }>
+    >(`/addresses/${addressId}`)
+  },
+
+  updateAddress({ body, addressId }: { body: CreateAddressReqBody; addressId: string }) {
+    return http.put<
+      SuccessResponse<{
+        address: AddressItem
+      }>
+    >(`/addresses/${addressId}`, body)
+  },
+
+  deleteAddress(addressId: string) {
+    return http.delete<OnlyMessageResponse>(`/addresses/${addressId}`)
+  },
+
+  setDefaultAddress(addressId: string) {
+    return http.post<OnlyMessageResponse>(`/addresses/${addressId}/set-default`)
   }
 } as const
