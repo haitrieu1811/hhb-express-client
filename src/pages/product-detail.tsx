@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { CloudUpload, PlusCircle, ShoppingBag, ShoppingCart, Star } from 'lucide-react'
+import { CloudUpload, Loader2, PlusCircle, ShoppingBag, ShoppingCart, Star } from 'lucide-react'
 import React from 'react'
 import { Link, useParams } from 'react-router'
 
@@ -31,6 +31,7 @@ import { Progress } from '~/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs'
 import { Textarea } from '~/components/ui/textarea'
 import PATH from '~/constants/path'
+import useCart from '~/hooks/use-cart'
 import { cn, formatCurrency, getIdFromNameId, rateSale } from '~/lib/utils'
 
 const MAX_PHOTOS_TO_DISPLAY = 5
@@ -54,6 +55,13 @@ export default function ProductDetailPage() {
     () => getProductQuery.data?.data.data.product,
     [getProductQuery.data?.data.data.product]
   )
+
+  const { addProductToCartMutation } = useCart({
+    enabledGetMyCart: false,
+    onAddProductToCartSuccess: () => {
+      setQuantity(1)
+    }
+  })
 
   return (
     <React.Fragment>
@@ -149,16 +157,29 @@ export default function ProductDetailPage() {
               <div className='text-sm text-muted-foreground'>1721 sản phẩm có sẵn</div>
             </div>
             {/* Thêm giỏ hàng, mua ngay */}
-            <div className='flex space-x-2'>
-              <Button variant='outline' size='lg'>
-                <ShoppingCart />
-                Thêm vào giỏ hàng
-              </Button>
-              <Button size='lg'>
-                <ShoppingBag />
-                Mua ngay
-              </Button>
-            </div>
+            {product && (
+              <div className='flex space-x-2'>
+                <Button
+                  variant='outline'
+                  size='lg'
+                  disabled={addProductToCartMutation.isPending}
+                  onClick={() =>
+                    addProductToCartMutation.mutate({
+                      productId: product._id,
+                      quantity
+                    })
+                  }
+                >
+                  {!addProductToCartMutation.isPending && <ShoppingCart />}
+                  {addProductToCartMutation.isPending && <Loader2 className='animate-spin' />}
+                  Thêm vào giỏ hàng
+                </Button>
+                <Button size='lg'>
+                  <ShoppingBag />
+                  Mua ngay
+                </Button>
+              </div>
+            )}
           </div>
           <Tabs defaultValue='description'>
             <TabsList>

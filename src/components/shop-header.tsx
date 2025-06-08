@@ -27,10 +27,10 @@ import { Button } from '~/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Input } from '~/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
-import { Skeleton } from '~/components/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip'
 import { USER_MENU } from '~/constants/data'
 import PATH from '~/constants/path'
+import useCart from '~/hooks/use-cart'
 import useDebounce from '~/hooks/use-debounce'
 import useProductCategories from '~/hooks/use-product-categories'
 import usePublicProducts from '~/hooks/use-public-products'
@@ -60,6 +60,8 @@ export default function ShopHeader() {
     name: searchQueryDebounce,
     enabled: searchQueryDebounce.trim().length > 0
   })
+
+  const { myCart, totalItems, totalAmount } = useCart({})
 
   const handleCancelSearchCategory = () => {
     setSearchCategoryQuery('')
@@ -255,62 +257,89 @@ export default function ShopHeader() {
                     <PopoverContent align='end' className='w-sm p-0 pb-4'>
                       <div className='flex justify-between items-center p-4'>
                         <h3 className='font-medium tracking-tight'>Giỏ hàng</h3>
-                        <div className='flex items-center space-x-4 text-sm'>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div className='flex items-center space-x-1'>
-                                <ShoppingCart className='size-4' />
-                                <span>9</span>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>Số lượng sản phẩm trong giỏ hàng</TooltipContent>
-                          </Tooltip>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div className='flex items-center space-x-1'>
-                                <DollarSign className='size-4' />
-                                <span>12.000.000đ</span>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>Tổng tiền sản phẩm trong giỏ hàng</TooltipContent>
-                          </Tooltip>
-                        </div>
+                        {totalItems > 0 && (
+                          <div className='flex items-center space-x-4 text-sm'>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className='flex items-center space-x-1'>
+                                  <ShoppingCart className='size-4' />
+                                  <span>{totalItems}</span>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent>Số lượng sản phẩm trong giỏ hàng</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className='flex items-center space-x-1'>
+                                  <DollarSign className='size-4' />
+                                  <span>{formatCurrency(totalAmount)}&#8363;</span>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent>Tổng tiền sản phẩm trong giỏ hàng</TooltipContent>
+                            </Tooltip>
+                          </div>
+                        )}
                       </div>
-                      <div className='max-h-[400px] overflow-y-auto'>
-                        {Array(20)
-                          .fill(0)
-                          .map((_, index) => (
-                            <div key={index} className='flex justify-between space-x-4 p-4 border-t'>
-                              <Skeleton className='size-16 rounded-lg' />
-                              <div className='flex-1 space-y-1'>
-                                <Link to={PATH.HOME} className='text-sm line-clamp-2 hover:underline'>
-                                  Đèn học PIXAR Bóng LED Chống Cận Bảo Vệ Mắt Đổi 3 Màu Kẹp Bàn Chắc Chắn Tao1501 Bảo
-                                  Hành 2 Năm BA001
-                                </Link>
-                                <div className='flex items-center space-x-2 text-xs'>
-                                  <div className='font-semibold'>12.000.000đ</div>
-                                  <div className='text-muted-foreground line-through'>8.000.000đ</div>
-                                  <div className='flex items-center space-x-1 text-xs'>
-                                    <X className='size-3' />4
+                      {totalItems > 0 && (
+                        <React.Fragment>
+                          <div className='max-h-[400px] overflow-y-auto'>
+                            {myCart.map((cartItem) => (
+                              <div key={cartItem._id} className='flex justify-between space-x-4 p-4 border-t'>
+                                <img
+                                  src={cartItem.product.thumbnail}
+                                  alt={cartItem.product.name}
+                                  className='size-16 rounded-lg shrink-0'
+                                />
+                                <div className='flex-1 space-y-1'>
+                                  <Link
+                                    to={PATH.PRODUCT_DETAIL({
+                                      name: cartItem.product.name,
+                                      id: cartItem.product._id
+                                    })}
+                                    className='text-sm line-clamp-2 hover:underline'
+                                  >
+                                    {cartItem.product.name}
+                                  </Link>
+                                  <div className='flex items-center space-x-2 text-xs'>
+                                    {cartItem.unitPriceAfterDiscount < cartItem.unitPrice ? (
+                                      <React.Fragment>
+                                        <div className='font-semibold'>
+                                          {formatCurrency(cartItem.unitPriceAfterDiscount)}&#8363;
+                                        </div>
+                                        <div className='text-muted-foreground line-through'>
+                                          {' '}
+                                          {formatCurrency(cartItem.unitPrice)}&#8363;
+                                        </div>
+                                      </React.Fragment>
+                                    ) : (
+                                      <div className='font-semibold'>{formatCurrency(cartItem.unitPrice)}&#8363;</div>
+                                    )}
+                                    <div className='flex items-center space-x-1 text-xs'>
+                                      <X className='size-3' />
+                                      {cartItem.quantity}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
-                      </div>
-                      <div className='flex justify-end pt-2 px-2 space-x-2'>
-                        <Button asChild variant='outline' size='sm'>
-                          <Link to={PATH.HOME}>Xem giỏ hàng</Link>
-                        </Button>
-                        <Button asChild size='sm'>
-                          <Link to={PATH.HOME}>Thanh toán</Link>
-                        </Button>
-                      </div>
+                            ))}
+                          </div>
+                          <div className='flex justify-end pt-2 px-2 space-x-2'>
+                            <Button asChild variant='outline' size='sm'>
+                              <Link to={PATH.HOME}>Xem giỏ hàng</Link>
+                            </Button>
+                            <Button asChild size='sm'>
+                              <Link to={PATH.HOME}>Thanh toán</Link>
+                            </Button>
+                          </div>
+                        </React.Fragment>
+                      )}
                     </PopoverContent>
                   </Popover>
-                  <div className='absolute top-0 right-0 size-4 rounded-full flex justify-center items-center text-[10px] pointer-events-none font-semibold bg-destructive text-white'>
-                    9
-                  </div>
+                  {totalItems > 0 && (
+                    <div className='absolute top-0 right-0 size-4 rounded-full flex justify-center items-center text-[10px] pointer-events-none font-semibold bg-destructive text-white'>
+                      {totalItems}
+                    </div>
+                  )}
                 </div>
                 {/* Thông báo */}
                 <Popover>
