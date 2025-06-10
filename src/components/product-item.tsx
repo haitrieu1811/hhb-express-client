@@ -1,4 +1,4 @@
-import { Search, ShoppingCart } from 'lucide-react'
+import { Loader2, Search, ShoppingCart } from 'lucide-react'
 import React from 'react'
 import { Link } from 'react-router'
 
@@ -8,6 +8,7 @@ import { Button } from '~/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '~/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip'
 import PATH from '~/constants/path'
+import useCart from '~/hooks/use-cart'
 import { formatCurrency, rateSale } from '~/lib/utils'
 import { ProductItem as ProductItemType } from '~/types/products.types'
 
@@ -17,6 +18,11 @@ type ProductItemProps = {
 
 export default function ProductItem({ productData }: ProductItemProps) {
   const [isOpenQuickView, setIsOpenQuickView] = React.useState<boolean>(false)
+
+  const { addProductToCartMutation } = useCart({
+    enabledGetMyCart: false
+  })
+
   return (
     <React.Fragment>
       <div className='border rounded-lg overflow-hidden shadow-sm relative'>
@@ -60,8 +66,27 @@ export default function ProductItem({ productData }: ProductItemProps) {
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button size='icon' variant='outline' className='size-8'>
-                    <ShoppingCart className='size-3.5' />
+                  <Button
+                    size='icon'
+                    variant='outline'
+                    className='size-8'
+                    disabled={
+                      addProductToCartMutation.isPending &&
+                      addProductToCartMutation.variables.productId === productData._id
+                    }
+                    onClick={() =>
+                      addProductToCartMutation.mutate({
+                        productId: productData._id,
+                        quantity: 1
+                      })
+                    }
+                  >
+                    {addProductToCartMutation.isPending &&
+                    addProductToCartMutation.variables.productId === productData._id ? (
+                      <Loader2 className='size-3.5 animate-spin' />
+                    ) : (
+                      <ShoppingCart className='size-3.5' />
+                    )}
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>Thêm một sản phẩm vào giỏ hàng</TooltipContent>

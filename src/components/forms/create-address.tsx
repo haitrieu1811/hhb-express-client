@@ -65,9 +65,6 @@ export default function CreateAddressForm({
     }
   })
 
-  console.log(form.watch())
-  console.log('>> addressData', addressData)
-
   const provinceId = form.watch('provinceId')
   const districtId = form.watch('districtId')
 

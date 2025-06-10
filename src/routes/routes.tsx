@@ -5,6 +5,7 @@ import AccountPage from '~/pages/account/account'
 import AccountAddressesPage from '~/pages/account/addresses'
 import AccountChangePasswordPage from '~/pages/account/change-password'
 import AccountProfilePage from '~/pages/account/profile'
+import CartPage from '~/pages/cart'
 import DashboardPage from '~/pages/dashboard'
 import DashboardMePage from '~/pages/dashboard-me'
 import DashboardProductPage from '~/pages/dashboard-product'
@@ -15,7 +16,6 @@ import DashboardUserPage from '~/pages/dashboard-user'
 import ForgotPasswordPage from '~/pages/forgot-password'
 import HomePage from '~/pages/home'
 import LoginPage from '~/pages/login'
-import MePage from '~/pages/me'
 import ProductDetailPage from '~/pages/product-detail'
 import RegisterPage from '~/pages/register'
 import ResetPasswordPage from '~/pages/reset-password'
@@ -70,9 +70,9 @@ export const protectedRoutes = [
     page: DashboardProductNewPage
   },
   {
-    path: PATH.ME,
+    path: PATH.CART,
     layout: ShopLayout,
-    page: MePage
+    page: CartPage
   },
   {
     path: PATH.ACCOUNT,

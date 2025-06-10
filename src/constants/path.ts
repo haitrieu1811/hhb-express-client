@@ -15,6 +15,7 @@ const PATH = {
   ACCOUNT_PROFILE: '/account/profile',
   ACCOUNT_CHANGE_PASSWORD: '/account/change-password',
   ACCOUNT_ADDRESSES: '/account/addresses',
+  CART: '/cart',
 
   DASHBOARD: '/dashboard',
   DASHBOARD_USER: '/dashboard/user',

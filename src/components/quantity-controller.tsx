@@ -3,12 +3,13 @@ import { Minus, Plus } from 'lucide-react'
 import React from 'react'
 
 import { Button } from '~/components/ui/button'
-import { Input } from '~/components/ui/input'
+import { Skeleton } from '~/components/ui/skeleton'
 import { NUMBER_REGEX } from '~/constants/regex'
 
 type QuantityControllerProps = React.InputHTMLAttributes<HTMLInputElement> & {
   value: number
   max?: number
+  disabled?: boolean
   onDecrease?: (value: number) => void
   onIncrease?: (value: number) => void
   onType?: (value: number) => void
@@ -17,6 +18,7 @@ type QuantityControllerProps = React.InputHTMLAttributes<HTMLInputElement> & {
 export default function QuantityController({
   value,
   max,
+  disabled = false,
   onChange,
   onDecrease,
   onIncrease,
@@ -54,12 +56,17 @@ export default function QuantityController({
   }
 
   return (
-    <div className='flex items-center space-x-1'>
-      <Button variant='outline' onClick={handleDecrease}>
+    <div className='flex items-center justify-center relative'>
+      {disabled && <Skeleton className='absolute inset-0' />}
+      <Button variant='outline' size='icon' className='h-10 rounded-r-none' onClick={handleDecrease}>
         <Minus />
       </Button>
-      <Input className='w-16 h-10 text-center' value={value} onChange={handleInputChange} />
-      <Button variant='outline' onClick={handleIncrease}>
+      <input
+        className='w-10 h-10 text-center text-sm border-y outline-none'
+        value={value}
+        onChange={handleInputChange}
+      />
+      <Button variant='outline' size='icon' className='h-10 rounded-l-none' onClick={handleIncrease}>
         <Plus />
       </Button>
     </div>

@@ -23,6 +23,7 @@ import { Link } from 'react-router'
 
 import { ModeToggle } from '~/components/mode-toggle'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
+import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Input } from '~/components/ui/input'
@@ -30,7 +31,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip'
 import { USER_MENU } from '~/constants/data'
 import PATH from '~/constants/path'
-import useCart from '~/hooks/use-cart'
 import useDebounce from '~/hooks/use-debounce'
 import useProductCategories from '~/hooks/use-product-categories'
 import usePublicProducts from '~/hooks/use-public-products'
@@ -38,7 +38,7 @@ import { formatCurrency, rateSale } from '~/lib/utils'
 import { AppContext } from '~/providers/app.provider'
 
 export default function ShopHeader() {
-  const { isAuthenticated, profile } = React.useContext(AppContext)
+  const { isAuthenticated, profile, myCart, totalCartItems, totalCartAmount } = React.useContext(AppContext)
 
   const searchCategoryRef = React.useRef<HTMLInputElement>(null)
   const searchRef = React.useRef<HTMLInputElement>(null)
@@ -60,8 +60,6 @@ export default function ShopHeader() {
     name: searchQueryDebounce,
     enabled: searchQueryDebounce.trim().length > 0
   })
-
-  const { myCart, totalItems, totalAmount } = useCart({})
 
   const handleCancelSearchCategory = () => {
     setSearchCategoryQuery('')
@@ -88,7 +86,7 @@ export default function ShopHeader() {
             {/* Danh mục sản phẩm */}
             <Button variant='secondary' onClick={() => setIsOpenCategoriesDialog(true)}>
               <Menu className='size-4' />
-              Danh mục
+              Tất cả danh mục
             </Button>
             <Dialog open={isOpenCategoriesDialog} onOpenChange={(value) => setIsOpenCategoriesDialog(value)}>
               <DialogContent>
@@ -257,30 +255,30 @@ export default function ShopHeader() {
                     <PopoverContent align='end' className='w-sm p-0 pb-4'>
                       <div className='flex justify-between items-center p-4'>
                         <h3 className='font-medium tracking-tight'>Giỏ hàng</h3>
-                        {totalItems > 0 && (
+                        {totalCartItems > 0 && (
                           <div className='flex items-center space-x-4 text-sm'>
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <div className='flex items-center space-x-1'>
                                   <ShoppingCart className='size-4' />
-                                  <span>{totalItems}</span>
+                                  <span>{totalCartItems}</span>
                                 </div>
                               </TooltipTrigger>
-                              <TooltipContent>Số lượng sản phẩm trong giỏ hàng</TooltipContent>
+                              <TooltipContent>Số lượng sản phẩm</TooltipContent>
                             </Tooltip>
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <div className='flex items-center space-x-1'>
                                   <DollarSign className='size-4' />
-                                  <span>{formatCurrency(totalAmount)}&#8363;</span>
+                                  <span>{formatCurrency(totalCartAmount)}&#8363;</span>
                                 </div>
                               </TooltipTrigger>
-                              <TooltipContent>Tổng tiền sản phẩm trong giỏ hàng</TooltipContent>
+                              <TooltipContent>Tổng tiền sản phẩm</TooltipContent>
                             </Tooltip>
                           </div>
                         )}
                       </div>
-                      {totalItems > 0 && (
+                      {totalCartItems > 0 && (
                         <React.Fragment>
                           <div className='max-h-[400px] overflow-y-auto'>
                             {myCart.map((cartItem) => (
@@ -325,7 +323,7 @@ export default function ShopHeader() {
                           </div>
                           <div className='flex justify-end pt-2 px-2 space-x-2'>
                             <Button asChild variant='outline' size='sm'>
-                              <Link to={PATH.HOME}>Xem giỏ hàng</Link>
+                              <Link to={PATH.CART}>Xem giỏ hàng</Link>
                             </Button>
                             <Button asChild size='sm'>
                               <Link to={PATH.HOME}>Thanh toán</Link>
@@ -335,9 +333,11 @@ export default function ShopHeader() {
                       )}
                     </PopoverContent>
                   </Popover>
-                  {totalItems > 0 && (
-                    <div className='absolute top-0 right-0 size-4 rounded-full flex justify-center items-center text-[10px] pointer-events-none font-semibold bg-destructive text-white'>
-                      {totalItems}
+                  {totalCartItems > 0 && (
+                    <div className='absolute -top-1 -right-1'>
+                      <Badge className='h-4 min-w-4 rounded-full px-1 tabular-nums' variant='destructive'>
+                        {totalCartItems > 9 ? '9+' : totalCartItems}
+                      </Badge>
                     </div>
                   )}
                 </div>
@@ -349,8 +349,10 @@ export default function ShopHeader() {
                         <Bell className='size-4' />
                         Thông báo
                       </Button>
-                      <div className='absolute top-0 right-0 size-4 rounded-full flex justify-center items-center text-[10px] pointer-events-none font-semibold bg-destructive text-white'>
-                        9
+                      <div className='absolute -top-1 -right-1'>
+                        <Badge className='h-4 min-w-4 rounded-full px-1 tabular-nums' variant='destructive'>
+                          9
+                        </Badge>
                       </div>
                     </div>
                   </PopoverTrigger>

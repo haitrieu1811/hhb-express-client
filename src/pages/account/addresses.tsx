@@ -7,7 +7,7 @@ import { addressesApis } from '~/apis/addresses.apis'
 import CreateAddressForm from '~/components/forms/create-address'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Separator } from '~/components/ui/separator'
 import { AddressType } from '~/constants/enum'
@@ -67,14 +67,14 @@ export default function AccountAddressesPage() {
           <CardDescription>
             Đảm bảo địa chỉ nhận hàng luôn chính xác để chúng tôi giao sản phẩm đến tay bạn
           </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className='flex justify-end'>
+          <CardAction>
             <Button size='sm' variant='outline' onClick={() => setIsOpenCreateAddressDialog(true)}>
               <PlusCircle className='size-4' />
               Thêm địa chỉ mới
             </Button>
-          </div>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
           {/* Danh sách địa chỉ */}
           <div className='mt-10'>
             {addresses.map((address, index) => (

@@ -9,6 +9,18 @@ const cartItemsApis = {
 
   getMyCart() {
     return http.get<GetMyCartResponse>('/cart-items/me')
+  },
+
+  updateCartItem({ cartItemId, quantity }: { cartItemId: string; quantity: number }) {
+    return http.put<OnlyMessageResponse>(`/cart-items/${cartItemId}`, { quantity })
+  },
+
+  deleteCartItems(cartItemIds: string[]) {
+    return http.delete<OnlyMessageResponse>('/cart-items', {
+      data: {
+        cartItemIds
+      }
+    })
   }
 } as const
 
