@@ -5,7 +5,6 @@ import {
   Home,
   Info,
   Loader2,
-  LogIn,
   Menu,
   Newspaper,
   Phone,
@@ -15,7 +14,6 @@ import {
   SquareRoundCorner,
   Tags,
   Truck,
-  UserRoundPlus,
   X
 } from 'lucide-react'
 import React from 'react'
@@ -72,7 +70,7 @@ export default function ShopHeader() {
   }
 
   return (
-    <header className='sticky top-0 inset-x-0 z-10 bg-background'>
+    <header className='sticky top-0 inset-x-0 z-10 bg-card'>
       <div className='h-16 flex justify-center items-center border-b'>
         <div className='w-7xl mx-auto flex justify-between items-center space-x-4'>
           <div className='flex items-center space-x-10'>
@@ -86,7 +84,7 @@ export default function ShopHeader() {
             {/* Danh mục sản phẩm */}
             <Button variant='secondary' onClick={() => setIsOpenCategoriesDialog(true)}>
               <Menu className='size-4' />
-              Tất cả danh mục
+              Danh mục
             </Button>
             <Dialog open={isOpenCategoriesDialog} onOpenChange={(value) => setIsOpenCategoriesDialog(value)}>
               <DialogContent>
@@ -243,6 +241,50 @@ export default function ShopHeader() {
           <div className='flex items-center space-x-4'>
             {isAuthenticated && (
               <React.Fragment>
+                {/* Thông báo */}
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <div className='relative'>
+                      <Button variant='outline'>
+                        <Bell className='size-4' />
+                        Thông báo
+                      </Button>
+                      <div className='absolute -top-1 -right-1'>
+                        <Badge className='h-4 min-w-4 rounded-full px-1 tabular-nums'>9</Badge>
+                      </div>
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent align='end' className='w-sm p-0 pb-4'>
+                    <div className='flex justify-between items-center space-x-20 p-4'>
+                      <h3 className='font-medium tracking-tight'>Thông báo</h3>
+                      <Button size='sm' variant='link'>
+                        Đánh dấu tất cả đã đọc
+                      </Button>
+                    </div>
+                    <div className='max-h-[400px] overflow-y-auto'>
+                      {Array(20)
+                        .fill(0)
+                        .map((_, index) => (
+                          <Link
+                            key={index}
+                            to={PATH.HOME}
+                            className='flex justify-between items-center space-x-6 p-4 hover:bg-muted duration-100 border-t'
+                          >
+                            <div className='size-12 bg-muted rounded-lg flex justify-center items-center shrink-0'>
+                              <SquareRoundCorner />
+                            </div>
+                            <div className='space-y-1'>
+                              <div className='text-sm font-medium line-clamp-2'>
+                                Bài học Tìm hiểu toán tử instanceof mới được thêm vào.
+                              </div>
+                              <div className='text-muted-foreground text-xs'>1 giờ trước.</div>
+                            </div>
+                            <Circle className='size-3 stroke-destructive fill-destructive' />
+                          </Link>
+                        ))}
+                    </div>
+                  </PopoverContent>
+                </Popover>
                 {/* Giỏ hàng */}
                 <div className='relative'>
                   <Popover>
@@ -261,7 +303,7 @@ export default function ShopHeader() {
                               <TooltipTrigger asChild>
                                 <div className='flex items-center space-x-1'>
                                   <ShoppingCart className='size-4' />
-                                  <span>{totalCartItems}</span>
+                                  <span className='font-medium'>{totalCartItems}</span>
                                 </div>
                               </TooltipTrigger>
                               <TooltipContent>Số lượng sản phẩm</TooltipContent>
@@ -270,7 +312,7 @@ export default function ShopHeader() {
                               <TooltipTrigger asChild>
                                 <div className='flex items-center space-x-1'>
                                   <DollarSign className='size-4' />
-                                  <span>{formatCurrency(totalCartAmount)}&#8363;</span>
+                                  <span className='font-medium'>{formatCurrency(totalCartAmount)}&#8363;</span>
                                 </div>
                               </TooltipTrigger>
                               <TooltipContent>Tổng tiền sản phẩm</TooltipContent>
@@ -323,10 +365,10 @@ export default function ShopHeader() {
                           </div>
                           <div className='flex justify-end pt-2 px-2 space-x-2'>
                             <Button asChild variant='outline' size='sm'>
-                              <Link to={PATH.CART}>Xem giỏ hàng</Link>
+                              <Link to={PATH.CART_LIST}>Xem giỏ hàng</Link>
                             </Button>
                             <Button asChild size='sm'>
-                              <Link to={PATH.HOME}>Thanh toán</Link>
+                              <Link to={PATH.CART_ORDER_INFO}>Thanh toán</Link>
                             </Button>
                           </div>
                         </React.Fragment>
@@ -335,58 +377,12 @@ export default function ShopHeader() {
                   </Popover>
                   {totalCartItems > 0 && (
                     <div className='absolute -top-1 -right-1'>
-                      <Badge className='h-4 min-w-4 rounded-full px-1 tabular-nums' variant='destructive'>
+                      <Badge className='h-4 min-w-4 rounded-full px-1 tabular-nums'>
                         {totalCartItems > 9 ? '9+' : totalCartItems}
                       </Badge>
                     </div>
                   )}
                 </div>
-                {/* Thông báo */}
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <div className='relative'>
-                      <Button variant='outline'>
-                        <Bell className='size-4' />
-                        Thông báo
-                      </Button>
-                      <div className='absolute -top-1 -right-1'>
-                        <Badge className='h-4 min-w-4 rounded-full px-1 tabular-nums' variant='destructive'>
-                          9
-                        </Badge>
-                      </div>
-                    </div>
-                  </PopoverTrigger>
-                  <PopoverContent align='end' className='w-sm p-0 pb-4'>
-                    <div className='flex justify-between items-center space-x-20 p-4'>
-                      <h3 className='font-medium tracking-tight'>Thông báo</h3>
-                      <Button size='sm' variant='link'>
-                        Đánh dấu tất cả đã đọc
-                      </Button>
-                    </div>
-                    <div className='max-h-[400px] overflow-y-auto'>
-                      {Array(20)
-                        .fill(0)
-                        .map((_, index) => (
-                          <Link
-                            key={index}
-                            to={PATH.HOME}
-                            className='flex justify-between items-center space-x-6 p-4 hover:bg-muted duration-100 border-t'
-                          >
-                            <div className='size-12 bg-muted rounded-lg flex justify-center items-center shrink-0'>
-                              <SquareRoundCorner />
-                            </div>
-                            <div className='space-y-1'>
-                              <div className='text-sm font-medium line-clamp-2'>
-                                Bài học Tìm hiểu toán tử instanceof mới được thêm vào.
-                              </div>
-                              <div className='text-muted-foreground text-xs'>1 giờ trước.</div>
-                            </div>
-                            <Circle className='size-3 stroke-destructive fill-destructive' />
-                          </Link>
-                        ))}
-                    </div>
-                  </PopoverContent>
-                </Popover>
                 {/* Tài khoản */}
                 <Popover>
                   <PopoverTrigger asChild>
@@ -439,23 +435,17 @@ export default function ShopHeader() {
             {!isAuthenticated && (
               <div className='flex space-x-1'>
                 <Button asChild size='sm' variant='outline'>
-                  <Link to={PATH.REGISTER}>
-                    <UserRoundPlus className='size-4' />
-                    Đăng ký
-                  </Link>
+                  <Link to={PATH.REGISTER}>Đăng ký</Link>
                 </Button>
                 <Button asChild size='sm'>
-                  <Link to={PATH.LOGIN}>
-                    <LogIn />
-                    Đăng nhập
-                  </Link>
+                  <Link to={PATH.LOGIN}>Đăng nhập</Link>
                 </Button>
               </div>
             )}
           </div>
         </div>
       </div>
-      <div className='bg-background border-b h-12 flex items-center'>
+      <div className='bg-card border-b h-12 flex items-center'>
         <div className='w-7xl mx-auto'>
           <div className='flex justify-between'>
             <div></div>

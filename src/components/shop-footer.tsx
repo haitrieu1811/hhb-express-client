@@ -14,9 +14,9 @@ export default function ShopFooter() {
               <div className='bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg'>
                 <Truck className='size-6' />
               </div>
-              <span className='font-bold text-lg tracking-tight'>MuaHangNhanh</span>
+              <span className='font-medium text-lg tracking-tight'>MuaHangNhanh</span>
             </Link>
-            <div className='text-sm space-y-1 text-muted-foreground'>
+            <div className='text-sm space-y-1'>
               <div>Điện thoại: 08 1919 8989</div>
               <div>Email: contact@fullstack.edu.vn</div>
               <div>Địa chỉ: Số 1, ngõ 41, Trần Duy Hưng, Cầu Giấy, Hà Nội</div>
@@ -24,8 +24,8 @@ export default function ShopFooter() {
           </div>
 
           <div className='col-span-2 space-y-4'>
-            <h3 className='font-semibold tracking-tight text-xl'>Về MHN</h3>
-            <ul className='text-sm text-muted-foreground space-y-2'>
+            <h3 className='font-medium tracking-tight text-lg'>Về MHN</h3>
+            <ul className='text-sm space-y-2'>
               <li>
                 <Link to={PATH.HOME} className='hover:underline'>
                   Giới thiệu
@@ -50,8 +50,8 @@ export default function ShopFooter() {
           </div>
 
           <div className='col-span-2 space-y-4'>
-            <h3 className='font-semibold tracking-tight text-xl'>Về MHN</h3>
-            <ul className='text-sm text-muted-foreground space-y-2'>
+            <h3 className='font-medium tracking-tight text-lg'>Về MHN</h3>
+            <ul className='text-sm space-y-2'>
               <li>
                 <Link to={PATH.HOME} className='hover:underline'>
                   Giới thiệu
@@ -80,9 +80,9 @@ export default function ShopFooter() {
               <div className='bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg'>
                 <Truck className='size-6' />
               </div>
-              <span className='font-bold text-lg tracking-tight'>MuaHangNhanh</span>
+              <span className='font-medium text-lg tracking-tight'>MuaHangNhanh</span>
             </Link>
-            <div className='text-sm space-y-1 text-muted-foreground'>
+            <div className='text-sm space-y-1'>
               <div>Điện thoại: 08 1919 8989</div>
               <div>Email: contact@fullstack.edu.vn</div>
               <div>Địa chỉ: Số 1, ngõ 41, Trần Duy Hưng, Cầu Giấy, Hà Nội</div>

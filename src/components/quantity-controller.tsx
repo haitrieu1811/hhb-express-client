@@ -28,7 +28,6 @@ export default function QuantityController({
     const { value } = e.target
     if (NUMBER_REGEX.test(value)) {
       onChange && onChange(e)
-
       let newValue = Number(e.target.value)
       if (newValue < 1) {
         newValue = 1

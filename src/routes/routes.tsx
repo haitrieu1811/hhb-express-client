@@ -4,8 +4,13 @@ import ShopLayout from '~/layouts/shop'
 import AccountPage from '~/pages/account/account'
 import AccountAddressesPage from '~/pages/account/addresses'
 import AccountChangePasswordPage from '~/pages/account/change-password'
+import AccountOrderDetailPage from '~/pages/account/order-detail'
+import AccountOrdersPage from '~/pages/account/orders'
 import AccountProfilePage from '~/pages/account/profile'
 import CartPage from '~/pages/cart'
+import CartListPage from '~/pages/cart/list'
+import CartOrderInfoPage from '~/pages/cart/order-info'
+import CartOrderSuccessPage from '~/pages/cart/order-success'
 import DashboardPage from '~/pages/dashboard'
 import DashboardMePage from '~/pages/dashboard-me'
 import DashboardProductPage from '~/pages/dashboard-product'
@@ -72,7 +77,21 @@ export const protectedRoutes = [
   {
     path: PATH.CART,
     layout: ShopLayout,
-    page: CartPage
+    page: CartPage,
+    children: [
+      {
+        path: PATH.CART_LIST,
+        page: CartListPage
+      },
+      {
+        path: PATH.CART_ORDER_INFO,
+        page: CartOrderInfoPage
+      },
+      {
+        path: PATH.CART_ORDER_SUCCESS,
+        page: CartOrderSuccessPage
+      }
+    ]
   },
   {
     path: PATH.ACCOUNT,
@@ -90,6 +109,14 @@ export const protectedRoutes = [
       {
         path: PATH.ACCOUNT_ADDRESSES,
         page: AccountAddressesPage
+      },
+      {
+        path: PATH.ACCOUNT_ORDERS,
+        page: AccountOrdersPage
+      },
+      {
+        path: PATH.ACCOUNT_ORDER_DETAIL_WITHOUT_ID,
+        page: AccountOrderDetailPage
       }
     ]
   }

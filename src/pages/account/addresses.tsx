@@ -11,24 +11,13 @@ import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle }
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Separator } from '~/components/ui/separator'
 import { AddressType } from '~/constants/enum'
-import { AppContext } from '~/providers/app.provider'
+import useMyAddresses from '~/hooks/use-my-addresses'
 
 export default function AccountAddressesPage() {
-  const { isAuthenticated } = React.useContext(AppContext)
-
   const [isOpenCreateAddressDialog, setIsOpenCreateAddressDialog] = React.useState<boolean>(false)
   const [currentAddressId, setCurrentAddressId] = React.useState<string | null>(null)
 
-  const getMyAddressesQuery = useQuery({
-    queryKey: ['get-my-addresses'],
-    queryFn: () => addressesApis.getMyAddresses(),
-    enabled: isAuthenticated
-  })
-
-  const addresses = React.useMemo(
-    () => getMyAddressesQuery.data?.data.data.addresses ?? [],
-    [getMyAddressesQuery.data?.data.data.addresses]
-  )
+  const { addresses, getMyAddressesQuery } = useMyAddresses()
 
   const getAddressQuery = useQuery({
     queryKey: ['get-address', currentAddressId],

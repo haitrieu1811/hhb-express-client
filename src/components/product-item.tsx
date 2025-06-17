@@ -27,30 +27,32 @@ export default function ProductItem({ productData }: ProductItemProps) {
     <React.Fragment>
       <div className='border rounded-lg overflow-hidden shadow-sm relative'>
         {productData.priceAfterDiscount < productData.price && (
-          <div className='absolute top-0 right-0 px-2 py-1 text-xs font-semibold bg-destructive rounded-bl-lg text-white'>
+          <div className='absolute top-0 right-0 px-2 py-1 text-xs font-semibold bg-primary rounded-bl-lg text-white'>
             -{rateSale(productData.price, productData.priceAfterDiscount)}%
           </div>
         )}
         <Link to={PATH.PRODUCT_DETAIL({ name: productData.name, id: productData._id })} className='block'>
           <img src={productData.thumbnail.url} alt={productData.name} className='object-cover' />
         </Link>
-        <div className='px-4 pt-2 pb-4 space-y-4'>
+        <div className='p-2 pb-4 space-y-4'>
           <div className='space-y-1'>
             <Link
               to={PATH.PRODUCT_DETAIL({ name: productData.name, id: productData._id })}
-              className='text-sm hover:underline line-clamp-1'
+              className='text-sm hover:underline line-clamp-1 font-medium'
             >
               {productData.name}
             </Link>
             {productData.priceAfterDiscount < productData.price ? (
               <div className='space-y-1'>
-                <div className='font-semibold text-sm'>{formatCurrency(productData.priceAfterDiscount)}&#8363;</div>
+                <div className='font-semibold text-sm text-primary'>
+                  {formatCurrency(productData.priceAfterDiscount)}&#8363;
+                </div>
                 <div className='text-muted-foreground text-xs line-through'>
                   {formatCurrency(productData.price)}&#8363;
                 </div>
               </div>
             ) : (
-              <div className='font-semibold text-sm'>{formatCurrency(productData.price)}&#8363;</div>
+              <div className='font-semibold text-sm text-primary'>{formatCurrency(productData.price)}&#8363;</div>
             )}
           </div>
           <div className='flex justify-between items-center space-x-4'>
