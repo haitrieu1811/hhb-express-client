@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { Loader2, X } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { Loader2 } from 'lucide-react'
 import moment from 'moment'
 import React from 'react'
 import { Link } from 'react-router'
@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs'
 import { ORDER_STATUS_BADGE } from '~/constants/data'
 import { OrderStatus } from '~/constants/enum'
 import PATH from '~/constants/path'
+import useUpdateOrder from '~/hooks/use-update-order'
 import { convertMomentFromNowToVietnamese, formatCurrency } from '~/lib/utils'
 import { AppContext } from '~/providers/app.provider'
 
@@ -29,9 +30,7 @@ export default function AccountOrdersPage() {
     [getMyOrdersQuery.data?.data.data.orders]
   )
 
-  const updateOrderMutation = useMutation({
-    mutationKey: ['update-order'],
-    mutationFn: ordersApis.updateOrder,
+  const { updateOrderMutation } = useUpdateOrder({
     onSuccess: () => {
       getMyOrdersQuery.refetch()
     }
@@ -65,10 +64,7 @@ export default function AccountOrdersPage() {
                   />
                   <div className='flex-1 space-y-2'>
                     <h3 className='line-clamp-2 font-medium text-sm'>{item.product.name}</h3>
-                    <div className='flex items-center space-x-1 text-muted-foreground'>
-                      <X className='size-4' />
-                      {item.quantity}
-                    </div>
+                    <div className='text-sm text-muted-foreground'>Số lượng: {item.quantity}</div>
                   </div>
                   <div className='flex items-center text-sm space-x-2'>
                     {item.unitPriceAfterDiscount < item.unitPrice ? (

@@ -8,6 +8,27 @@ export type CreateOrderReqBody = {
   addressId: string
 }
 
+export type ProductInOrder = {
+  _id: string
+  thumbnail: {
+    _id: string
+    url: string
+  }
+  name: string
+  price: number
+  priceAfterDiscount: number
+  status: number
+  approvalStatus: number
+  createdAt: string
+  updatedAt: string
+  category: {
+    _id: string
+    name: string
+    createdAt: string
+    updatedAt: string
+  }
+}
+
 export type OrderItem = {
   _id: string
   code: string
@@ -19,26 +40,7 @@ export type OrderItem = {
     status: number
     createdAt: string
     updatedAt: string
-    product: {
-      _id: string
-      thumbnail: {
-        _id: string
-        url: string
-      }
-      name: string
-      price: number
-      priceAfterDiscount: number
-      status: number
-      approvalStatus: number
-      createdAt: string
-      updatedAt: string
-      category: {
-        _id: string
-        name: string
-        createdAt: string
-        updatedAt: string
-      }
-    }
+    product: ProductInOrder
   }[]
   address: {
     _id: string

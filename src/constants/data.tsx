@@ -43,38 +43,38 @@ export const USER_MENU = [
   },
   {
     icon: LogOut,
-    to: PATH.HOME,
+    to: '/logout',
     label: 'Đăng xuất'
   }
 ] as const
 
 export const ORDER_STATUS_BADGE = {
   [OrderStatus.Waiting]: (
-    <div className='flex items-center text-yellow-500 dark:text-yellow-600 text-sm font-medium tracking-tight'>
+    <div className='flex items-center text-yellow-500 dark:text-yellow-600 text-sm font-medium tracking-tight whitespace-nowrap'>
       <Loader className='size-4 mr-2' />
       <span>Chờ xác nhận</span>
     </div>
   ),
   [OrderStatus.Confirmed]: (
-    <div className='flex items-center text-blue-500 text-sm font-medium tracking-tight'>
+    <div className='flex items-center text-blue-500 dark:text-blue-600 text-sm font-medium tracking-tight whitespace-nowrap'>
       <CheckCheck className='size-4 mr-2' />
       <span> Đã xác nhận</span>
     </div>
   ),
   [OrderStatus.Delivering]: (
-    <div className='flex items-center text-emerald-500 dark:text-emerald-600 text-sm font-semibold tracking-tight'>
+    <div className='flex items-center text-emerald-500 dark:text-emerald-600 text-sm font-semibold tracking-tight whitespace-nowrap'>
       <Truck className='size-4 mr-2' />
       <span>Đang vận chuyển</span>
     </div>
   ),
   [OrderStatus.Success]: (
-    <div className='flex items-center text-green-500 dark:text-green-600 text-sm font-semibold tracking-tight'>
+    <div className='flex items-center text-green-500 dark:text-green-600 text-sm font-semibold tracking-tight whitespace-nowrap'>
       <Import className='size-4 mr-2' />
       <span>Đã nhận hàng</span>
     </div>
   ),
   [OrderStatus.Cancel]: (
-    <div className='flex items-center text-red-500 dark:text-red-600 text-sm font-semibold tracking-tight'>
+    <div className='flex items-center text-red-500 dark:text-red-600 text-sm font-semibold tracking-tight whitespace-nowrap'>
       <Ban className='size-4 mr-2' />
       <span>Đã hủy</span>
     </div>

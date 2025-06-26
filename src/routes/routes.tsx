@@ -1,7 +1,7 @@
 import PATH from '~/constants/path'
 import DashboardLayout from '~/layouts/dashboard'
 import ShopLayout from '~/layouts/shop'
-import AccountPage from '~/pages/account/account'
+import AccountPage from '~/pages/account'
 import AccountAddressesPage from '~/pages/account/addresses'
 import AccountChangePasswordPage from '~/pages/account/change-password'
 import AccountOrderDetailPage from '~/pages/account/order-detail'
@@ -13,6 +13,7 @@ import CartOrderInfoPage from '~/pages/cart/order-info'
 import CartOrderSuccessPage from '~/pages/cart/order-success'
 import DashboardPage from '~/pages/dashboard'
 import DashboardMePage from '~/pages/dashboard-me'
+import DashboardOrdersPage from '~/pages/dashboard-orders'
 import DashboardProductPage from '~/pages/dashboard-product'
 import DashboardProductCategoryPage from '~/pages/dashboard-product-category'
 import DashboardProductCategoryNewPage from '~/pages/dashboard-product-category-new'
@@ -73,6 +74,11 @@ export const protectedRoutes = [
     path: PATH.DASHBOARD_PRODUCT_NEW,
     layout: DashboardLayout,
     page: DashboardProductNewPage
+  },
+  {
+    path: PATH.DASHBOARD_ORDERS,
+    layout: DashboardLayout,
+    page: DashboardOrdersPage
   },
   {
     path: PATH.CART,

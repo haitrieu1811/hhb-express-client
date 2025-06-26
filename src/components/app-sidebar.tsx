@@ -4,9 +4,9 @@ import {
   Frame,
   LifeBuoy,
   Map,
+  NotepadText,
   PieChart,
   Send,
-  Settings2,
   ShoppingBag,
   Truck,
   UsersRound
@@ -111,21 +111,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           ]
         },
         {
-          title: 'Cài đặt',
-          url: '#',
-          icon: Settings2,
+          title: 'Đơn hàng',
+          url: PATH.DASHBOARD_ORDERS,
+          icon: NotepadText,
           items: [
             {
-              title: 'Chung',
-              url: '#'
-            },
-            {
-              title: 'Nhóm',
-              url: '#'
-            },
-            {
-              title: 'Giao diện',
-              url: '#'
+              title: 'Danh sách',
+              url: PATH.DASHBOARD_ORDERS
             }
           ]
         }

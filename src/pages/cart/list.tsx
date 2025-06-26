@@ -154,7 +154,7 @@ export default function CartListPage() {
                         onDecrease={(quantity) => handleUpdateCartItem({ quantity, cartItemId: cartItem._id })}
                       />
                     </TableCell>
-                    <TableCell className='text-destructive font-medium'>
+                    <TableCell className='text-primary font-medium'>
                       {formatCurrency(cartItem.unitPriceAfterDiscount * cartItem.quantity)}&#8363;
                     </TableCell>
                     <TableCell className='text-right'>
@@ -179,7 +179,7 @@ export default function CartListPage() {
                 {totalCheckedCartItems > 0 && (
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button size='sm' variant='link' className='text-destructive'>
+                      <Button size='sm' variant='link' className='text-primary'>
                         Xóa mục đã chọn
                       </Button>
                     </AlertDialogTrigger>
@@ -211,9 +211,7 @@ export default function CartListPage() {
                   })}
                 >
                   <div className='text-sm'>Tổng cộng ({totalCheckedCartItems} sản phẩm)</div>
-                  <div className='text-lg text-destructive font-semibold'>
-                    {formatCurrency(totalCheckedAmount)}&#8363;
-                  </div>
+                  <div className='text-lg text-primary font-semibold'>{formatCurrency(totalCheckedAmount)}&#8363;</div>
                 </div>
                 <div className='flex flex-col items-end space-y-2'>
                   <Button
@@ -227,7 +225,7 @@ export default function CartListPage() {
                     <Link to={PATH.CART_ORDER_INFO}>Mua hàng</Link>
                   </Button>
                   {totalCheckedAmount === 0 && (
-                    <p className='text-sm text-destructive font-medium'>Hãy chọn ít nhất một mặt hàng để mua hàng.</p>
+                    <p className='text-sm text-primary font-medium'>Hãy chọn ít nhất một mặt hàng để mua hàng.</p>
                   )}
                 </div>
               </div>

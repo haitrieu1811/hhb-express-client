@@ -17,6 +17,15 @@ const ordersApis = {
     >('/orders/me', { params })
   },
 
+  getAllOrders(params?: PaginationReqParams) {
+    return http.get<
+      SuccessResponse<{
+        orders: OrderItem[]
+        pagination: PaginationResponse
+      }>
+    >('/orders/all', { params })
+  },
+
   getOrder(orderId: string) {
     return http.get<
       SuccessResponse<{

@@ -11,7 +11,7 @@ export default function AccountPage() {
       <aside className='space-y-4 w-1/5 bg-card p-2 rounded-md border sticky top-32'>
         <div className='space-y-2'>
           {USER_MENU.map((item) => {
-            const isActive = item.to === location.pathname
+            const isActive = location.pathname.startsWith(item.to)
             return (
               <Button
                 asChild

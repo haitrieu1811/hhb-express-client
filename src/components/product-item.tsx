@@ -25,7 +25,7 @@ export default function ProductItem({ productData }: ProductItemProps) {
 
   return (
     <React.Fragment>
-      <div className='border rounded-lg overflow-hidden shadow-sm relative'>
+      <div className='border rounded-md bg-card overflow-hidden relative'>
         {productData.priceAfterDiscount < productData.price && (
           <div className='absolute top-0 right-0 px-2 py-1 text-xs font-semibold bg-primary rounded-bl-lg text-white'>
             -{rateSale(productData.price, productData.priceAfterDiscount)}%

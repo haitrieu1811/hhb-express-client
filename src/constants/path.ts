@@ -31,6 +31,7 @@ const PATH = {
   DASHBOARD_ME: '/dashboard/me',
   DASHBOARD_PRODUCT: '/dashboard/product',
   DASHBOARD_PRODUCT_NEW: '/dashboard/product/new',
+  DASHBOARD_ORDERS: '/dashboard/orders',
 
   NOT_FOUND: '*'
 } as const
