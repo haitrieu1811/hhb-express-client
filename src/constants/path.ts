@@ -10,6 +10,7 @@ const PATH = {
 
   PRODUCT_DETAIL_WITH_NAME_ID: '/products/:nameId',
   PRODUCT_DETAIL: ({ name, id }: { name: string; id: string }) => `/products/${generateNameId({ name, id })}`,
+
   ME: '/me',
   ACCOUNT: '/account',
   ACCOUNT_PROFILE: '/account/profile',
@@ -18,11 +19,14 @@ const PATH = {
   ACCOUNT_ORDERS: '/account/orders',
   ACCOUNT_ORDER_DETAIL_WITHOUT_ID: '/account/orders/:orderId',
   ACCOUNT_ORDER_DETAI: (orderId: string) => `/account/orders/${orderId}`,
+
   CART: '/cart',
   CART_LIST: '/cart/list',
   CART_ORDER_INFO: '/cart/order-info',
   CART_ORDER_PREVIEW: '/cart/order-preview',
   CART_ORDER_SUCCESS: '/cart/order-success',
+
+  PRODUCTS: '/products',
 
   DASHBOARD: '/dashboard',
   DASHBOARD_USER: '/dashboard/user',

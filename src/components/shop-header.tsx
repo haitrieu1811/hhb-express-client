@@ -17,7 +17,7 @@ import {
   X
 } from 'lucide-react'
 import React from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 
 import { ModeToggle } from '~/components/mode-toggle'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
@@ -32,10 +32,40 @@ import PATH from '~/constants/path'
 import useDebounce from '~/hooks/use-debounce'
 import useProductCategories from '~/hooks/use-product-categories'
 import usePublicProducts from '~/hooks/use-public-products'
-import { formatCurrency, rateSale } from '~/lib/utils'
+import { cn, formatCurrency, rateSale } from '~/lib/utils'
 import { AppContext } from '~/providers/app.provider'
 
+const NAV_LINKS = [
+  {
+    path: PATH.HOME,
+    label: 'Trang chủ',
+    icon: Home
+  },
+  {
+    path: PATH.PRODUCTS,
+    label: 'Tất cả sản phẩm',
+    icon: Tags
+  },
+  {
+    path: '/info',
+    label: 'Giới thiệu',
+    icon: Info
+  },
+  {
+    path: '/contact',
+    label: 'Liên hệ',
+    icon: Phone
+  },
+  {
+    path: '/news',
+    label: 'Tin tức',
+    icon: Newspaper
+  }
+] as const
+
 export default function ShopHeader() {
+  const location = useLocation()
+
   const { isAuthenticated, profile, myCart, totalCartItems, totalCartAmount } = React.useContext(AppContext)
 
   const searchCategoryRef = React.useRef<HTMLInputElement>(null)
@@ -207,7 +237,7 @@ export default function ShopHeader() {
                                   <div className='text-muted-foreground line-through'>
                                     {formatCurrency(product.price)}&#8363;
                                   </div>
-                                  <div className='text-destructive font-semibold'>
+                                  <div className='text-primary font-semibold p-0.5 bg-primary/10 rounded'>
                                     -{rateSale(product.price, product.priceAfterDiscount)}%
                                   </div>
                                 </React.Fragment>
@@ -340,10 +370,10 @@ export default function ShopHeader() {
                                   >
                                     {cartItem.product.name}
                                   </Link>
-                                  <div className='flex items-center space-x-2 text-xs'>
+                                  <div className='flex items-center space-x-2 text-sm'>
                                     {cartItem.unitPriceAfterDiscount < cartItem.unitPrice ? (
                                       <React.Fragment>
-                                        <div className='font-semibold'>
+                                        <div className='font-medium text-primary'>
                                           {formatCurrency(cartItem.unitPriceAfterDiscount)}&#8363;
                                         </div>
                                         <div className='text-muted-foreground line-through'>
@@ -352,9 +382,11 @@ export default function ShopHeader() {
                                         </div>
                                       </React.Fragment>
                                     ) : (
-                                      <div className='font-semibold'>{formatCurrency(cartItem.unitPrice)}&#8363;</div>
+                                      <div className='font-medium text-primary'>
+                                        {formatCurrency(cartItem.unitPrice)}&#8363;
+                                      </div>
                                     )}
-                                    <div className='flex items-center space-x-1 text-xs'>
+                                    <div className='flex items-center space-x-1 text-sm'>
                                       <X className='size-3' />
                                       {cartItem.quantity}
                                     </div>
@@ -445,41 +477,28 @@ export default function ShopHeader() {
           </div>
         </div>
       </div>
-      <div className='bg-card border-b h-12 flex items-center'>
+      <div className='bg-card h-12 flex items-center border-b'>
         <div className='w-7xl mx-auto'>
           <div className='flex justify-between'>
             <div></div>
+            {/* Nav links */}
             <nav className='flex justify-center items-center space-x-4'>
-              <Button asChild size='sm' variant='ghost'>
-                <Link to={PATH.HOME}>
-                  <Home className='size-4' />
-                  Trang chủ
-                </Link>
-              </Button>
-              <Button asChild size='sm' variant='ghost'>
-                <Link to={PATH.HOME}>
-                  <Tags className='size-4' />
-                  Tất cả sản phẩm
-                </Link>
-              </Button>
-              <Button asChild size='sm' variant='ghost'>
-                <Link to={PATH.HOME}>
-                  <Info className='size-4' />
-                  Giới thiệu
-                </Link>
-              </Button>
-              <Button asChild size='sm' variant='ghost'>
-                <Link to={PATH.HOME}>
-                  <Phone className='size-4' />
-                  Liên hệ
-                </Link>
-              </Button>
-              <Button asChild size='sm' variant='ghost'>
-                <Link to={PATH.HOME}>
-                  <Newspaper className='size-4' />
-                  Tin tức
-                </Link>
-              </Button>
+              {NAV_LINKS.map((item, index) => (
+                <Button
+                  key={index}
+                  asChild
+                  size='sm'
+                  variant='ghost'
+                  className={cn('transition', {
+                    'pointer-events-none bg-primary/10 text-primary': item.path === location.pathname
+                  })}
+                >
+                  <Link to={item.path}>
+                    <item.icon className='size-4' />
+                    {item.label}
+                  </Link>
+                </Button>
+              ))}
             </nav>
             <ModeToggle />
           </div>

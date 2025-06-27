@@ -5,7 +5,7 @@ import PATH from '~/constants/path'
 
 export default function ShopFooter() {
   return (
-    <footer className='bg-popover border-t'>
+    <footer className='bg-card border-t'>
       <div className='w-7xl mx-auto'>
         <div className='grid grid-cols-12 gap-10 py-10'>
           <div className='col-span-4 space-y-4'>

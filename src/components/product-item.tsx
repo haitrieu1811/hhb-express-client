@@ -44,19 +44,19 @@ export default function ProductItem({ productData }: ProductItemProps) {
             </Link>
             {productData.priceAfterDiscount < productData.price ? (
               <div className='space-y-1'>
-                <div className='font-semibold text-sm text-primary'>
+                <div className='font-medium text-primary text-[15px]'>
                   {formatCurrency(productData.priceAfterDiscount)}&#8363;
                 </div>
-                <div className='text-muted-foreground text-xs line-through'>
+                <div className='text-muted-foreground text-sm line-through'>
                   {formatCurrency(productData.price)}&#8363;
                 </div>
               </div>
             ) : (
-              <div className='font-semibold text-sm text-primary'>{formatCurrency(productData.price)}&#8363;</div>
+              <div className='font-medium text-primary text-[15px]'>{formatCurrency(productData.price)}&#8363;</div>
             )}
           </div>
           <div className='flex justify-between items-center space-x-4'>
-            <div className='text-xs text-muted-foreground'>Đã bán 11k</div>
+            <div className='text-xs'>Đã bán 11k</div>
             <div className='flex space-x-1'>
               <Tooltip>
                 <TooltipTrigger asChild>

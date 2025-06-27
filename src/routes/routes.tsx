@@ -23,6 +23,7 @@ import ForgotPasswordPage from '~/pages/forgot-password'
 import HomePage from '~/pages/home'
 import LoginPage from '~/pages/login'
 import ProductDetailPage from '~/pages/product-detail'
+import ProductsPage from '~/pages/products'
 import RegisterPage from '~/pages/register'
 import ResetPasswordPage from '~/pages/reset-password'
 
@@ -36,6 +37,11 @@ export const publicRoutes = [
     path: PATH.PRODUCT_DETAIL_WITH_NAME_ID,
     layout: ShopLayout,
     page: ProductDetailPage
+  },
+  {
+    path: PATH.PRODUCTS,
+    layout: ShopLayout,
+    page: ProductsPage
   }
 ]
 
