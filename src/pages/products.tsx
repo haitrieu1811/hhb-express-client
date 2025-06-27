@@ -1,5 +1,5 @@
 import { Loader2 } from 'lucide-react'
-import { useSearchParams } from 'react-router'
+import { createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router'
 
 import PaginationV2 from '~/components/pagination'
 import ProductItem from '~/components/product-item'
@@ -11,11 +11,31 @@ export default function ProductsPage() {
   const [searchParams] = useSearchParams()
   const queryParams = Object.fromEntries([...searchParams])
 
+  const location = useLocation()
+  const navigate = useNavigate()
+
   const page = queryParams.page
+  const sortBy = queryParams.sortBy
+  const orderBy = queryParams.orderBy as 'asc' | 'desc'
 
   const { products, totalProducts, pagination, getProductsQuery } = usePublicProducts({
-    page
+    page,
+    sortBy,
+    orderBy
   })
+
+  const handleSort = (value: string) => {
+    const sortBy = value.split('-')[0]
+    const orderBy = value.split('-')[1]
+    navigate({
+      pathname: location.pathname,
+      search: createSearchParams({
+        ...queryParams,
+        sortBy,
+        orderBy
+      }).toString()
+    })
+  }
 
   return (
     <div className='flex items-start space-x-4'>
@@ -34,15 +54,15 @@ export default function ProductsPage() {
           <CardTitle className='text-xl'>Danh sách sản phẩm</CardTitle>
           <CardDescription>Có {totalProducts} sản phẩm trên hệ thống</CardDescription>
           <CardAction>
-            <Select>
+            <Select onValueChange={handleSort}>
               <SelectTrigger className='w-[200px]'>
                 <SelectValue placeholder='Sắp xếp theo' />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='light'>Giá tăng dần</SelectItem>
-                <SelectItem value='dark'>Giá giảm dần</SelectItem>
-                <SelectItem value='system'>Tên từ A - Z</SelectItem>
-                <SelectItem value='system'>Tên từ Z - A</SelectItem>
+                <SelectItem value='priceAfterDiscount-asc'>Giá tăng dần</SelectItem>
+                <SelectItem value='priceAfterDiscount-desc'>Giá giảm dần</SelectItem>
+                <SelectItem value='name-asc'>Tên từ A - Z</SelectItem>
+                <SelectItem value='name-desc'>Tên từ Z - A</SelectItem>
               </SelectContent>
             </Select>
           </CardAction>

@@ -15,6 +15,8 @@ export type CreateProductReqBody = {
 
 export type GetPublicProductsReqParams = PaginationReqParams & {
   name?: string
+  sortBy?: string
+  orderBy?: 'asc' | 'desc'
 }
 
 const productsApis = {
