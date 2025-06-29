@@ -4,6 +4,7 @@ import {
   DollarSign,
   Home,
   Info,
+  LayoutDashboard,
   Loader2,
   Menu,
   Newspaper,
@@ -23,7 +24,7 @@ import { ModeToggle } from '~/components/mode-toggle'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '~/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Input } from '~/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip'
@@ -120,6 +121,7 @@ export default function ShopHeader() {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Danh mục sản phẩm</DialogTitle>
+                  <DialogDescription>Có {totalProductCategories} danh mục sản phẩm</DialogDescription>
                 </DialogHeader>
                 {/* Tìm kiếm danh mục sản phẩm */}
                 <div className='relative'>
@@ -159,7 +161,7 @@ export default function ShopHeader() {
                             alt={category.name}
                             className='size-10 aspect-square object-cover shrink-0 rounded-md'
                           />
-                          <div className='text-sm capitalize'>{category.name}</div>
+                          <div className='text-sm capitalize font-medium'>{category.name}</div>
                         </Link>
                       </div>
                     ))}
@@ -480,7 +482,14 @@ export default function ShopHeader() {
       <div className='bg-card h-12 flex items-center border-b'>
         <div className='w-7xl mx-auto'>
           <div className='flex justify-between'>
-            <div></div>
+            <div>
+              <Button asChild variant='ghost'>
+                <Link to={PATH.DASHBOARD}>
+                  <LayoutDashboard className='size-4' />
+                  Trang quản trị
+                </Link>
+              </Button>
+            </div>
             {/* Nav links */}
             <nav className='flex justify-center items-center space-x-4'>
               {NAV_LINKS.map((item, index) => (

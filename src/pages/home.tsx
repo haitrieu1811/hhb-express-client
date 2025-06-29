@@ -16,7 +16,9 @@ const CAROUSELS = [
 ] as const
 
 export default function HomePage() {
-  const { products, totalProducts, getProductsQuery } = usePublicProducts({})
+  const { products, totalProducts, getProductsQuery } = usePublicProducts({
+    limit: '5'
+  })
 
   const { productCategories } = useProductCategories({})
 
@@ -66,7 +68,7 @@ export default function HomePage() {
         </CardHeader>
         <CardContent>
           {totalProducts > 0 && !getProductsQuery.isLoading && (
-            <div className='grid grid-cols-12 gap-4'>
+            <div className='grid grid-cols-10 gap-4'>
               {products.map((product) => (
                 <div key={product._id} className='col-span-2'>
                   <ProductItem productData={product} />

@@ -25,7 +25,7 @@ export default function PhotosGrid({
               <div
                 key={photo._id}
                 className={cn('col-span-3 p-1 border-2 rounded-md hover:cursor-pointer', {
-                  'border-foreground': photo.url === currentPhoto
+                  'border-primary': photo.url === currentPhoto
                 })}
                 onClick={() => setCurrentPhoto(photo.url)}
               >

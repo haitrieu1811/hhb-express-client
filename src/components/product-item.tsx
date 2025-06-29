@@ -1,4 +1,4 @@
-import { Loader2, Search, ShoppingCart } from 'lucide-react'
+import { Loader2, Search, ShoppingCart, Star } from 'lucide-react'
 import React from 'react'
 import { Link } from 'react-router'
 
@@ -44,7 +44,7 @@ export default function ProductItem({ productData }: ProductItemProps) {
             </Link>
             {productData.priceAfterDiscount < productData.price ? (
               <div className='space-y-1'>
-                <div className='font-medium text-primary text-[15px]'>
+                <div className='font-semibold text-primary text-[15px]'>
                   {formatCurrency(productData.priceAfterDiscount)}&#8363;
                 </div>
                 <div className='text-muted-foreground text-sm line-through'>
@@ -52,15 +52,26 @@ export default function ProductItem({ productData }: ProductItemProps) {
                 </div>
               </div>
             ) : (
-              <div className='font-medium text-primary text-[15px]'>{formatCurrency(productData.price)}&#8363;</div>
+              <div className='font-semibold text-primary text-[15px]'>{formatCurrency(productData.price)}&#8363;</div>
             )}
           </div>
-          <div className='flex justify-between items-center space-x-4'>
-            <div className='text-xs'>Đã bán 11k</div>
+          <div className='flex justify-between items-end space-x-4'>
+            <div className='space-y-1'>
+              <div className='flex items-center space-x-1'>
+                <span className='text-sm font-medium'>5.0</span>{' '}
+                <Star className='size-3 stroke-yellow-500 fill-yellow-500' />
+              </div>
+              <div className='text-xs text-muted-foreground font-medium'>Đã bán 11k</div>
+            </div>
             <div className='flex space-x-1'>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button size='icon' variant='outline' className='size-8' onClick={() => setIsOpenQuickView(true)}>
+                  <Button
+                    size='icon'
+                    variant='outline'
+                    className='size-8 rounded'
+                    onClick={() => setIsOpenQuickView(true)}
+                  >
                     <Search className='size-3.5' />
                   </Button>
                 </TooltipTrigger>
@@ -71,7 +82,7 @@ export default function ProductItem({ productData }: ProductItemProps) {
                   <Button
                     size='icon'
                     variant='outline'
-                    className='size-8'
+                    className='size-8 rounded'
                     disabled={
                       addProductToCartMutation.isPending &&
                       addProductToCartMutation.variables.productId === productData._id

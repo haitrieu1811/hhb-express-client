@@ -17,6 +17,7 @@ export type GetPublicProductsReqParams = PaginationReqParams & {
   name?: string
   sortBy?: string
   orderBy?: 'asc' | 'desc'
+  categoryIds?: string // Giá trị phải có định dạng id-id-id-....
 }
 
 const productsApis = {
