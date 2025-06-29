@@ -28,7 +28,7 @@ export default function ProductItem({ productData }: ProductItemProps) {
       <div className='border rounded-md bg-card overflow-hidden relative'>
         {productData.priceAfterDiscount < productData.price && (
           <div className='absolute top-0 right-0 px-2 py-1 text-xs font-semibold bg-primary rounded-bl-lg text-white'>
-            -{rateSale(productData.price, productData.priceAfterDiscount)}%
+            Giảm {rateSale(productData.price, productData.priceAfterDiscount)}%
           </div>
         )}
         <Link to={PATH.PRODUCT_DETAIL({ name: productData.name, id: productData._id })} className='block'>
@@ -57,10 +57,13 @@ export default function ProductItem({ productData }: ProductItemProps) {
           </div>
           <div className='flex justify-between items-end space-x-4'>
             <div className='space-y-1'>
-              <div className='flex items-center space-x-1'>
-                <span className='text-sm font-medium'>5.0</span>{' '}
-                <Star className='size-3 stroke-yellow-500 fill-yellow-500' />
-              </div>
+              {productData.starPoints && (
+                <div className='flex items-center space-x-1'>
+                  <span className='text-sm font-medium'>{productData.starPoints}</span>{' '}
+                  <Star className='size-3 stroke-yellow-500 fill-yellow-500' />
+                </div>
+              )}
+              {!productData.starPoints && <div className='text-xs text-muted-foreground'>Chưa có đánh giá</div>}
               <div className='text-xs text-muted-foreground font-medium'>Đã bán 11k</div>
             </div>
             <div className='flex space-x-1'>

@@ -125,7 +125,7 @@ export default function CartListPage() {
                         onCheckedChange={(checked) => handleCheck({ checked, index })}
                       />
                     </TableCell>
-                    <TableCell className='font-medium'>
+                    <TableCell>
                       <Link
                         to={PATH.PRODUCT_DETAIL({
                           name: cartItem.product.name,
@@ -170,7 +170,7 @@ export default function CartListPage() {
                 ))}
               </TableBody>
             </Table>
-            <div className='border rounded-md bg-background px-2 py-4 flex justify-between items-center space-x-10 sticky bottom-0 inset-x-0'>
+            <div className='bg-card px-2 py-4 flex justify-between items-center space-x-10 sticky bottom-0 inset-x-0'>
               <div className='flex items-center space-x-4'>
                 <div className='flex items-center space-x-2'>
                   <Checkbox id='checkAll' checked={isCheckedAll} onCheckedChange={handleCheckAll} />
@@ -211,7 +211,7 @@ export default function CartListPage() {
                   })}
                 >
                   <div className='text-sm'>Tổng cộng ({totalCheckedCartItems} sản phẩm)</div>
-                  <div className='text-lg text-primary font-semibold'>{formatCurrency(totalCheckedAmount)}&#8363;</div>
+                  <div className='text-2xl text-primary font-medium'>{formatCurrency(totalCheckedAmount)}&#8363;</div>
                 </div>
                 <div className='flex flex-col items-end space-y-2'>
                   <Button

@@ -18,7 +18,7 @@ import {
   X
 } from 'lucide-react'
 import React from 'react'
-import { Link, useLocation } from 'react-router'
+import { createSearchParams, Link, useLocation } from 'react-router'
 
 import { ModeToggle } from '~/components/mode-toggle'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
@@ -33,6 +33,7 @@ import PATH from '~/constants/path'
 import useDebounce from '~/hooks/use-debounce'
 import useProductCategories from '~/hooks/use-product-categories'
 import usePublicProducts from '~/hooks/use-public-products'
+import useQueryParams from '~/hooks/use-query-params'
 import { cn, formatCurrency, rateSale } from '~/lib/utils'
 import { AppContext } from '~/providers/app.provider'
 
@@ -66,6 +67,7 @@ const NAV_LINKS = [
 
 export default function ShopHeader() {
   const location = useLocation()
+  const queryParams = useQueryParams()
 
   const { isAuthenticated, profile, myCart, totalCartItems, totalCartAmount } = React.useContext(AppContext)
 
@@ -153,7 +155,13 @@ export default function ShopHeader() {
                     {productCategories.map((category) => (
                       <div key={category._id} className='col-span-6'>
                         <Link
-                          to={PATH.HOME}
+                          to={{
+                            pathname: PATH.PRODUCTS,
+                            search: createSearchParams({
+                              ...queryParams,
+                              categoryIds: category._id
+                            }).toString()
+                          }}
                           className='flex items-center space-x-4 hover:bg-muted duration-100 px-4 py-2 rounded-md border-t first:border-t-0'
                         >
                           <img

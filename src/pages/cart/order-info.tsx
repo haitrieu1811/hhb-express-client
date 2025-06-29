@@ -121,7 +121,7 @@ export default function CartOrderInfoPage() {
                         key={address._id}
                         className={cn('space-y-2 border  rounded-md p-4 hover:cursor-pointer', {
                           'border-transparent': address._id !== currentAddress?._id,
-                          'border-blue-500': address._id === currentAddress?._id
+                          'border-primary': address._id === currentAddress?._id
                         })}
                         onClick={() => handleChangeAddress(address)}
                       >
@@ -178,7 +178,7 @@ export default function CartOrderInfoPage() {
                   </TableCell>
                   <TableCell>{formatCurrency(checkoutItem.unitPriceAfterDiscount)}&#8363;</TableCell>
                   <TableCell className='text-center'>{checkoutItem.quantity}</TableCell>
-                  <TableCell className='font-semibold text-right'>
+                  <TableCell className='font-medium text-primary text-right'>
                     {formatCurrency(checkoutItem.unitPriceAfterDiscount * checkoutItem.quantity)}&#8363;
                   </TableCell>
                 </TableRow>
@@ -195,10 +195,10 @@ export default function CartOrderInfoPage() {
                 <Label>Lời nhắn</Label>
                 <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder='Lưu ý cho người bán' />
               </div>
-              <Alert className='text-yellow-600'>
+              <Alert className='text-yellow-500 dark:text-yellow-600'>
                 <TriangleAlert />
                 <AlertTitle>Lưu ý!</AlertTitle>
-                <AlertDescription className='text-yellow-600'>
+                <AlertDescription className='text-yellow-500 dark:text-yellow-600'>
                   Hãy kiểm tra sản phẩm và số lượng sản phẩm chính xác để không mua nhầm sản phẩm.
                 </AlertDescription>
               </Alert>
@@ -210,13 +210,11 @@ export default function CartOrderInfoPage() {
               </div>
               <div className='flex items-center justify-between space-x-20'>
                 <span>Tổng sản phẩm</span>
-                <span className='text-foreground font-semibold text-2xl'>{totalCheckoutItems}</span>
+                <span className='text-primary font-medium text-2xl'>{totalCheckoutItems}</span>
               </div>
               <div className='flex items-center justify-between space-x-20'>
                 <span>Tổng thanh toán</span>
-                <span className='text-foreground font-semibold text-2xl'>
-                  {formatCurrency(totalCheckoutAmount)}&#8363;
-                </span>
+                <span className='text-primary font-medium text-2xl'>{formatCurrency(totalCheckoutAmount)}&#8363;</span>
               </div>
               <div className='flex justify-end'>
                 <Button disabled={createOrderMutation.isPending} size='lg' className='uppercase' onClick={handleOrder}>

@@ -7,6 +7,7 @@ import { Link, useParams } from 'react-router'
 import productsApis from '~/apis/products.apis'
 import reviewsApis from '~/apis/reviews.apis'
 import PhotosGrid from '~/components/photos-grid'
+import ProductItem from '~/components/product-item'
 import QuantityController from '~/components/quantity-controller'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { Badge } from '~/components/ui/badge'
@@ -19,12 +20,13 @@ import {
   BreadcrumbSeparator
 } from '~/components/ui/breadcrumb'
 import { Button } from '~/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog'
 import { Progress } from '~/components/ui/progress'
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip'
 import PATH from '~/constants/path'
 import useCart from '~/hooks/use-cart'
+import usePublicProducts from '~/hooks/use-public-products'
 import { cn, convertMomentFromNowToVietnamese, formatCurrency, getIdFromNameId, rateSale } from '~/lib/utils'
 
 const MAX_PHOTOS_TO_DISPLAY = 5
@@ -101,7 +103,7 @@ export default function ProductDetailPage() {
     [statistics, totalReviews]
   )
 
-  // Cảm xúc
+  const { products } = usePublicProducts({})
 
   return (
     <div className='space-y-4'>
@@ -128,7 +130,7 @@ export default function ProductDetailPage() {
         {/* Hình ảnh sản phẩm */}
         <Card className='basis-1/2 sticky top-32 hover:cursor-pointer'>
           <CardContent>
-            <div className='grid grid-cols-12 gap-6' onClick={() => setIsViewPhoto(true)}>
+            <div className='grid grid-cols-12 gap-4' onClick={() => setIsViewPhoto(true)}>
               {product?.photos.slice(0, MAX_PHOTOS_TO_DISPLAY).map((photo) => (
                 <div key={photo._id} className='col-span-4'>
                   <img src={photo.url} alt='' className='aspect-square object-cover rounded-md' />
@@ -154,40 +156,41 @@ export default function ProductDetailPage() {
         {/* Thông tin sản phẩm */}
         <Card className='flex-1'>
           <CardContent>
-            <div className='space-y-16'>
-              <div className='space-y-6'>
+            <div className='space-y-6'>
+              <div>
                 <Badge variant='outline'>{product?.category.name}</Badge>
-                <h1 className='text-xl font-semibold'>{product?.name}</h1>
+                <h1 className='text-2xl font-semibold mt-4'>{product?.name}</h1>
                 {/* Số sao đánh giá */}
-                <div className='flex items-center space-x-8'>
-                  <div className='flex items-center space-x-4'>
-                    <div className='flex items-center space-x-1'>
-                      {Array(5)
-                        .fill(0)
-                        .map((_, index) => (
-                          <Star key={index} size={20} className='fill-yellow-500 stroke-yellow-500' />
-                        ))}
+                {totalReviews > 0 && (
+                  <div className='flex items-center space-x-4 font-medium mt-6'>
+                    <div className='flex items-center space-x-2'>
+                      <div className='text-lg'>{product?.starPoints}</div>
+                      <Star className='size-4 fill-yellow-500 dark:fill-yellow-600 stroke-yellow-500 dark:stroke-yellow-600' />
                     </div>
-                    <div className='font-semibold'>5.0</div>
+                    <div className='text-sm'>{totalReviews} đánh giá</div>
+                    <div className='text-sm'>Đã bán 6.7k</div>
                   </div>
-                  {totalReviews > 0 && <div className='text-sm text-muted-foreground'>{totalReviews} đánh giá</div>}
-                </div>
+                )}
                 {/* Giá, giảm giá */}
-                <div className='flex items-center space-x-4'>
+                <div className='flex items-center space-x-4 mt-4'>
                   {product && product.priceAfterDiscount < product.price ? (
                     <React.Fragment>
-                      <div className='font-semibold text-2xl'>{formatCurrency(product.priceAfterDiscount)}&#8363;</div>
+                      <div className='font-semibold text-3xl text-primary'>
+                        {formatCurrency(product.priceAfterDiscount)}&#8363;
+                      </div>
                       <div className='text-muted-foreground line-through text-xl'>
                         {formatCurrency(product.price)}&#8363;
                       </div>
-                      <Badge>-{rateSale(product.price, product.priceAfterDiscount)}%</Badge>
+                      <Badge>Giảm {rateSale(product.price, product.priceAfterDiscount)}%</Badge>
                     </React.Fragment>
                   ) : (
-                    <div className='font-semibold text-2xl'>{formatCurrency(product?.price ?? 0)}&#8363;</div>
+                    <div className='font-semibold text-3xl text-primary'>
+                      {formatCurrency(product?.price ?? 0)}&#8363;
+                    </div>
                   )}
                 </div>
                 {/* Số lượng */}
-                <div className='flex items-center space-x-6'>
+                <div className='flex items-center space-x-6 mt-10'>
                   <QuantityController
                     value={quantity}
                     onChange={(e) => setQuantity(Number(e.target.value))}
@@ -195,15 +198,16 @@ export default function ProductDetailPage() {
                     onIncrease={(value) => setQuantity(value)}
                     onType={(value) => setQuantity(value)}
                   />
-                  <div className='text-sm text-muted-foreground'>1721 sản phẩm có sẵn</div>
+                  <div className='text-sm'>1721 sản phẩm có sẵn</div>
                 </div>
                 {/* Thêm giỏ hàng, mua ngay */}
                 {product && (
-                  <div className='flex space-x-2'>
+                  <div className='flex space-x-2 mt-4'>
                     <Button
                       variant='outline'
                       size='lg'
                       disabled={addProductToCartMutation.isPending}
+                      className='flex-auto capitalize'
                       onClick={() =>
                         addProductToCartMutation.mutate({
                           productId: product._id,
@@ -215,14 +219,14 @@ export default function ProductDetailPage() {
                       {addProductToCartMutation.isPending && <Loader2 className='animate-spin' />}
                       Thêm vào giỏ hàng
                     </Button>
-                    <Button size='lg'>
+                    <Button size='lg' className='flex-auto capitalize'>
                       <ShoppingBag />
                       Mua ngay
                     </Button>
                   </div>
                 )}
               </div>
-              <div className='space-y-4'>
+              <div className='space-y-4 mt-20'>
                 <h3 className='text-xl font-medium tracking-tight'>Mô tả sản phẩm</h3>
                 <div
                   className={cn('whitespace-pre-line text-sm', {
@@ -251,48 +255,64 @@ export default function ProductDetailPage() {
           <CardContent>
             <div className='space-y-8'>
               {/* Tổng quan đánh giá */}
-              <div className='space-y-2'>
-                <h3 className='font-medium tracking-tight'>Tổng quan</h3>
-                <div className='flex items-center space-x-4'>
+              <div className='flex justify-between items-center space-x-10'>
+                <div className='flex-1 flex flex-col items-center justify-center space-y-2'>
                   <div className='text-3xl font-bold'>{statistics?.starPoints}</div>
                   <div className='flex items-center space-x-1'>
                     {Array(5)
                       .fill(0)
                       .map((_, index) => (
-                        <Star key={index} size={20} className='fill-yellow-500 stroke-yellow-500' />
+                        <Star
+                          key={index}
+                          className='size-5 fill-yellow-500 dark:fill-yellow-600 stroke-yellow-500 dark:stroke-yellow-600'
+                        />
                       ))}
                   </div>
+                  <p className='text-sm text-muted-foreground'>{totalReviews} đánh giá</p>
                 </div>
-                <p className='text-sm text-muted-foreground'>({totalReviews} đánh giá)</p>
-              </div>
-              {/* Số lượng đánh giá theo sao */}
-              <div className='space-y-2'>
-                {Array(5)
-                  .fill(0)
-                  .map((_, index) => {
-                    const star = (5 - index) as 1 | 2 | 3 | 4 | 5
-                    return (
-                      <div key={index} className='flex items-center space-x-4'>
-                        <div className='flex items-center space-x-1 w-[100px]'>
-                          {Array(star)
-                            .fill(0)
-                            .map((_, index) => (
-                              <Star key={index} size={12} className='fill-yellow-500 stroke-yellow-500' />
-                            ))}
+                {/* Số lượng đánh giá theo sao */}
+                <div className='space-y-2'>
+                  {Array(5)
+                    .fill(0)
+                    .map((_, index) => {
+                      const star = (5 - index) as 1 | 2 | 3 | 4 | 5
+                      return (
+                        <div key={index} className='flex items-center space-x-4'>
+                          <div className='flex items-center space-x-1'>
+                            {Array(5)
+                              .fill(0)
+                              .map((_, index) => (
+                                <Star
+                                  key={index}
+                                  className={cn('size-4', {
+                                    'fill-yellow-500 dark:fill-yellow-600 stroke-yellow-500 dark:stroke-yellow-600':
+                                      index < star,
+                                    'fill-muted stroke-muted': index >= star
+                                  })}
+                                />
+                              ))}
+                          </div>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Progress value={statisticsByStar[star].percent} className='w-[250px] h-1.5' />
+                            </TooltipTrigger>
+                            <TooltipContent>{statisticsByStar[star].percent}%</TooltipContent>
+                          </Tooltip>
+                          <div className='text-xs text-muted-foreground'>
+                            {statisticsByStar[star].quantity} đánh giá
+                          </div>
                         </div>
-                        <Progress value={statisticsByStar[star].percent} className='w-[300px]' />
-                        <div className='text-xs text-muted-foreground'>{statisticsByStar[star].quantity} đánh giá</div>
-                      </div>
-                    )
-                  })}
+                      )
+                    })}
+                </div>
               </div>
               {/* Danh sách đánh giá */}
-              <div className='space-y-6'>
+              <div className='space-y-2'>
                 <h3 className='font-medium tracking-tight'>Nhận xét của khách hàng</h3>
                 {reviews.length > 0 && (
-                  <div className='grid grid-cols-12 gap-4'>
+                  <div className='grid grid-cols-12'>
                     {reviews.map((review) => (
-                      <div key={review._id} className='col-span-6 space-y-4 border rounded p-4 bg-card'>
+                      <div key={review._id} className='col-span-12 space-y-4 py-6 border-t first:border-t-0'>
                         {review.starPoints === 5 && (
                           <div className='flex items-center space-x-2 text-green-500 dark:text-green-600'>
                             <Laugh className='size-5' />
@@ -305,19 +325,19 @@ export default function ProductDetailPage() {
                             <span className='text-xs font-medium'>Hài lòng</span>
                           </div>
                         )}
-                        {review.starPoints === 5 && (
+                        {review.starPoints === 3 && (
                           <div className='flex items-center space-x-2 text-yellow-500 dark:text-yellow-600'>
                             <Annoyed className='size-5' />
                             <span className='text-xs font-medium'>Bình thường</span>
                           </div>
                         )}
-                        {review.starPoints === 5 && (
+                        {review.starPoints === 2 && (
                           <div className='flex items-center space-x-2 text-violet-500 dark:text-violet-600'>
                             <Frown className='size-5' />
                             <span className='text-xs font-medium'>Không hài lòng</span>
                           </div>
                         )}
-                        {review.starPoints === 5 && (
+                        {review.starPoints === 1 && (
                           <div className='flex items-center space-x-2 text-red-500 dark:text-red-600'>
                             <Angry className='size-5' />
                             <span className='text-xs font-medium'>Thất vọng</span>
@@ -351,6 +371,15 @@ export default function ProductDetailPage() {
                           </Tooltip>
                         </div>
                         {review.content && <div className='text-sm'>{review.content}</div>}
+                        {review.photos.length > 0 && (
+                          <div className='grid grid-cols-12 gap-2'>
+                            {review.photos.map((photo) => (
+                              <a key={photo} href={photo} target='_blank' className='col-span-1'>
+                                <img src={photo} alt={photo} className='w-full aspect-square rounded-md object-cover' />
+                              </a>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -366,6 +395,25 @@ export default function ProductDetailPage() {
           </CardHeader>
         </Card>
       </div>
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-xl'>Sản phẩm cùng danh mục</CardTitle>
+          <CardAction>
+            <Button asChild variant='link' className='p-0'>
+              <Link to={PATH.PRODUCTS}>Xem thêm sản phẩm cùng danh mục</Link>
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
+          <div className='grid grid-cols-10 gap-4'>
+            {products.slice(0, 5).map((product) => (
+              <div key={product._id} className='col-span-2'>
+                <ProductItem productData={product} />
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
