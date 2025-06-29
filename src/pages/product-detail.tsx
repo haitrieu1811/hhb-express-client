@@ -180,7 +180,7 @@ export default function ProductDetailPage() {
                       <div className='text-muted-foreground line-through text-xl'>
                         {formatCurrency(product.price)}&#8363;
                       </div>
-                      <Badge>-{rateSale(product.price, product.priceAfterDiscount)}%</Badge>
+                      <Badge>Giảm {rateSale(product.price, product.priceAfterDiscount)}%</Badge>
                     </React.Fragment>
                   ) : (
                     <div className='font-semibold text-2xl'>{formatCurrency(product?.price ?? 0)}&#8363;</div>

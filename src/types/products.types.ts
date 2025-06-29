@@ -10,6 +10,7 @@ export type ProductItem = {
   }[]
   name: string
   description: string
+  starPoints: 1 | 2 | 3 | 4 | 5 | null
   category: {
     _id: string
     thumbnail: string
