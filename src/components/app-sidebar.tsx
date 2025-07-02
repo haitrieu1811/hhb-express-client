@@ -5,6 +5,7 @@ import {
   LifeBuoy,
   Map,
   NotepadText,
+  PencilLine,
   PieChart,
   Send,
   ShoppingBag,
@@ -118,6 +119,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             {
               title: 'Danh sách',
               url: PATH.DASHBOARD_ORDERS
+            }
+          ]
+        },
+        {
+          title: 'Blogs',
+          url: PATH.DASHBOARD_BLOGS,
+          icon: PencilLine,
+          items: [
+            {
+              title: 'Danh sách',
+              url: PATH.DASHBOARD_BLOGS
             }
           ]
         }

@@ -4,8 +4,8 @@ export const UTILS_MESSAGES = {
   LIMIT_MUST_BE_AN_INTEGER: 'Limit phải là một số nguyên.',
   LIMIT_MUST_BE_GREATER_THAN_OR_EQUAL_ZERO: 'Limit phải là một số lớn hơn hoặc bằng 0.',
   PERMISSION_DENIED: 'Quyền truy cập API bị từ chối.',
-  FILE_ID_IS_REQUIRED: 'ID file là bắt buộc',
-  FILE_ID_IS_INVALID: 'ID file không hợp lệ.'
+  IMAGE_ID_IS_REQUIRED: 'ID hình ảnh là bắt buộc',
+  IMAGE_ID_IS_INVALID: 'ID hình ảnh không hợp lệ.'
 } as const
 
 export const USERS_MESSAGES = {
@@ -99,5 +99,97 @@ export const PRODUCTS_MESSAGES = {
   PRODUCT_NOT_FOUND: 'Không tìm thấy sản phẩm.',
   PRODUCT_STATUS_IS_INVALID: 'Trạng thái sản phẩm không hợp lệ.',
   PRODUCT_APPROVAL_STATUS_IS_INVALID: 'Trạng thái phê duyệt sản phẩm không hợp lệ.',
-  GET_PRODUCTS_SUCCESS: 'Lấy danh sách sản phẩm thành công.'
+  GET_PRODUCTS_SUCCESS: 'Lấy danh sách sản phẩm thành công.',
+  GET_PRODUCT_SUCCESS: 'Lấy thông tin chi tiết sản phẩm thành công.'
+} as const
+
+export const ADDRESS_MESSAGES = {
+  GET_PROVINCES_SUCCESS: 'Lấy danh sách tỉnh/thành thành công.',
+  GET_DISTRICTS_SUCCESS: 'Lấy danh sách quận/huyện thành công.',
+  PROVINCE_ID_IS_REQUIRED: 'ID tỉnh/thành là bắt buộc.',
+  PROVINCE_ID_IS_INVALID: 'ID tỉnh/thành không hợp lệ.',
+  PROVINCE_NOT_FOUND: 'Không tìm thấy tỉnh thành.',
+  GET_WARDS_SUCCESS: 'Lấy danh sách phường xã thành công.',
+  CREATE_ADDRESS_SUCCESS: 'Tạo địa chỉ mới thành công.',
+  ADDRESS_FULLNAME_IS_REQUIRED: 'Họ tên người nhận là bắt buộc.',
+  ADDRESS_PHONE_NUMBER_IS_REQUIRED: 'Số điện thoại người nhận là bắt buộc.',
+  ADDRESS_PHONE_NUMBER_IS_INVALID: 'Số điện thoại người nhận không hợp lệ.',
+  ADDRESS_DETAIL_IS_REQUIRED: 'Địa chỉ cụ thể là bắt buộc.',
+  ADDRESS_TYPE_IS_REQUIRED: 'Loại địa chỉ là bắt buộc.',
+  ADDRESS_TYPE_IS_INVALID: 'Loại địa chỉ không hợp lệ.',
+  DISTRICT_ID_IS_REQUIRED: 'ID quận/huyện là bắt buộc.',
+  WARD_ID_IS_REQUIRED: 'ID phường/xã là bắt buộc.',
+  GET_MY_ADDRESSES_SUCCESS: 'Lấy danh sách địa chỉ của tôi thành công.',
+  ADDRESS_ID_IS_REQUIRED: 'ID địa chỉ là bắt buộc.',
+  ADDRESS_ID_IS_INVALID: 'ID địa chỉ không hợp lệ.',
+  ADDRESS_NOT_FOUND: 'Không tìm thấy địa chỉ.',
+  GET_ADDRESS_SUCCESS: 'Lấy thông tin địa chỉ thành công.',
+  UPDATE_ADDRESS_SUCCESS: 'Cập nhật địa chỉ thành công.',
+  DELETE_ADDRESS_SUCCESS: 'Xóa địa chỉ thành công.',
+  SET_DEFAULT_ADDRESS_SUCCESS: 'Đặt địa chỉ mặc định thành công.'
+} as const
+
+export const CART_MESSAGES = {
+  ADD_PRODUCT_TO_CART_SUCCESS: 'Thêm sản phẩm vào giỏ hàng thành công.',
+  QUANTITY_IS_REQUIRED: 'Số lượng là bắt buộc.',
+  QUANTITY_MUST_BE_AN_INT: 'Số lượng phải là một số nguyên.',
+  QUANTITY_MUST_BE_GREATER_THAN_ZERO: 'Số lượng phải lớn hơn 0.',
+  GET_MY_CART_SUCCESS: 'Lấy thông tin giỏ hàng thành công.',
+  UPDATE_CART_ITEM_SUCCESS: 'Cập nhật giỏ hàng thành công.',
+  CART_ITEM_ID_IS_REQUIRED: 'ID mặt hàng giỏ hàng là bắt buộc.',
+  CART_ITEM_ID_IS_INVALID: 'ID mặt hàng giỏ hàng không hợp lệ.',
+  CART_ITEM_NOT_FOUND: 'Không tìm thấy mặt hàng giỏ hàng.',
+  DELETE_CART_ITEMS_SUCCESS: 'Xóa mặt hàng trong giỏ hàng thành công.',
+  CART_ITEM_IDS_IS_REQUIRED: 'ID các mặt hàng là bắt buộc.',
+  CART_ITEM_IDS_MUST_BE_AN_ARRAY: 'ID các mặt hàng phải là một mảng.',
+  CART_ITEM_IDS_IS_INVALID: 'ID các mặt hàng không hợp lệ.',
+  CART_ITEM_IDS_MUST_NOT_BE_EMPTY: 'ID các mặt hàng phải là một mảng không rỗng.'
+} as const
+
+export const ORDER_MESSAGES = {
+  CREATE_ORDER_SUCCESS: 'Đặt hàng thành công.',
+  TOTAL_ITEMS_IS_REQUIRED: 'Tổng số mặt hàng là bắt buộc.',
+  TOTAL_ITEMS_MUST_BE_GREATER_THAN_ZERO: 'Tổng số mặt hàng phải là số nguyên lớn hơn 0.',
+  TOTAL_AMOUNT_IS_REQUIRED: 'Tổng tiền là bắt buộc.',
+  TOTAL_AMOUNT_MUST_BE_GREATER_THAN_ZERO: 'Tổng tiền phải là số nguyên lớn hơn 0.',
+  SELLER_ID_IS_REQUIRED: 'ID người bán là bắt buộc.',
+  SELLER_ID_IS_INVALID: 'ID người bán không hợp lệ.',
+  SELLER_NOT_FOUND: 'Không tìm thấy người bán.',
+  CANNOT_BUY_YOUR_ITEMS: 'Bạn không thể tự mua hàng của mình.',
+  GET_MY_ORDERS_SUCCESS: 'Lấy danh sách đơn hàng thành công.',
+  GET_ORDER_SUCCESS: 'Lấy thông tin đơn hàng thành công.',
+  ORDER_ID_IS_REQUIRED: 'ID đơn hàng là bắt buộc.',
+  ORDER_ID_IS_INVALID: 'ID đơn hàng không hợp lệ.',
+  ORDER_NOT_FOUND: 'Không tìm thấy đơn hàng.',
+  UPDATE_ORDER_SUCCESS: 'Cập nhật đơn hàng thành công.',
+  ORDER_STATUS_IS_INVALID: 'Trạng thái đơn hàng không hợp lệ.',
+  GET_ALL_ORDERS_SUCCESS: 'Lấy danh sách tất cả đơn hàng thành công.'
+} as const
+
+export const REVIEWS_MESSAGE = {
+  CREATE_REVIEW_SUCCESS: 'Đánh giá sản phẩm thành công.',
+  STAR_POINTS_IS_REQUIRED: 'Số sao đánh giá là bắt buộc.',
+  STAR_POINTS_MUST_BE_AN_INTEGER: 'Số sao đánh giá phải là một số nguyên.',
+  STAR_POINTS_IS_INVALID: 'Số sao đánh giá phải có giá trị từ 1 đến 5.',
+  PHOTOS_MUST_BE_AN_ARRAY: 'Hình ảnh thực tế phải là một mảng.',
+  PHOTOS_IS_INVALID: 'Hình ảnh thực tế không hợp lệ.',
+  PLEASE_BUY_BEFORE_REVIEW: 'Bạn phải mua sản phẩm trước khi đánh giá.',
+  YOU_HAVE_REVIEWED_BEFORE: 'Bạn đã đánh giá trước đó',
+  GET_REVIEWD_PRODUCT_IDS_SUCCESS: 'Lấy danh sách ID sản phẩm đã đánh giá thành công.',
+  GET_REVIEWS_SUCCESS: 'Lấy danh sách đánh giá thành công.'
+} as const
+
+export const BLOGS_MESSAGE = {
+  CREATE_BLOG_SUCCESS: 'Tạo blog thành công.',
+  BLOG_TITLE_IS_REQUIRED: 'Tiêu đề blog là bắt buộc.',
+  BLOG_CONTENT_IS_REQUIRED: 'Nội dung blog là bắt buộc.',
+  BLOG_STATUS_IS_INVALID: 'Trạng thái blog không hợp lệ.',
+  BLOG_ORDER_MUST_BE_A_INT: 'Thứ tự blog phải là một số nguyên.',
+  BLOG_ORDER_MUST_BE_GREATER_THAN_ZERO: 'Thứ tự blog phải lớn hơn 0.',
+  UPDATE_BLOG_SUCCESS: 'Cập nhật blog thành công.',
+  BLOG_ID_IS_REQUIRED: 'ID blog là bắt buộc.',
+  BLOG_ID_IS_INVALID: 'ID blog không hợp lệ.',
+  BLOG_NOT_FOUND: 'Không tìm thấy blog.',
+  GET_BLOGS_SUCCESS: 'Lấy danh sách blog thành công.',
+  GET_BLOG_SUCCESS: 'Lấy thông tin blog thành công.'
 } as const

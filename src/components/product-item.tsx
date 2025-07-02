@@ -25,14 +25,18 @@ export default function ProductItem({ productData }: ProductItemProps) {
 
   return (
     <React.Fragment>
-      <div className='border rounded-md bg-card overflow-hidden relative'>
+      <div className='bg-card relative'>
         {productData.priceAfterDiscount < productData.price && (
-          <div className='absolute top-0 right-0 px-2 py-1 text-xs font-semibold bg-primary rounded-bl-lg text-white'>
+          <div className='absolute top-0 right-0 px-2 py-1 text-xs font-semibold bg-primary rounded-bl-lg rounded-tr-md text-white'>
             Giảm {rateSale(productData.price, productData.priceAfterDiscount)}%
           </div>
         )}
         <Link to={PATH.PRODUCT_DETAIL({ name: productData.name, id: productData._id })} className='block'>
-          <img src={productData.thumbnail.url} alt={productData.name} className='object-cover' />
+          <img
+            src={productData.thumbnail.url}
+            alt={productData.name}
+            className='object-cover aspect-square rounded-md'
+          />
         </Link>
         <div className='p-2 pb-4 space-y-4'>
           <div className='space-y-1'>

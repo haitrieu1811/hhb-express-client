@@ -7,11 +7,15 @@ import AccountChangePasswordPage from '~/pages/account/change-password'
 import AccountOrderDetailPage from '~/pages/account/order-detail'
 import AccountOrdersPage from '~/pages/account/orders'
 import AccountProfilePage from '~/pages/account/profile'
+import BlogDetailPage from '~/pages/blog-detail'
+import BlogsPage from '~/pages/blogs'
 import CartPage from '~/pages/cart'
 import CartListPage from '~/pages/cart/list'
 import CartOrderInfoPage from '~/pages/cart/order-info'
 import CartOrderSuccessPage from '~/pages/cart/order-success'
 import DashboardPage from '~/pages/dashboard'
+import DashboardBlogNewPage from '~/pages/dashboard-blog-new'
+import DashboardBlogsPage from '~/pages/dashboard-blogs'
 import DashboardMePage from '~/pages/dashboard-me'
 import DashboardOrdersPage from '~/pages/dashboard-orders'
 import DashboardProductPage from '~/pages/dashboard-product'
@@ -42,6 +46,16 @@ export const publicRoutes = [
     path: PATH.PRODUCTS,
     layout: ShopLayout,
     page: ProductsPage
+  },
+  {
+    path: PATH.BLOGS,
+    layout: ShopLayout,
+    page: BlogsPage
+  },
+  {
+    path: PATH.BLOG_DETAIL_WITH_NAME_ID,
+    layout: ShopLayout,
+    page: BlogDetailPage
   }
 ]
 
@@ -85,6 +99,16 @@ export const protectedRoutes = [
     path: PATH.DASHBOARD_ORDERS,
     layout: DashboardLayout,
     page: DashboardOrdersPage
+  },
+  {
+    path: PATH.DASHBOARD_BLOGS,
+    layout: DashboardLayout,
+    page: DashboardBlogsPage
+  },
+  {
+    path: PATH.DASHBOARD_BLOGS_NEW,
+    layout: DashboardLayout,
+    page: DashboardBlogNewPage
   },
   {
     path: PATH.CART,

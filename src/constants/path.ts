@@ -27,6 +27,9 @@ const PATH = {
   CART_ORDER_SUCCESS: '/cart/order-success',
 
   PRODUCTS: '/products',
+  BLOGS: '/blogs',
+  BLOG_DETAIL_WITH_NAME_ID: '/blogs/:nameId',
+  BLOG_DETAIL: (nameId: { name: string; id: string }) => `/blogs/${generateNameId(nameId)}`,
 
   DASHBOARD: '/dashboard',
   DASHBOARD_USER: '/dashboard/user',
@@ -36,6 +39,8 @@ const PATH = {
   DASHBOARD_PRODUCT: '/dashboard/product',
   DASHBOARD_PRODUCT_NEW: '/dashboard/product/new',
   DASHBOARD_ORDERS: '/dashboard/orders',
+  DASHBOARD_BLOGS: '/dashboard/blogs',
+  DASHBOARD_BLOGS_NEW: '/dashboard/blogs/new',
 
   NOT_FOUND: '*'
 } as const

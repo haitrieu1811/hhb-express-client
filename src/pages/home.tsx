@@ -1,10 +1,13 @@
 import { Loader2 } from 'lucide-react'
 import { Link } from 'react-router'
+import BlogItem from '~/components/blog-item'
 
 import ProductItem from '~/components/product-item'
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { Button } from '~/components/ui/button'
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '~/components/ui/carousel'
 import PATH from '~/constants/path'
+import useBlogs from '~/hooks/use-blogs'
 import useProductCategories from '~/hooks/use-product-categories'
 import usePublicProducts from '~/hooks/use-public-products'
 
@@ -21,6 +24,8 @@ export default function HomePage() {
   })
 
   const { productCategories } = useProductCategories({})
+
+  const { blogs } = useBlogs()
 
   return (
     <div className='space-y-4'>
@@ -81,6 +86,26 @@ export default function HomePage() {
               <Loader2 className='size-10 animate-spin' />
             </div>
           )}
+        </CardContent>
+      </Card>
+      {/* Blogs */}
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-xl'>Blogs</CardTitle>
+          <CardAction>
+            <Button asChild variant='link'>
+              <Link to={PATH.BLOGS}>Xem thêm blogs</Link>
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
+          <div className='grid grid-cols-12 gap-4'>
+            {blogs.map((blog) => (
+              <div key={blog._id} className='col-span-3'>
+                <BlogItem blogData={blog} />
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
     </div>

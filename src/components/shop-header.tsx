@@ -7,7 +7,7 @@ import {
   LayoutDashboard,
   Loader2,
   Menu,
-  Newspaper,
+  PencilLine,
   Phone,
   Search,
   SearchX,
@@ -59,9 +59,9 @@ const NAV_LINKS = [
     icon: Phone
   },
   {
-    path: '/news',
-    label: 'Tin tức',
-    icon: Newspaper
+    path: PATH.BLOGS,
+    label: 'Blogs',
+    icon: PencilLine
   }
 ] as const
 
