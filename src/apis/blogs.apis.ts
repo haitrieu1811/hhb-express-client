@@ -3,7 +3,7 @@ import { BlogItem, CreateBlogReqBody, OriginalBlog } from '~/types/blogs.types'
 import { PaginationReqParams, PaginationResponse, SuccessResponse } from '~/types/utils.types'
 
 const blogsApis = {
-  createPost(body: CreateBlogReqBody) {
+  createBlog(body: CreateBlogReqBody) {
     return http.post<
       SuccessResponse<{
         blog: OriginalBlog
@@ -26,6 +26,26 @@ const blogsApis = {
         blog: BlogItem
       }>
     >(`/blogs/${blogId}`)
+  },
+
+  updateBlog({ body, blogId }: { body: CreateBlogReqBody; blogId: string }) {
+    return http.put<
+      SuccessResponse<{
+        blog: BlogItem
+      }>
+    >(`/blogs/${blogId}`, body)
+  },
+
+  deleteBlogs(blogIds: string[]) {
+    return http.delete<
+      SuccessResponse<{
+        deletedCount: number
+      }>
+    >('/blogs', {
+      data: {
+        blogIds
+      }
+    })
   }
 } as const
 

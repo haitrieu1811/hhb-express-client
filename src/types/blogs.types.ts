@@ -23,6 +23,7 @@ export type BlogItem = {
     createdAt: string
     updatedAt: string
   }
+  order: number
   content: string
   status: BlogStatus
   createdAt: string

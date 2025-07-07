@@ -25,7 +25,9 @@ export default function HomePage() {
 
   const { productCategories } = useProductCategories({})
 
-  const { blogs } = useBlogs()
+  const { blogs } = useBlogs({
+    limit: '4'
+  })
 
   return (
     <div className='space-y-4'>
@@ -91,10 +93,10 @@ export default function HomePage() {
       {/* Blogs */}
       <Card>
         <CardHeader>
-          <CardTitle className='text-xl'>Blogs</CardTitle>
+          <CardTitle className='text-xl'>Bài viết nổi bật</CardTitle>
           <CardAction>
             <Button asChild variant='link'>
-              <Link to={PATH.BLOGS}>Xem thêm blogs</Link>
+              <Link to={PATH.BLOGS}>Xem thêm bài viết</Link>
             </Button>
           </CardAction>
         </CardHeader>

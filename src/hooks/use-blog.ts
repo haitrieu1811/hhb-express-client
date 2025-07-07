@@ -3,10 +3,10 @@ import React from 'react'
 
 import blogsApis from '~/apis/blogs.apis'
 
-export default function useBlog({ blogId }: { blogId: string }) {
+export default function useBlog({ blogId }: { blogId: string | undefined }) {
   const getBlogQuery = useQuery({
     queryKey: ['get-blog', blogId],
-    queryFn: () => blogsApis.getBlog(blogId),
+    queryFn: () => blogsApis.getBlog(blogId as string),
     enabled: !!blogId
   })
 

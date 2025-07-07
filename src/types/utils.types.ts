@@ -30,6 +30,7 @@ export type ImageItem = {
   _id: string
   name: string
   type: MediaType.Image
+  url: string
 }
 
 export type UploadImageResponse = SuccessResponse<{

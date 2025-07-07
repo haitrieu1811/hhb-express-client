@@ -41,6 +41,8 @@ const PATH = {
   DASHBOARD_ORDERS: '/dashboard/orders',
   DASHBOARD_BLOGS: '/dashboard/blogs',
   DASHBOARD_BLOGS_NEW: '/dashboard/blogs/new',
+  DASHBOARD_BLOGS_DETAIL_WITHOUT_ID: '/dashboard/blogs/:blogId',
+  DASHBOARD_BLOGS_DETAIL: (blogId: string) => `/dashboard/blogs/${blogId}`,
 
   NOT_FOUND: '*'
 } as const

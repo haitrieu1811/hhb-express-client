@@ -25,6 +25,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Progress } from '~/components/ui/progress'
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip'
 import PATH from '~/constants/path'
+import useBlogs from '~/hooks/use-blogs'
 import useCart from '~/hooks/use-cart'
 import usePublicProducts from '~/hooks/use-public-products'
 import { cn, convertMomentFromNowToVietnamese, formatCurrency, getIdFromNameId, rateSale } from '~/lib/utils'
@@ -56,6 +57,10 @@ export default function ProductDetailPage() {
     onAddProductToCartSuccess: () => {
       setQuantity(1)
     }
+  })
+
+  const { blogs } = useBlogs({
+    limit: '5'
   })
 
   const getReviewsQuery = useQuery({
@@ -238,7 +243,7 @@ export default function ProductDetailPage() {
                 </div>
                 <div className='flex justify-center'>
                   <Button variant='link' className='px-0' onClick={() => setIsReadMore((prevState) => !prevState)}>
-                    {isReadMore ? 'Thu gọn' : 'Đọc tiếp'} bài viết
+                    {isReadMore ? 'Thu gọn' : 'Đọc tiếp'} mô tả sản phẩm
                   </Button>
                 </div>
               </div>
@@ -246,9 +251,9 @@ export default function ProductDetailPage() {
           </CardContent>
         </Card>
       </div>
-      <div className='grid grid-cols-12 gap-4'>
+      <div className='flex items-start space-x-4'>
         {/* Đánh giá và nhận xét */}
-        <Card className='col-span-8'>
+        <Card className='flex-1'>
           <CardHeader>
             <CardTitle className='text-xl'>Đánh giá và nhận xét</CardTitle>
           </CardHeader>
@@ -388,11 +393,46 @@ export default function ProductDetailPage() {
             </div>
           </CardContent>
         </Card>
-        {/* Tin tức */}
-        <Card className='col-span-4'>
+        {/* Bài viết */}
+        <Card className='w-1/3'>
           <CardHeader>
-            <CardTitle className='text-xl'>Tin tức</CardTitle>
+            <CardTitle className='text-xl'>Bài viết</CardTitle>
+            <CardAction>
+              <Button asChild variant='link' size='sm'>
+                <Link to={PATH.BLOGS}>Xem thêm bài viết</Link>
+              </Button>
+            </CardAction>
           </CardHeader>
+          <CardContent className='space-y-4'>
+            {blogs.map((blog) => (
+              <div key={blog._id} className='flex items-start space-x-4'>
+                <Link
+                  to={PATH.BLOG_DETAIL({
+                    name: blog.title,
+                    id: blog._id
+                  })}
+                  className='shrink-0'
+                >
+                  <img
+                    src={blog.thumbnail.url}
+                    alt={blog.title}
+                    className='w-[100px] aspect-video object-cover rounded-md'
+                  />
+                </Link>
+                <div className='flex-1'>
+                  <Link
+                    to={PATH.BLOG_DETAIL({
+                      name: blog.title,
+                      id: blog._id
+                    })}
+                    className='font-medium text-sm hover:underline line-clamp-2'
+                  >
+                    {blog.title}
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </CardContent>
         </Card>
       </div>
       <Card>

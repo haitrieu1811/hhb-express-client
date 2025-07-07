@@ -14,6 +14,7 @@ import CartListPage from '~/pages/cart/list'
 import CartOrderInfoPage from '~/pages/cart/order-info'
 import CartOrderSuccessPage from '~/pages/cart/order-success'
 import DashboardPage from '~/pages/dashboard'
+import DashboardBlogDetailPage from '~/pages/dashboard-blog-detail'
 import DashboardBlogNewPage from '~/pages/dashboard-blog-new'
 import DashboardBlogsPage from '~/pages/dashboard-blogs'
 import DashboardMePage from '~/pages/dashboard-me'
@@ -109,6 +110,11 @@ export const protectedRoutes = [
     path: PATH.DASHBOARD_BLOGS_NEW,
     layout: DashboardLayout,
     page: DashboardBlogNewPage
+  },
+  {
+    path: PATH.DASHBOARD_BLOGS_DETAIL_WITHOUT_ID,
+    layout: DashboardLayout,
+    page: DashboardBlogDetailPage
   },
   {
     path: PATH.CART,

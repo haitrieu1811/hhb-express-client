@@ -60,7 +60,7 @@ const NAV_LINKS = [
   },
   {
     path: PATH.BLOGS,
-    label: 'Blogs',
+    label: 'Bài viết',
     icon: PencilLine
   }
 ] as const

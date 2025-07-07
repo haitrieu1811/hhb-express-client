@@ -1,9 +1,10 @@
+import dompurify from 'dompurify'
 import { Loader2 } from 'lucide-react'
 import moment from 'moment'
 import React from 'react'
 import { useParams } from 'react-router'
-import BlogItem from '~/components/blog-item'
 
+import BlogItem from '~/components/blog-item'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import useBlog from '~/hooks/use-blog'
 import useBlogs from '~/hooks/use-blogs'
@@ -28,7 +29,14 @@ export default function BlogDetailPage() {
                 Cập nhật {convertMomentFromNowToVietnamese(moment(blog.updatedAt).fromNow())}
               </CardDescription>
             </CardHeader>
-            <CardContent>{blog.content}</CardContent>
+            <CardContent>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: dompurify.sanitize(blog.content)
+                }}
+                className='space-y-8'
+              />
+            </CardContent>
           </React.Fragment>
         )}
         {getBlogQuery.isLoading && (
