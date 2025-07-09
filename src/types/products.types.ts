@@ -29,6 +29,8 @@ export type ProductItem = {
   }
   price: number
   priceAfterDiscount: number
+  status: string
+  categoryId: string
   createdAt: string
   updatedAt: string
 }

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { CircleCheck, CircleX, Ellipsis, PlusCircle } from 'lucide-react'
+import { CircleCheck, Ellipsis, Pause, PlusCircle } from 'lucide-react'
 import moment from 'moment'
 import React from 'react'
 import { Link } from 'react-router'
@@ -88,17 +88,12 @@ export default function DashboardBlogsPage() {
                   </TableCell>
                   <TableCell>
                     <Badge
-                      variant='outline'
-                      className={cn('rounded', {
-                        'text-green-500': blog.status === BlogStatus.Active,
-                        'text-red-500': blog.status === BlogStatus.Inactive
+                      className={cn({
+                        'text-green-500 bg-green-500/10': blog.status === BlogStatus.Active,
+                        'text-red-500 bg-red-500/10': blog.status === BlogStatus.Inactive
                       })}
                     >
-                      {blog.status === BlogStatus.Active ? (
-                        <CircleCheck className='stroke-green-500' />
-                      ) : (
-                        <CircleX className='stroke-red-500' />
-                      )}
+                      {blog.status === BlogStatus.Active ? <CircleCheck /> : <Pause />}
                       {blog.status === BlogStatus.Active ? 'Hoạt động' : 'Tạm dừng'}
                     </Badge>
                   </TableCell>

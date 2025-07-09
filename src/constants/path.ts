@@ -36,13 +36,15 @@ const PATH = {
   DASHBOARD_PRODUCT_CATEGORY: '/dashboard/product-category',
   DASHBOARD_PRODUCT_CATEGORY_NEW: '/dashboard/product-category/new',
   DASHBOARD_ME: '/dashboard/me',
-  DASHBOARD_PRODUCT: '/dashboard/product',
-  DASHBOARD_PRODUCT_NEW: '/dashboard/product/new',
+  DASHBOARD_PRODUCT_NEW: '/dashboard/products/new',
   DASHBOARD_ORDERS: '/dashboard/orders',
   DASHBOARD_BLOGS: '/dashboard/blogs',
   DASHBOARD_BLOGS_NEW: '/dashboard/blogs/new',
   DASHBOARD_BLOGS_DETAIL_WITHOUT_ID: '/dashboard/blogs/:blogId',
   DASHBOARD_BLOGS_DETAIL: (blogId: string) => `/dashboard/blogs/${blogId}`,
+  DASHBOARD_PRODUCTS: '/dashboard/products',
+  DASHBOARD_PRODUCT_DETAIL_WITHOUT_ID: '/dashboard/products/:productId',
+  DASHBOARD_PRODUCT_DETAIL: (productId: string) => `/dashboard/products/${productId}`,
 
   NOT_FOUND: '*'
 } as const

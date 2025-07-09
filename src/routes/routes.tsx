@@ -19,10 +19,11 @@ import DashboardBlogNewPage from '~/pages/dashboard-blog-new'
 import DashboardBlogsPage from '~/pages/dashboard-blogs'
 import DashboardMePage from '~/pages/dashboard-me'
 import DashboardOrdersPage from '~/pages/dashboard-orders'
-import DashboardProductPage from '~/pages/dashboard-product'
 import DashboardProductCategoryPage from '~/pages/dashboard-product-category'
 import DashboardProductCategoryNewPage from '~/pages/dashboard-product-category-new'
+import DashboardProductDetailPage from '~/pages/dashboard-product-detail'
 import DashboardProductNewPage from '~/pages/dashboard-product-new'
+import DashboardProductsPage from '~/pages/dashboard-products'
 import DashboardUserPage from '~/pages/dashboard-user'
 import ForgotPasswordPage from '~/pages/forgot-password'
 import HomePage from '~/pages/home'
@@ -87,11 +88,6 @@ export const protectedRoutes = [
     page: DashboardMePage
   },
   {
-    path: PATH.DASHBOARD_PRODUCT,
-    layout: DashboardLayout,
-    page: DashboardProductPage
-  },
-  {
     path: PATH.DASHBOARD_PRODUCT_NEW,
     layout: DashboardLayout,
     page: DashboardProductNewPage
@@ -115,6 +111,16 @@ export const protectedRoutes = [
     path: PATH.DASHBOARD_BLOGS_DETAIL_WITHOUT_ID,
     layout: DashboardLayout,
     page: DashboardBlogDetailPage
+  },
+  {
+    path: PATH.DASHBOARD_PRODUCTS,
+    layout: DashboardLayout,
+    page: DashboardProductsPage
+  },
+  {
+    path: PATH.DASHBOARD_PRODUCT_DETAIL_WITHOUT_ID,
+    layout: DashboardLayout,
+    page: DashboardProductDetailPage
   },
   {
     path: PATH.CART,

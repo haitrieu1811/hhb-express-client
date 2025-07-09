@@ -23,7 +23,11 @@ export default function usePublicProducts({ enabled, ...params }: UsePublicProdu
   })
 
   const products = React.useMemo(
-    () => getProductsQuery.data?.data.data.products ?? [],
+    () =>
+      getProductsQuery.data?.data.data.products.map((product) => ({
+        ...product,
+        status: product.status.toString()
+      })) ?? [],
     [getProductsQuery.data?.data.data.products]
   )
 

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Angry, Annoyed, Frown, Laugh, Loader2, ShoppingBag, ShoppingCart, Smile, Star } from 'lucide-react'
 import moment from 'moment'
 import React from 'react'
+import DOMPurify from 'dompurify'
 import { Link, useParams } from 'react-router'
 
 import productsApis from '~/apis/products.apis'
@@ -39,7 +40,6 @@ export default function ProductDetailPage() {
 
   const [quantity, setQuantity] = React.useState<number>(1)
   const [isViewPhoto, setIsViewPhoto] = React.useState<boolean>(false)
-  const [isReadMore, setIsReadMore] = React.useState<boolean>(false)
 
   const getProductQuery = useQuery({
     queryKey: ['get-product', productId],
@@ -231,168 +231,171 @@ export default function ProductDetailPage() {
                   </div>
                 )}
               </div>
-              <div className='space-y-4 mt-20'>
-                <h3 className='text-xl font-medium tracking-tight'>Mô tả sản phẩm</h3>
-                <div
-                  className={cn('whitespace-pre-line text-sm', {
-                    'max-h-[200px] overflow-y-hidden': !isReadMore,
-                    'h-auto': isReadMore
-                  })}
-                >
-                  {product?.description}
-                </div>
-                <div className='flex justify-center'>
-                  <Button variant='link' className='px-0' onClick={() => setIsReadMore((prevState) => !prevState)}>
-                    {isReadMore ? 'Thu gọn' : 'Đọc tiếp'} mô tả sản phẩm
-                  </Button>
-                </div>
-              </div>
             </div>
           </CardContent>
         </Card>
       </div>
       <div className='flex items-start space-x-4'>
-        {/* Đánh giá và nhận xét */}
-        <Card className='flex-1'>
-          <CardHeader>
-            <CardTitle className='text-xl'>Đánh giá và nhận xét</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='space-y-8'>
-              {/* Tổng quan đánh giá */}
-              <div className='flex justify-between items-center space-x-10'>
-                <div className='flex-1 flex flex-col items-center justify-center space-y-2'>
-                  <div className='text-3xl font-bold'>{statistics?.starPoints}</div>
-                  <div className='flex items-center space-x-1'>
+        <div className='flex-1 space-y-4'>
+          {/* Mô tả sản phẩm */}
+          <Card>
+            <CardHeader>
+              <CardTitle className='text-xl'>Mô tả sản phẩm</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(product?.description ?? '')
+                }}
+              />
+            </CardContent>
+          </Card>
+          {/* Đánh giá và nhận xét */}
+          <Card>
+            <CardHeader>
+              <CardTitle className='text-xl'>Đánh giá và nhận xét</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className='space-y-8'>
+                {/* Tổng quan đánh giá */}
+                <div className='flex justify-between items-center space-x-10'>
+                  <div className='flex-1 flex flex-col items-center justify-center space-y-2'>
+                    <div className='text-3xl font-bold'>{statistics?.starPoints}</div>
+                    <div className='flex items-center space-x-1'>
+                      {Array(5)
+                        .fill(0)
+                        .map((_, index) => (
+                          <Star
+                            key={index}
+                            className='size-5 fill-yellow-500 dark:fill-yellow-600 stroke-yellow-500 dark:stroke-yellow-600'
+                          />
+                        ))}
+                    </div>
+                    <p className='text-sm text-muted-foreground'>{totalReviews} đánh giá</p>
+                  </div>
+                  {/* Số lượng đánh giá theo sao */}
+                  <div className='space-y-2'>
                     {Array(5)
                       .fill(0)
-                      .map((_, index) => (
-                        <Star
-                          key={index}
-                          className='size-5 fill-yellow-500 dark:fill-yellow-600 stroke-yellow-500 dark:stroke-yellow-600'
-                        />
-                      ))}
-                  </div>
-                  <p className='text-sm text-muted-foreground'>{totalReviews} đánh giá</p>
-                </div>
-                {/* Số lượng đánh giá theo sao */}
-                <div className='space-y-2'>
-                  {Array(5)
-                    .fill(0)
-                    .map((_, index) => {
-                      const star = (5 - index) as 1 | 2 | 3 | 4 | 5
-                      return (
-                        <div key={index} className='flex items-center space-x-4'>
-                          <div className='flex items-center space-x-1'>
-                            {Array(5)
-                              .fill(0)
-                              .map((_, index) => (
-                                <Star
-                                  key={index}
-                                  className={cn('size-4', {
-                                    'fill-yellow-500 dark:fill-yellow-600 stroke-yellow-500 dark:stroke-yellow-600':
-                                      index < star,
-                                    'fill-muted stroke-muted': index >= star
-                                  })}
-                                />
-                              ))}
-                          </div>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Progress value={statisticsByStar[star].percent} className='w-[250px] h-1.5' />
-                            </TooltipTrigger>
-                            <TooltipContent>{statisticsByStar[star].percent}%</TooltipContent>
-                          </Tooltip>
-                          <div className='text-xs text-muted-foreground'>
-                            {statisticsByStar[star].quantity} đánh giá
-                          </div>
-                        </div>
-                      )
-                    })}
-                </div>
-              </div>
-              {/* Danh sách đánh giá */}
-              <div className='space-y-2'>
-                <h3 className='font-medium tracking-tight'>Nhận xét của khách hàng</h3>
-                {reviews.length > 0 && (
-                  <div className='grid grid-cols-12'>
-                    {reviews.map((review) => (
-                      <div key={review._id} className='col-span-12 space-y-4 py-6 border-t first:border-t-0'>
-                        {review.starPoints === 5 && (
-                          <div className='flex items-center space-x-2 text-green-500 dark:text-green-600'>
-                            <Laugh className='size-5' />
-                            <span className='text-xs font-medium'>Tuyệt vời</span>
-                          </div>
-                        )}
-                        {review.starPoints === 4 && (
-                          <div className='flex items-center space-x-2 text-blue-500 dark:text-blue-600'>
-                            <Smile className='size-5' />
-                            <span className='text-xs font-medium'>Hài lòng</span>
-                          </div>
-                        )}
-                        {review.starPoints === 3 && (
-                          <div className='flex items-center space-x-2 text-yellow-500 dark:text-yellow-600'>
-                            <Annoyed className='size-5' />
-                            <span className='text-xs font-medium'>Bình thường</span>
-                          </div>
-                        )}
-                        {review.starPoints === 2 && (
-                          <div className='flex items-center space-x-2 text-violet-500 dark:text-violet-600'>
-                            <Frown className='size-5' />
-                            <span className='text-xs font-medium'>Không hài lòng</span>
-                          </div>
-                        )}
-                        {review.starPoints === 1 && (
-                          <div className='flex items-center space-x-2 text-red-500 dark:text-red-600'>
-                            <Angry className='size-5' />
-                            <span className='text-xs font-medium'>Thất vọng</span>
-                          </div>
-                        )}
-                        <div className='flex items-center space-x-2'>
-                          <Avatar className='shrink-0'>
-                            <AvatarImage src={review.author.avatar} alt={review.author.fullName} />
-                            <AvatarFallback>
-                              {review.author.fullName[0].toUpperCase()}
-                              {review.author.fullName[1].toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className='flex-1 space-y-1'>
-                            <h3 className='inline-block text-sm font-medium'>{review.author.fullName}</h3>
+                      .map((_, index) => {
+                        const star = (5 - index) as 1 | 2 | 3 | 4 | 5
+                        return (
+                          <div key={index} className='flex items-center space-x-4'>
                             <div className='flex items-center space-x-1'>
-                              {Array(review.starPoints)
+                              {Array(5)
                                 .fill(0)
                                 .map((_, index) => (
-                                  <Star key={index} size={12} className='fill-yellow-500 stroke-yellow-500' />
+                                  <Star
+                                    key={index}
+                                    className={cn('size-4', {
+                                      'fill-yellow-500 dark:fill-yellow-600 stroke-yellow-500 dark:stroke-yellow-600':
+                                        index < star,
+                                      'fill-muted stroke-muted': index >= star
+                                    })}
+                                  />
                                 ))}
                             </div>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Progress value={statisticsByStar[star].percent} className='w-[250px] h-1.5' />
+                              </TooltipTrigger>
+                              <TooltipContent>{statisticsByStar[star].percent}%</TooltipContent>
+                            </Tooltip>
+                            <div className='text-xs text-muted-foreground'>
+                              {statisticsByStar[star].quantity} đánh giá
+                            </div>
                           </div>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div className='text-xs text-muted-foreground'>
-                                {convertMomentFromNowToVietnamese(moment(review.createdAt).fromNow())}
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>{moment(review.createdAt).format('HH:mm DD-MM-YYYY')}</TooltipContent>
-                          </Tooltip>
-                        </div>
-                        {review.content && <div className='text-sm'>{review.content}</div>}
-                        {review.photos.length > 0 && (
-                          <div className='grid grid-cols-12 gap-2'>
-                            {review.photos.map((photo) => (
-                              <a key={photo} href={photo} target='_blank' className='col-span-1'>
-                                <img src={photo} alt={photo} className='w-full aspect-square rounded-md object-cover' />
-                              </a>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                        )
+                      })}
                   </div>
-                )}
+                </div>
+                {/* Danh sách đánh giá */}
+                <div className='space-y-2'>
+                  <h3 className='font-medium tracking-tight'>Nhận xét của khách hàng</h3>
+                  {reviews.length > 0 && (
+                    <div className='grid grid-cols-12'>
+                      {reviews.map((review) => (
+                        <div key={review._id} className='col-span-12 space-y-4 py-6 border-t first:border-t-0'>
+                          {review.starPoints === 5 && (
+                            <div className='flex items-center space-x-2 text-green-500 dark:text-green-600'>
+                              <Laugh className='size-5' />
+                              <span className='text-xs font-medium'>Tuyệt vời</span>
+                            </div>
+                          )}
+                          {review.starPoints === 4 && (
+                            <div className='flex items-center space-x-2 text-blue-500 dark:text-blue-600'>
+                              <Smile className='size-5' />
+                              <span className='text-xs font-medium'>Hài lòng</span>
+                            </div>
+                          )}
+                          {review.starPoints === 3 && (
+                            <div className='flex items-center space-x-2 text-yellow-500 dark:text-yellow-600'>
+                              <Annoyed className='size-5' />
+                              <span className='text-xs font-medium'>Bình thường</span>
+                            </div>
+                          )}
+                          {review.starPoints === 2 && (
+                            <div className='flex items-center space-x-2 text-violet-500 dark:text-violet-600'>
+                              <Frown className='size-5' />
+                              <span className='text-xs font-medium'>Không hài lòng</span>
+                            </div>
+                          )}
+                          {review.starPoints === 1 && (
+                            <div className='flex items-center space-x-2 text-red-500 dark:text-red-600'>
+                              <Angry className='size-5' />
+                              <span className='text-xs font-medium'>Thất vọng</span>
+                            </div>
+                          )}
+                          <div className='flex items-center space-x-2'>
+                            <Avatar className='shrink-0'>
+                              <AvatarImage src={review.author.avatar} alt={review.author.fullName} />
+                              <AvatarFallback>
+                                {review.author.fullName[0].toUpperCase()}
+                                {review.author.fullName[1].toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className='flex-1 space-y-1'>
+                              <h3 className='inline-block text-sm font-medium'>{review.author.fullName}</h3>
+                              <div className='flex items-center space-x-1'>
+                                {Array(review.starPoints)
+                                  .fill(0)
+                                  .map((_, index) => (
+                                    <Star key={index} size={12} className='fill-yellow-500 stroke-yellow-500' />
+                                  ))}
+                              </div>
+                            </div>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className='text-xs text-muted-foreground'>
+                                  {convertMomentFromNowToVietnamese(moment(review.createdAt).fromNow())}
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent>{moment(review.createdAt).format('HH:mm DD-MM-YYYY')}</TooltipContent>
+                            </Tooltip>
+                          </div>
+                          {review.content && <div className='text-sm'>{review.content}</div>}
+                          {review.photos.length > 0 && (
+                            <div className='grid grid-cols-12 gap-2'>
+                              {review.photos.map((photo) => (
+                                <a key={photo} href={photo} target='_blank' className='col-span-1'>
+                                  <img
+                                    src={photo}
+                                    alt={photo}
+                                    className='w-full aspect-square rounded-md object-cover'
+                                  />
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
         {/* Bài viết */}
         <Card className='w-1/3'>
           <CardHeader>
